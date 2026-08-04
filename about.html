@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>关于我 · wv-ce</title>
+    <meta name="description" content="关于 wv-ce 的个人介绍。"/>
+    <link rel="stylesheet" href="css/style.css" />
+    <script>
+      (function () {
+        var saved = localStorage.getItem("wv-theme");
+        var theme =
+          saved ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-logo" href="index.html">wv-ce</a>
+        <div class="nav-links">
+          <a href="index.html">首页</a>
+          <a href="blog/index.html">博客</a>
+          <a href="about.html" class="active">关于</a>
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="切换主题"
+            title="切换主题"
+          >
+            <span id="theme-icon">🌙</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page container">
+      <h1>关于我</h1>
+
+      <div class="about-card">
+        <h3>简介</h3>
+        <p>
+          我是 wv-ce，一名热爱编程和分享的开发者。平时喜欢折腾新技术、写博客、
+          记录自己在代码世界里的成长。这里是我的一个小角落，欢迎你来逛逛。
+        </p>
+      </div>
+
+      <div class="about-card">
+        <h3>技能</h3>
+
+        <div class="skill-bar">
+          <span class="label"><span>Web 开发</span><span>80%</span></span>
+          <div class="bar"><div class="fill" style="width: 80%"></div></div>
+        </div>
+
+        <div class="skill-bar">
+          <span class="label"><span>后端 / 脚本</span><span>70%</span></span>
+          <div class="bar"><div class="fill" style="width: 70%"></div></div>
+        </div>
+
+        <div class="skill-bar">
+          <span class="label"><span>设计与写作</span><span>65%</span></span>
+          <div class="bar"><div class="fill" style="width: 65%"></div></div>
+        </div>
+      </div>
+
+      <div class="about-card">
+        <h3>兴趣爱好</h3>
+        <div class="tags">
+          <span class="tag">编程</span>
+          <span class="tag">开源</span>
+          <span class="tag">阅读</span>
+          <span class="tag">健身</span>
+        </div>
+      </div>
+
+      <div class="about-card">
+        <h3>联系</h3>
+        <p>
+          你可以通过 <a href="https://github.com/wv-ce" target="_blank" rel="noopener">GitHub</a>
+          找到我，或者在下方填写你的邮箱，我会尽快回复。
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">© <span id="year"></span> wv-ce · 用 ❤️ 构建</div>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

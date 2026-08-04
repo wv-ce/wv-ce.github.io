@@ -1,3 +1,83 @@
-<p>Hello 大家好</p>
-<p>我是wv-ce，这是我的个人网站。 </p>
-<p>很高兴你来到这里</p>
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wv-ce · 个人网站</title>
+    <meta
+      name="description"
+      content="wv-ce 的个人网站：博客与日常生活分享。"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script>
+      (function () {
+        var saved = localStorage.getItem("wv-theme");
+        var theme =
+          saved ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container">
+        <a class="nav-logo" href="index.html">wv-ce</a>
+        <div class="nav-links">
+          <a href="index.html" class="active">首页</a>
+          <a href="blog/index.html">博客</a>
+          <a href="about.html">关于</a>
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="切换主题"
+            title="切换主题"
+          >
+            <span id="theme-icon">🌙</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <div class="hero-avatar">
+          <img
+            src="https://github.com/wv-ce.png"
+            alt="wv-ce 头像"
+          />
+        </div>
+        <h1>你好，我是 wv-ce 👋</h1>
+        <p class="tagline">写代码，记录生活。</p>
+        <p>
+          这是我在 GitHub Pages 上的个人网站。我会在这里分享我的技术笔记、
+          项目经历和一些日常思考。
+        </p>
+        <div class="socials">
+          <a href="https://github.com/wv-ce" target="_blank" rel="noopener">
+            GitHub
+          </a>
+          <a href="about.html">关于我</a>
+        </div>
+      </section>
+
+      <section class="container">
+        <h2 class="section-title">最新文章</h2>
+        <ul class="post-list">
+          <li>
+            <a href="blog/welcome.html">欢迎来到我的个人网站</a>
+            <p class="post-meta">2024-01-01 · 随笔</p>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">© <span id="year"></span> wv-ce · 用 ❤️ 构建</div>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
