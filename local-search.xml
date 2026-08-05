@@ -5,8 +5,8 @@
   
   <entry>
     <title>欢迎来到我的个人网站</title>
-    <link href="/2024/01/01/welcome/"/>
-    <url>/2024/01/01/welcome/</url>
+    <link href="/2026/08/05/welcome/"/>
+    <url>/2026/08/05/welcome/</url>
     
     <content type="html"><![CDATA[<p>大家好，我是 wv-ce。经过一番折腾，我的个人网站终于上线了 🎉。这篇文章就来聊聊这个网站的由来，以及我打算在这里写些什么。</p><h2 id="为什么建这个网站"><a href="#为什么建这个网站" class="headerlink" title="为什么建这个网站"></a>为什么建这个网站</h2><p>一直想有一个属于自己的地方，可以自由地记录、分享和思考。社交媒体虽然方便，但内容和形式都受限于平台。而一个自己的网站，从设计到内容都由自己掌控，这种感觉很好。</p><h2 id="网站的技术方案"><a href="#网站的技术方案" class="headerlink" title="网站的技术方案"></a>网站的技术方案</h2><p>这个网站使用 <a href="https://hexo.io/">Hexo</a> 构建，主题为 <a href="https://github.com/fluid-dev/hexo-theme-fluid">Fluid</a>。好处是：</p><ul><li>支持 Markdown 写作，专注内容本身</li><li>明暗模式自动切换</li><li>页面加载快，部署在 GitHub Pages 上</li></ul><h2 id="我会写些什么"><a href="#我会写些什么" class="headerlink" title="我会写些什么"></a>我会写些什么</h2><ol><li>技术笔记：把踩过的坑和学习心得记录下来</li><li>项目分享：介绍我做过的有意思的项目</li><li>生活随笔：一些日常的思考与记录</li></ol><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>网站刚刚起步，内容会慢慢丰富起来。如果你有什么建议，欢迎通过 <a href="https://github.com/wv-ce">GitHub</a> 找到我。期待与你交流。</p>]]></content>
     
