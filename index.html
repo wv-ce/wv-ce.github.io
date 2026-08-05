@@ -10,6 +10,9 @@
     />
     <link rel="stylesheet" href="css/style.css" />
     <script>
+      window.SITE_BASE = "";
+    </script>
+    <script>
       (function () {
         var saved = localStorage.getItem("wv-theme");
         var theme =
@@ -65,12 +68,12 @@
 
       <section class="container">
         <h2 class="section-title">最新文章</h2>
-        <ul class="post-list">
-          <li>
-            <a href="blog/welcome.html">欢迎来到我的个人网站</a>
-            <p class="post-meta">2024-01-01 · 随笔</p>
-          </li>
+        <ul class="post-list" id="recent-posts">
+          <li class="post-meta">加载中…</li>
         </ul>
+        <p style="margin-top: 16px">
+          <a href="blog/index.html">查看全部文章 →</a>
+        </p>
       </section>
     </main>
 
@@ -79,5 +82,6 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/blog.js"></script>
   </body>
 </html>

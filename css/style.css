@@ -262,6 +262,45 @@ a:hover {
   margin-bottom: 16px;
 }
 
+.content blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--bg-soft);
+  border-radius: 0 8px 8px 0;
+  padding: 4px 16px;
+  margin: 16px 0;
+  color: var(--text-muted);
+}
+
+.content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 24px 0;
+}
+
+.content img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.content th,
+.content td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.content th {
+  background: var(--bg-soft);
+  font-weight: 600;
+}
+
 /* 文章页 header */
 .article-header h1 {
   margin-bottom: 8px;
