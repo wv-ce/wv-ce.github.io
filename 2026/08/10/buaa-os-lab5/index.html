@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wv-ce.github.io/2026/08/10/buaa-os-lab5/image.png">
 <meta property="article:published_time" content="2026-08-10T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-08-23T07:27:41.695Z">
+<meta property="article:modified_time" content="2026-08-23T07:38:53.352Z">
 <meta property="article:author" content="wv-ce">
 <meta property="article:tag" content="BUAA_OS">
 <meta property="article:tag" content="操作系统">
@@ -48,6 +48,8 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
 
 
 
@@ -329,7 +331,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.2k 字
+          8.4k 字
         
       </span>
     
@@ -340,7 +342,7 @@
         
         
         
-          69 分钟
+          70 分钟
         
       </span>
     
@@ -384,8 +386,10 @@
             
               <div class="markdown-body">
                 
-                <h2 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h2><h3 id="Thinking-5-1"><a href="#Thinking-5-1" class="headerlink" title="Thinking 5.1"></a>Thinking 5.1</h3><ol>
-<li>会引发的主要问题：数据不一致性与 I&#x2F;O 失效</li>
+                <h2 id="思考题">思考题</h2>
+<h3 id="Thinking-5-1">Thinking 5.1</h3>
+<ol>
+<li>会引发的主要问题：数据不一致性与 I/O 失效</li>
 </ol>
 <ul>
 <li>写操作无法即时到达设备： 写入数据时，数据可能会被留在 CPU 的 Cache 中，而没有真正写入设备的寄存器或存储介质。这导致设备无法接收到控制命令或数据。</li>
@@ -396,114 +400,146 @@
 <li>不同设备的操作差异</li>
 </ol>
 <ul>
-<li>串口设备（如 UART）：<ul>
+<li>串口设备（如 UART）：
+<ul>
 <li>差异极大且致命。 串口寄存器（如发送保持寄存器、接收缓冲寄存器）是高度时效性的。如果读写被缓存，会导致无法发送字符或读到“影子”数据，且无法通过读取状态寄存器来判断设备是否就绪，整个通信链路会崩溃。</li>
 </ul>
 </li>
-<li>IDE 磁盘（大块数据传输）：<ul>
+<li>IDE 磁盘（大块数据传输）：
+<ul>
 <li>相对复杂。 虽然控制寄存器部分同样严禁缓存，但在进行大块数据读写（如 DMA 传输）时，如果不正确处理缓存，会导致磁盘写回的数据与内存中的 Cache 不一致。</li>
 <li>缓存更新策略影响： 如果使用写通（Write-through），写入会同步到内存，但读取仍可能读到 Cache 旧值；如果使用写回（Write-back），则数据可能长期滞留在 Cache，必须手动执行特定的 Cache 无效化（Invalidate）或刷新（Flush）指令，这大大增加了编程复杂度且易出错。</li>
 </ul>
 </li>
 </ul>
-<h3 id="Thinking-5-2"><a href="#Thinking-5-2" class="headerlink" title="Thinking 5.2"></a>Thinking 5.2</h3><ol>
-<li><p>一个磁盘块中最多能存储多少个文件控制块？<br>一个磁盘块的大小（<code>BLOCK_SIZE</code>）等同于一页的大小（<code>PAGE_SIZE</code>），为 4096 字节（4KB）。<br>在 <code>fs.h</code> 中有以下相关定义：</p>
+<h3 id="Thinking-5-2">Thinking 5.2</h3>
+<ol>
+<li>
+<p>一个磁盘块中最多能存储多少个文件控制块？
+一个磁盘块的大小（<code>BLOCK_SIZE</code>）等同于一页的大小（<code>PAGE_SIZE</code>），为 4096 字节（4KB）。
+在 <code>fs.h</code> 中有以下相关定义：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> BLOCK_SIZE PAGE_SIZE        <span class="hljs-comment">// 4096 字节</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> FILE_STRUCT_SIZE 256        <span class="hljs-comment">// 文件控制块 (struct File) 结构体的大小为 256 字节</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> FILE2BLK (BLOCK_SIZE / sizeof(struct File))   <span class="hljs-comment">// 即 BLOCK_SIZE / FILE_STRUCT_SIZE</span></span><br></code></pre></td></tr></table></figure>
-<p>其中，<code>sizeof(struct File)</code> 经过 <code>f_pad</code> 的填充字节定义，正好是固定大小的 <code>FILE_STRUCT_SIZE</code>（即 $256$ 字节）。<br>则一个块内能存放的文件控制块数：<br>   $$\text{FILE2BLK} &#x3D; \frac{\text{BLOCK_SIZE}}{\text{FILE_STRUCT_SIZE}} &#x3D; \frac{4096}{256} &#x3D; 16$$</p>
+<p>其中，<code>sizeof(struct File)</code> 经过 <code>f_pad</code> 的填充字节定义，正好是固定大小的 <code>FILE_STRUCT_SIZE</code>（即 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>256</mn></mrow><annotation encoding="application/x-tex">256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">256</span></span></span></span> 字节）。
+则一个块内能存放的文件控制块数：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>FILE2BLK</mtext><mo>=</mo><mfrac><mtext>BLOCK_SIZE</mtext><mtext>FILE_STRUCT_SIZE</mtext></mfrac><mo>=</mo><mfrac><mn>4096</mn><mn>256</mn></mfrac><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">\text{FILE2BLK} = \frac{\text{BLOCK\_SIZE}}{\text{FILE\_STRUCT\_SIZE}} = \frac{4096}{256} = 16
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">FILE2BLK</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3793em;vertical-align:-0.996em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3833em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">FILE_STRUCT_SIZE</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.7em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">BLOCK_SIZE</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.996em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">256</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4096</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span></span></p>
 <p>一个磁盘块最多能存储 16 个 文件控制块。</p>
 </li>
-<li><p>一个目录下最多能有多少个文件？</p>
-<p>在 MOS 文件系统中，目录本质上也是一个文件，其内容是由连续排列的 <code>struct File</code> 结构体（文件控制块）组成的。<br>因为目录也是文件，所以限制它最多能包含多少文件的因素，是单个文件最多能占用的磁盘块数。</p>
+<li>
+<p>一个目录下最多能有多少个文件？</p>
+<p>在 MOS 文件系统中，目录本质上也是一个文件，其内容是由连续排列的 <code>struct File</code> 结构体（文件控制块）组成的。
+因为目录也是文件，所以限制它最多能包含多少文件的因素，是单个文件最多能占用的磁盘块数。</p>
 <p>我们来计算一个目录文件最多能占用多少个磁盘块（Block）：</p>
 <ul>
 <li>直接索引指针数：<code>NDIRECT = 10</code></li>
 <li>间接索引指针数：<code>NINDIRECT = BLOCK_SIZE / 4 - 10 = 4096 / 4 - 10 = 1024 - 10 = 1014</code> （不使用前10个间接指针）</li>
-<li>文件占用的最大磁盘块数 &#x3D; 直指块 + 间接块 &#x3D; $10 + 1014 &#x3D; 1024$ 块。</li>
+<li>文件占用的最大磁盘块数 = 直指块 + 间接块 = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>+</mo><mn>1014</mn><mo>=</mo><mn>1024</mn></mrow><annotation encoding="application/x-tex">10 + 1014 = 1024</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1014</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1024</span></span></span></span> 块。</li>
 </ul>
-<p>那么，最大文件数 &#x3D; 最大磁盘块数 $\times$ 单块内文件控制块数 &#x3D; 1024 $\times$ 16 &#x3D; 16384</p>
+<p>那么，最大文件数 = 最大磁盘块数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 单块内文件控制块数 = 1024 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 16 = 16384</p>
 </li>
-<li><p>我们的文件系统支持的单个文件最大为多大？</p>
+<li>
+<p>我们的文件系统支持的单个文件最大为多大？</p>
 <p>在 <code>fs.h</code> 中，单个文件最大大小的计算宏如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> NINDIRECT (BLOCK_SIZE / 4)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXFILESIZE (NINDIRECT * BLOCK_SIZE)</span><br></code></pre></td></tr></table></figure>
-<p>文件系统支持的单个文件最大为：<br>$$\text{MAXFILESIZE} &#x3D; 1024 \times 4\text{KB} &#x3D; 4096\text{KB} &#x3D; 4\text{MB}$$</p>
+<p>文件系统支持的单个文件最大为：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>MAXFILESIZE</mtext><mo>=</mo><mn>1024</mn><mo>×</mo><mn>4</mn><mtext>KB</mtext><mo>=</mo><mn>4096</mn><mtext>KB</mtext><mo>=</mo><mn>4</mn><mtext>MB</mtext></mrow><annotation encoding="application/x-tex">\text{MAXFILESIZE} = 1024 \times 4\text{KB} = 4096\text{KB} = 4\text{MB}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">MAXFILESIZE</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1024</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">4</span><span class="mord text"><span class="mord">KB</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">4096</span><span class="mord text"><span class="mord">KB</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">4</span><span class="mord text"><span class="mord">MB</span></span></span></span></span></span></p>
 </li>
 </ol>
-<h3 id="Thinking-5-3"><a href="#Thinking-5-3" class="headerlink" title="Thinking 5.3"></a>Thinking 5.3</h3><p>1GB</p>
-<h3 id="Thinking-5-4"><a href="#Thinking-5-4" class="headerlink" title="Thinking 5.4"></a>Thinking 5.4</h3><h4 id="1-BLOCK-SIZE-BLOCK-SIZE-BIT"><a href="#1-BLOCK-SIZE-BLOCK-SIZE-BIT" class="headerlink" title="1. BLOCK_SIZE &amp; BLOCK_SIZE_BIT"></a>1. <code>BLOCK_SIZE</code> &amp; <code>BLOCK_SIZE_BIT</code></h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> BLOCK_SIZE PAGE_SIZE</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> BLOCK_SIZE_BIT (BLOCK_SIZE * 8)</span><br></code></pre></td></tr></table></figure>
+<h3 id="Thinking-5-3">Thinking 5.3</h3>
+<p>1GB</p>
+<h3 id="Thinking-5-4">Thinking 5.4</h3>
+<h4 id="1-BLOCK-SIZE-BLOCK-SIZE-BIT">1. <code>BLOCK_SIZE</code> &amp; <code>BLOCK_SIZE_BIT</code></h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> BLOCK_SIZE PAGE_SIZE</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> BLOCK_SIZE_BIT (BLOCK_SIZE * 8)</span><br></code></pre></td></tr></table></figure>
 <ul>
-<li>解释：<code>BLOCK_SIZE</code> 指每个“文件系统块”的大小。这里将其与操作系统的页大小绑定。<code>BLOCK_SIZE_BIT</code> 表示一个块所含的比特数（$4096 \times 8 &#x3D; 32768$ 位）。</li>
-<li>主要应用之处：<ul>
+<li>解释：<code>BLOCK_SIZE</code> 指每个“文件系统块”的大小。这里将其与操作系统的页大小绑定。<code>BLOCK_SIZE_BIT</code> 表示一个块所含的比特数（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4096</mn><mo>×</mo><mn>8</mn><mo>=</mo><mn>32768</mn></mrow><annotation encoding="application/x-tex">4096 \times 8 = 32768</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4096</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32768</span></span></span></span> 位）。</li>
+<li>主要应用之处：
+<ul>
 <li>磁盘读写的最小单元：OS 按“块”为单位在内存和磁盘之间搬运数据。</li>
 <li>空闲块管理：<code>BLOCK_SIZE_BIT</code> 用来作为位图（Bitmap）管理的基本单位。一个空闲位图块正好能管理 32768 个磁盘块的分配与回收。</li>
 </ul>
 </li>
 </ul>
-<h4 id="2-NDIRECT-NINDIRECT-MAXFILESIZE"><a href="#2-NDIRECT-NINDIRECT-MAXFILESIZE" class="headerlink" title="2. NDIRECT &amp; NINDIRECT &amp; MAXFILESIZE"></a>2. <code>NDIRECT</code> &amp; <code>NINDIRECT</code> &amp; <code>MAXFILESIZE</code></h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> NDIRECT 10</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> NINDIRECT (BLOCK_SIZE / 4)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXFILESIZE (NINDIRECT * BLOCK_SIZE)</span><br></code></pre></td></tr></table></figure>
+<h4 id="2-NDIRECT-NINDIRECT-MAXFILESIZE">2. <code>NDIRECT</code> &amp; <code>NINDIRECT</code> &amp; <code>MAXFILESIZE</code></h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> NDIRECT 10</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> NINDIRECT (BLOCK_SIZE / 4)</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXFILESIZE (NINDIRECT * BLOCK_SIZE)</span><br></code></pre></td></tr></table></figure>
 <ul>
-<li>解释：<ul>
+<li>解释：
+<ul>
 <li><code>NDIRECT</code> (10)：一个 <code>struct File</code>（FCB）中包含的直接块指针数量。</li>
 <li><code>NINDIRECT</code> (1024)：一个间接块中能存放的磁盘物理块号。</li>
 <li><code>MAXFILESIZE</code> (4MB)：文件系统支持的单个文件最大字节数。</li>
 </ul>
 </li>
-<li>主要应用之处：<ul>
-<li>文件索引与查找：在 <code>file_get_block()</code> 函数中，用于判定目标块指针在线性索引中的位置。如果所需的逻辑块号 $blk &lt; 10$，直接走 <code>f_direct[blk]</code>；如果 $\ge 10$，则通过间接地址 <code>f_indirect</code> 指向的索引页去查找。</li>
+<li>主要应用之处：
+<ul>
+<li>文件索引与查找：在 <code>file_get_block()</code> 函数中，用于判定目标块指针在线性索引中的位置。如果所需的逻辑块号 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>l</mi><mi>k</mi><mo>&lt;</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">blk &lt; 10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span>，直接走 <code>f_direct[blk]</code>；如果 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">\ge 10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span>，则通过间接地址 <code>f_indirect</code> 指向的索引页去查找。</li>
 <li>边界保护：在 <code>file_set_size()</code> 等写操作中，用于限制文件大小不超过 <code>MAXFILESIZE</code>。</li>
 </ul>
 </li>
 </ul>
-<h4 id="3-FILE-STRUCT-SIZE-FILE2BLK"><a href="#3-FILE-STRUCT-SIZE-FILE2BLK" class="headerlink" title="3. FILE_STRUCT_SIZE &amp; FILE2BLK"></a>3. <code>FILE_STRUCT_SIZE</code> &amp; <code>FILE2BLK</code></h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> FILE_STRUCT_SIZE 256</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> FILE2BLK (BLOCK_SIZE / sizeof(struct File))</span><br></code></pre></td></tr></table></figure>
+<h4 id="3-FILE-STRUCT-SIZE-FILE2BLK">3. <code>FILE_STRUCT_SIZE</code> &amp; <code>FILE2BLK</code></h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> FILE_STRUCT_SIZE 256</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> FILE2BLK (BLOCK_SIZE / sizeof(struct File))</span><br></code></pre></td></tr></table></figure>
 <ul>
-<li>解释：<ul>
+<li>解释：
+<ul>
 <li><code>FILE_STRUCT_SIZE</code> 强制规定一个 <code>struct File</code> 的磁盘存储实体为固定的 256 字节。</li>
 <li><code>FILE2BLK</code> 为一个标准磁盘块中能够紧密塞入的文件控制块数量（16个）。</li>
 </ul>
 </li>
-<li>主要应用之处：<ul>
+<li>主要应用之处：
+<ul>
 <li>目录项遍历：因为目录本身也是一个文件，当你在某个目录下查找、创建或删除文件时，需要在一页中按 <code>FILE2BLK</code> 步长遍历文件控制块，以匹配文件名。</li>
 </ul>
 </li>
 </ul>
-<h4 id="4-SECT-SIZE-SECT2BLK"><a href="#4-SECT-SIZE-SECT2BLK" class="headerlink" title="4. SECT_SIZE &amp; SECT2BLK"></a>4. <code>SECT_SIZE</code> &amp; <code>SECT2BLK</code></h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> SECT_SIZE 512</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SECT2BLK (BLOCK_SIZE / SECT_SIZE)</span><br></code></pre></td></tr></table></figure>
+<h4 id="4-SECT-SIZE-SECT2BLK">4. <code>SECT_SIZE</code> &amp; <code>SECT2BLK</code></h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> SECT_SIZE 512</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> SECT2BLK (BLOCK_SIZE / SECT_SIZE)</span><br></code></pre></td></tr></table></figure>
 <ul>
-<li>解释：<ul>
+<li>解释：
+<ul>
 <li><code>SECT_SIZE</code> 代表磁盘物理扇区的大小。</li>
-<li><code>SECT2BLK</code> 代表一个文件系统逻辑块含有的物理扇区数量（$4096 &#x2F; 512 &#x3D; 8$ 扇区）。</li>
+<li><code>SECT2BLK</code> 代表一个文件系统逻辑块含有的物理扇区数量（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4096</mn><mi mathvariant="normal">/</mi><mn>512</mn><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">4096 / 512 = 8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">4096/512</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span> 扇区）。</li>
 </ul>
 </li>
-<li>主要应用之处：<ul>
+<li>主要应用之处：
+<ul>
 <li>IDE 硬件驱动控制：磁盘驱动（如 <code>ide_read</code>、<code>ide_write</code>）是以扇区为单位向硬件发送控制器指令的。当系统需要读写一个逻辑块（Block）时，需要利用 <code>SECT2BLK</code>（即通过逻辑块号乘上 <code>SECT2BLK</code> 计算出对应的物理扇区号）向 IDE 磁盘发送读写 8 个扇区的指令。</li>
 </ul>
 </li>
 </ul>
-<h4 id="5-DISKMAP-DISKMAX"><a href="#5-DISKMAP-DISKMAX" class="headerlink" title="5. DISKMAP &amp; DISKMAX"></a>5. <code>DISKMAP</code> &amp; <code>DISKMAX</code></h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> DISKMAP 0x10000000</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DISKMAX 0x40000000</span><br></code></pre></td></tr></table></figure>
+<h4 id="5-DISKMAP-DISKMAX">5. <code>DISKMAP</code> &amp; <code>DISKMAX</code></h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> DISKMAP 0x10000000</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DISKMAX 0x40000000</span><br></code></pre></td></tr></table></figure>
 <ul>
-<li>解释：<ul>
+<li>解释：
+<ul>
 <li><code>DISKMAP</code> 定义了文件系统服务进程（FS Server）虚拟地址空间中外设磁盘块映射的起始虚拟地址（<code>0x10000000</code>）。</li>
 <li><code>DISKMAX</code> 代表系统支持的最大磁盘大小（1GB，即 <code>0x40000000</code>）。</li>
 </ul>
 </li>
-<li>主要应用之处：<ul>
+<li>主要应用之处：
+<ul>
 <li>磁盘块缓存（Block Cache）：MOS 将磁盘块 <code>n</code> 直接映射到 FS 进程的虚拟内存空间 <code>DISKMAP + n * BLOCK_SIZE</code>。</li>
 </ul>
 </li>
 </ul>
-<h3 id="Thinking-5-5"><a href="#Thinking-5-5" class="headerlink" title="Thinking 5.5"></a>Thinking 5.5</h3><p><code>fork</code> 前后的父子进程会共享文件描述符和定位指针（Offset）。</p>
+<h3 id="Thinking-5-5">Thinking 5.5</h3>
+<p><code>fork</code> 前后的父子进程会共享文件描述符和定位指针（Offset）。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;lib.h&gt;</span></span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">umain</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> argv)</span> &#123;<br>    <span class="hljs-type">int</span> r;<br>    <span class="hljs-type">int</span> fdnum;<br>    <span class="hljs-type">char</span> buf[<span class="hljs-number">10</span>];<br>    <span class="hljs-type">char</span> *filename = <span class="hljs-string">&quot;/test_share.txt&quot;</span>;<br><br>    <span class="hljs-comment">// 1. 创建测试文件并写入带有明显分界的数据</span><br>    <span class="hljs-keyword">if</span> ((fdnum = open(filename, O_CREAT | O_RDWR)) &lt; <span class="hljs-number">0</span>) &#123;<br>        user_panic(<span class="hljs-string">&quot;open and create failed: %d&quot;</span>, fdnum);<br>    &#125;<br>    <span class="hljs-keyword">if</span> ((r = write(fdnum, <span class="hljs-string">&quot;Hello World&quot;</span>, <span class="hljs-number">11</span>)) &lt; <span class="hljs-number">0</span>) &#123;<br>        user_panic(<span class="hljs-string">&quot;write failed: %d&quot;</span>, r);<br>    &#125;<br>    close(fdnum);<br><br>    <span class="hljs-comment">// 2. 重新打开文件，此时读写指针（Offset）复位到 0</span><br>    <span class="hljs-keyword">if</span> ((fdnum = open(filename, O_RDWR)) &lt; <span class="hljs-number">0</span>) &#123;<br>        user_panic(<span class="hljs-string">&quot;reopen failed: %d&quot;</span>, fdnum);<br>    &#125;<br><br>    <span class="hljs-comment">// 3. 调用 fork 创建子进程</span><br>    <span class="hljs-type">int</span> pid = fork();<br>    <span class="hljs-keyword">if</span> (pid &lt; <span class="hljs-number">0</span>) &#123;<br>        user_panic(<span class="hljs-string">&quot;fork failed: %d&quot;</span>, pid);<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (pid == <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">// ========== 子进程逻辑 ==========</span><br>        <span class="hljs-comment">// 尝试读取前 5 个字节 (&quot;Hello&quot;)</span><br>        <span class="hljs-keyword">if</span> ((r = read(fdnum, buf, <span class="hljs-number">5</span>)) != <span class="hljs-number">5</span>) &#123;<br>            user_panic(<span class="hljs-string">&quot;child read failed: %d&quot;</span>, r);<br>        &#125;<br>        buf[<span class="hljs-number">5</span>] = <span class="hljs-string">&#x27;\0&#x27;</span>;<br>        writef(<span class="hljs-string">&quot;[-] Child read first 5 bytes: &#x27;%s&#x27;\n&quot;</span>, buf);<br>        <br>        <span class="hljs-comment">// 子进程退出，此时它已经把指针“悄悄”推到了 5</span><br>        <span class="hljs-built_in">exit</span>();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// ========== 父进程逻辑 ==========</span><br>        <span class="hljs-comment">// 等待子进程退出以确保子进程优先完成了读操作</span><br>        wait(pid); <br><br>        <span class="hljs-comment">// 父进程直接读取后续 5 个字节</span><br>        <span class="hljs-keyword">if</span> ((r = read(fdnum, buf, <span class="hljs-number">5</span>)) != <span class="hljs-number">5</span>) &#123;<br>            user_panic(<span class="hljs-string">&quot;parent read failed: %d&quot;</span>, r);<br>        &#125;<br>        buf[<span class="hljs-number">5</span>] = <span class="hljs-string">&#x27;\0&#x27;</span>;<br>        writef(<span class="hljs-string">&quot;[-] Parent read next 5 bytes:  &#x27;%s&#x27;\n&quot;</span>, buf);<br><br>        <span class="hljs-comment">// 4. 比对结果</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(buf, <span class="hljs-string">&quot; Worl&quot;</span>) == <span class="hljs-number">0</span>) &#123;<br>            writef(<span class="hljs-string">&quot;[+] SUCCESS: Parent and Child SHARE file descriptor and offset pointer!\n&quot;</span>);<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strcmp</span>(buf, <span class="hljs-string">&quot;Hello&quot;</span>) == <span class="hljs-number">0</span>) &#123;<br>            writef(<span class="hljs-string">&quot;[!] FAILED: Offset pointer is NOT shared (Parent read &#x27;Hello&#x27; again).\n&quot;</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            writef(<span class="hljs-string">&quot;[?] Unexpected output: &#x27;%s&#x27;\n&quot;</span>, buf);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="Thinking-5-6"><a href="#Thinking-5-6" class="headerlink" title="Thinking 5.6"></a>Thinking 5.6</h3><ol>
+<h3 id="Thinking-5-6">Thinking 5.6</h3>
+<ol>
 <li><code>struct File</code> — 文件控制块 (FCB)</li>
 </ol>
 <ul>
 <li>定位：物理磁盘上文件的唯一代表（元数据实体）。它既存在于物理磁盘上，也会被加载到内存中。</li>
-<li>成员作用：<ul>
+<li>成员作用：
+<ul>
 <li><code>f_name</code>：文件名。</li>
 <li><code>f_size</code>：文件的实际大小（字节为单位）。</li>
 <li><code>f_type</code>：文件类型。</li>
 <li><code>f_direct[NDIRECT]</code>：直接数据块指针数组。</li>
 <li><code>f_indirect</code>：一级间接索引块的物理块号。</li>
 <li><code>f_dir</code>：仅在虚拟内存中有效的指针，指向该文件所在的宿主目录。</li>
-<li><code>f_pad</code>：填充数组（填充至 $256$ 字节），保证在磁盘块（4096字节）中能紧密且对齐地存放 16 个 <code>struct File</code>。</li>
+<li><code>f_pad</code>：填充数组（填充至 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>256</mn></mrow><annotation encoding="application/x-tex">256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">256</span></span></span></span> 字节），保证在磁盘块（4096字节）中能紧密且对齐地存放 16 个 <code>struct File</code>。</li>
 </ul>
 </li>
 </ul>
@@ -512,8 +548,9 @@
 </ol>
 <ul>
 <li>定位：纯内存数据结构。进程用于记录某种设备或通道（如普通文件、管道、控制台终端）的通用打开状态。</li>
-<li>成员作用：<ul>
-<li><code>fd_dev_id</code>：外设&#x2F;类型标识符。</li>
+<li>成员作用：
+<ul>
+<li><code>fd_dev_id</code>：外设/类型标识符。</li>
 <li><code>fd_offset</code>：当前读写位置偏移量（定位指针）。由于其位于由 <code>PTE_LIBRARY</code> 共享的物理页，fork 后的父子进程会完全共享此偏移。</li>
 <li><code>fd_omode</code>：文件打开的文件权限模式（如 <code>O_RDONLY</code>、<code>O_WRONLY</code>、<code>O_RDWR</code> 等）。</li>
 </ul>
@@ -523,8 +560,9 @@
 <li><code>struct Filefd</code> — 磁盘文件描述符 (File-backed File Descriptor)</li>
 </ol>
 <ul>
-<li>定位：纯内存数据结构。它是 <code>struct Fd</code> 的特化&#x2F;派生形态。依靠 C 语言的结构体扁平排布，当文件描述符属于“磁盘文件”时，会将 <code>struct Fd</code> 强制类型转换（Type Cast）为 <code>struct Filefd</code>。</li>
-<li>成员作用：<ul>
+<li>定位：纯内存数据结构。它是 <code>struct Fd</code> 的特化/派生形态。依靠 C 语言的结构体扁平排布，当文件描述符属于“磁盘文件”时，会将 <code>struct Fd</code> 强制类型转换（Type Cast）为 <code>struct Filefd</code>。</li>
+<li>成员作用：
+<ul>
 <li><code>f_fd</code>：继承自通用的 <code>struct Fd</code>，存放偏移量和打开模式。</li>
 <li><code>f_fileid</code>：FS Server 分配给该打开文件的全局唯一标识符（File ID），用来在 IPC 请求中代表该文件。</li>
 <li><code>f_file</code>：该文件对应的磁盘 <code>struct File</code> 的完整内存副本，方便客户端进程直接读取文件大小等元数据。</li>
@@ -533,12 +571,15 @@
 </ul>
 <p>这三者在文件系统架构中处于不同层级，它们的对应关系和调用场景如下：</p>
 <p><img src="/2026/08/10/buaa-os-lab5/image.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
-<h3 id="Thinking-5-7"><a href="#Thinking-5-7" class="headerlink" title="Thinking 5.7"></a>Thinking 5.7</h3><ol>
-<li>实线加实心三角箭头（如 <code>ENV_CREATE</code>）<ul>
-<li>代表含义：同步消息 &#x2F; 控制流调用（含有创建&#x2F;触发关系）。</li>
+<h3 id="Thinking-5-7">Thinking 5.7</h3>
+<ol>
+<li>实线加实心三角箭头（如 <code>ENV_CREATE</code>）
+<ul>
+<li>代表含义：同步消息 / 控制流调用（含有创建/触发关系）。</li>
 </ul>
 </li>
-<li>虚线加普通尖箭头（例如 <code>user_env -&gt; open()</code> 的指向、IPC 回传）<ul>
+<li>虚线加普通尖箭头（例如 <code>user_env -&gt; open()</code> 的指向、IPC 回传）
+<ul>
 <li>代表含义：控制流内部转换、本地函数调用、或者是异步响应（通常作为前一个同步调用的返回信息）。</li>
 </ul>
 </li>
@@ -551,11 +592,13 @@
 </ol>
 <ul>
 <li>应用场景：用户进程调用 <code>fsipc()</code>，将打开文件请求结构体 <code>fsreq</code> 传递给 <code>fs_serv</code>。</li>
-<li>具体实现机制：<ul>
+<li>具体实现机制：
+<ul>
 <li>步骤①（参数准备）：用户进程在自己的虚拟地址空间中填充好一个请求页（页面首地址为 <code>fsreq</code>），其中包含要打开的文件路径、模式等。</li>
 <li>步骤②（系统调用陷入）：用户进程调用封装后的 <code>sys_ipc_can_send(receiver_envid, val, src_va, perm)</code> 系统调用陷入内核。</li>
-<li>步骤③（内核安全投递）：<ol>
-<li>内核挂起当前的发送进程，并切换到 <code>fs_serv</code> 进程的控制块（PCB&#x2F;Env）。</li>
+<li>步骤③（内核安全投递）：
+<ol>
+<li>内核挂起当前的发送进程，并切换到 <code>fs_serv</code> 进程的控制块（PCB/Env）。</li>
 <li>内核修改服务进程的页表，将用户进程 <code>src_va</code>（即 <code>fsreq</code>）所在的物理页，直接映射到服务进程接收缓冲区的虚拟地址上（通常是服务进程预留的专用 IPC 接收页 <code>sys_ipc_recv</code> 指定位置）。</li>
 <li>内核将接收方 <code>fs_serv</code> 的进程状态由“阻塞等待”修改为“就绪”。</li>
 </ol>
@@ -564,19 +607,22 @@
 </li>
 </ul>
 <ol start="2">
-<li>服务端向工作线程&#x2F;客户端响应：<code>ipc_send</code> 共享返回页 <code>dst_va</code></li>
+<li>服务端向工作线程/客户端响应：<code>ipc_send</code> 共享返回页 <code>dst_va</code></li>
 </ol>
 <ul>
 <li>应用场景：<code>fs_serv</code> 处理完打开请求后，将包含有文件描述符和副本的物理页直接映射回给用户进程的 <code>dst_va</code> 虚拟地址上。</li>
-<li>具体实现机制：<ul>
+<li>具体实现机制：
+<ul>
 <li>通过 IPC 传递 <code>PTE_LIBRARY</code> 权限（共享内存映射）。</li>
 <li>服务进程在分配好对应的文件描述符页 <code>fd</code>（在进程内部表现为 <code>Filefd</code>）后，通过系统调用 <code>sys_ipc_can_send</code> 回传数据。</li>
-<li>最为关键的是，在传递权限参数 <code>perm</code> 时，会带上 <code>PTE_LIBRARY</code>（库共享标志）以及写权限 <code>PTE_V | PTE_R</code>。 </li>
+<li>最为关键的是，在传递权限参数 <code>perm</code> 时，会带上 <code>PTE_LIBRARY</code>（库共享标志）以及写权限 <code>PTE_V | PTE_R</code>。</li>
 <li>内核在执行页映射拷贝时，让用户进程的 <code>dst_va</code> 虚拟地址与服务进程缓存此描述符的虚拟地址指向同一个物理内存页，且都保留 <code>PTE_LIBRARY</code> 标志。这就完美实现了上一问中所验证的“父子进程、服客进程之间对文件描述符、读写偏移量（Offset）的实时内存共享”。</li>
 </ul>
 </li>
 </ul>
-<h2 id="难点分析"><a href="#难点分析" class="headerlink" title="难点分析"></a>难点分析</h2><h3 id="难点思维导图（基于新框架）"><a href="#难点思维导图（基于新框架）" class="headerlink" title="难点思维导图（基于新框架）"></a>难点思维导图（基于新框架）</h3><pre><code class=" mermaid">mindmap
+<h2 id="难点分析">难点分析</h2>
+<h3 id="难点思维导图（基于新框架）">难点思维导图（基于新框架）</h3>
+<pre><code class=" mermaid">mindmap
   root((Lab5 难点分析))
     外设控制与磁盘驱动
       磁盘映射IO
@@ -599,8 +645,8 @@
         路径解析与目录修改
         库→IPC→服务全链路
 </code></pre>
-
-<h3 id="各模块难点简析"><a href="#各模块难点简析" class="headerlink" title="各模块难点简析"></a>各模块难点简析</h3><p>外设控制与磁盘驱动</p>
+<h3 id="各模块难点简析">各模块难点简析</h3>
+<p>外设控制与磁盘驱动</p>
 <ul>
 <li>磁盘映射 IO：理解端口映射或内存映射 IO 的本质，必须用 <code>volatile</code> 确保读写不被编译器优化，并严格按照硬件时序操作。</li>
 <li>IDE 磁盘驱动：实现基于中断的异步读写——提交命令后进程睡眠，中断处理程序负责唤醒。难点在于正确设置扇区号、命令寄存器，以及处理睡眠队列的竞态。</li>
@@ -610,14 +656,15 @@
 <li>磁盘布局：超级块、inode 位图、数据位图、inode 区、数据区的精确划分，一旦偏移量算错，整个文件系统不可用。</li>
 <li>文件系统结构：inode 的直接块与间接块管理，分配、寻址和释放的边界条件；目录本质是特殊文件，增删条目时要处理好空洞和 <code>“.”</code> <code>“..”</code> 的引用计数。</li>
 <li>块缓存机制：内存中缓冲最近访问的磁盘块，需处理脏块的延迟写回与多进程同步（多个请求同时访问同一块时不能冲突）。</li>
-<li>服务进程的 IPC 设计：文件系统作为独立服务，通过 IPC 与用户进程通信。难点在于设计 <code>open</code>&#x2F;<code>read</code>&#x2F;<code>write</code>&#x2F;<code>remove</code> 等消息的格式，以及如何在保护域之间高效搬运数据。</li>
+<li>服务进程的 IPC 设计：文件系统作为独立服务，通过 IPC 与用户进程通信。难点在于设计 <code>open</code>/<code>read</code>/<code>write</code>/<code>remove</code> 等消息的格式，以及如何在保护域之间高效搬运数据。</li>
 </ul>
 <p>文件操作接口</p>
 <ul>
 <li>文件描述符：每个进程维护 fd 数组，指向系统级打开文件表。<code>open</code> 分配空闲 fd，<code>close</code> 释放，<code>fork</code> 和 <code>dup</code> 时需正确增加引用计数，保证共享偏移语义。</li>
 <li><code>remove</code> 的全路径封装：用户调用 <code>remove(path)</code> 后，需经过库函数→IPC→文件系统服务进程的完整路径解析，最终删除目录项、释放 inode 及其间接块、更新位图。这是写入操作的典型代表，涉及多处修改和一致性维护。</li>
 </ul>
-<h3 id="remove-全路径封装流程（展示难点串联）"><a href="#remove-全路径封装流程（展示难点串联）" class="headerlink" title="remove 全路径封装流程（展示难点串联）"></a><code>remove</code> 全路径封装流程（展示难点串联）</h3><pre><code class=" mermaid">sequenceDiagram
+<h3 id="remove-全路径封装流程（展示难点串联）"><code>remove</code> 全路径封装流程（展示难点串联）</h3>
+<pre><code class=" mermaid">sequenceDiagram
     participant App as 用户进程
     participant Lib as 库函数 (remove)
     participant FS as 文件系统服务进程
@@ -639,9 +686,10 @@
     deactivate FS
     Lib--&gt;&gt;App: 返回 0 或 -1
 </code></pre>
-
-<h3 id="实验体会"><a href="#实验体会" class="headerlink" title="实验体会"></a>实验体会</h3><p>通过实现文件系统全栈通路，深刻体会到分层抽象与同步机制的关键。一次 <code>read</code> 需精密协调 IPC、缓存与磁盘驱动，任何环节疏漏皆可致数据异常。对操作系统存储管理有了系统性认知。</p>
-<h3 id="原创说明"><a href="#原创说明" class="headerlink" title="原创说明"></a>原创说明</h3><p>本实验报告基本为原创，流程图有使用大模型辅助绘制，但内容和分析均为个人理解总结。</p>
+<h3 id="实验体会">实验体会</h3>
+<p>通过实现文件系统全栈通路，深刻体会到分层抽象与同步机制的关键。一次 <code>read</code> 需精密协调 IPC、缓存与磁盘驱动，任何环节疏漏皆可致数据异常。对操作系统存储管理有了系统性认知。</p>
+<h3 id="原创说明">原创说明</h3>
+<p>本实验报告基本为原创，流程图有使用大模型辅助绘制，但内容和分析均为个人理解总结。</p>
 
                 
               </div>
@@ -802,6 +850,11 @@
 
 
   
+
+
+  
+  
+
 
 
 

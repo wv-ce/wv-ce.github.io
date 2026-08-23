@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wv-ce.github.io/2026/08/07/buaa-os-lab2/image.png">
 <meta property="article:published_time" content="2026-08-07T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-08-23T07:27:41.693Z">
+<meta property="article:modified_time" content="2026-08-23T07:38:53.351Z">
 <meta property="article:author" content="wv-ce">
 <meta property="article:tag" content="BUAA_OS">
 <meta property="article:tag" content="操作系统">
@@ -48,6 +48,8 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
 
 
 
@@ -384,110 +386,126 @@
             
               <div class="markdown-body">
                 
-                <h2 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h2><h3 id="Thinking-2-1"><a href="#Thinking-2-1" class="headerlink" title="Thinking 2.1"></a>Thinking 2.1</h3><p>两者都是虚拟地址</p>
-<h3 id="Thinking-2-2"><a href="#Thinking-2-2" class="headerlink" title="Thinking 2.2"></a>Thinking 2.2</h3><ul>
+                <h2 id="思考题">思考题</h2>
+<h3 id="Thinking-2-1">Thinking 2.1</h3>
+<p>两者都是虚拟地址</p>
+<h3 id="Thinking-2-2">Thinking 2.2</h3>
+<ul>
 <li>方便复用，可读性和可维护性高</li>
-<li>中间插入&#x2F;删除：双向链表 $O(1)$，单向&#x2F;循环 $O(n)$。头尾操作：三者性能一样。</li>
+<li>中间插入/删除：双向链表 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>，单向/循环 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>。头尾操作：三者性能一样。</li>
 </ul>
-<h3 id="Thinking-2-3"><a href="#Thinking-2-3" class="headerlink" title="Thinking 2.3"></a>Thinking 2.3</h3><p>C</p>
-<h3 id="Thinking-2-4"><a href="#Thinking-2-4" class="headerlink" title="Thinking 2.4"></a>Thinking 2.4</h3><ul>
+<h3 id="Thinking-2-3">Thinking 2.3</h3>
+<p>C</p>
+<h3 id="Thinking-2-4">Thinking 2.4</h3>
+<ul>
 <li>在多进程操作系统中，不同进程的虚拟地址空间是相互隔离且可能重叠的，引入 ASID 的必要性在于它为 TLB 条目增加了“身份标签”，<strong>使得多个进程的地址映射能在 TLB 中共存</strong>，从而避免了在进程切换时必须强制清空整个 TLB 所带来的巨大性能开销，显著提升了系统在多任务环境下的内存访问效率。</li>
-<li>根据 MIPS 4Kc 文档中对 <code>EntryHi</code> 寄存器结构的定义，<strong>ASID 段占据了 8 位（bit 7 到 bit 0）</strong>，由于 $2^8 &#x3D; 256$，因此该处理器架构在不刷新 TLB 的情况下，最多可以同时标识并容纳 <strong>256 个</strong> 不同的地址空间。</li>
+<li>根据 MIPS 4Kc 文档中对 <code>EntryHi</code> 寄存器结构的定义，<strong>ASID 段占据了 8 位（bit 7 到 bit 0）</strong>，由于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>8</mn></msup><mo>=</mo><mn>256</mn></mrow><annotation encoding="application/x-tex">2^8 = 256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">256</span></span></span></span>，因此该处理器架构在不刷新 TLB 的情况下，最多可以同时标识并容纳 <strong>256 个</strong> 不同的地址空间。</li>
 </ul>
-<h3 id="Thinking-2-5"><a href="#Thinking-2-5" class="headerlink" title="Thinking 2.5"></a>Thinking 2.5</h3><ul>
+<h3 id="Thinking-2-5">Thinking 2.5</h3>
+<ul>
 <li><code>tlb_invalidate</code> 中 调用了 <code>tlb_out</code>。</li>
 <li><code>tlb_invalidate</code> 的作用是：让 CPU 里的虚拟地址缓存失效。</li>
 <li>如下</li>
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs c"># <span class="hljs-number">1.</span> 定义函数入口：LEAF是MIPS汇编宏，标记函数开始<br>LEAF(tlb_out)<br><br># <span class="hljs-number">2.</span> 汇编器指令：禁止指令重排序（MIPS硬件/汇编器可能重排指令，TLB操作必须严格顺序）<br>.<span class="hljs-built_in">set</span> noreorder<br><br># <span class="hljs-number">3.</span> 保存原CP0_ENTRYHI寄存器的值到t0<br># CP0_ENTRYHI：存放TLB查询的虚拟页号(VPN)，是TLB匹配的关键字段<br>mfc0    t0, CP0_ENTRYHI<br><br># <span class="hljs-number">4.</span> 将函数参数a0（待删除的虚拟地址）写入CP0_ENTRYHI<br># 为后续TLB查询做准备<br>mtc0    a0, CP0_ENTRYHI<br><br># <span class="hljs-number">5.</span> 空指令nop：等待CP0寄存器写入完成（MIPS协处理器访问需要延时槽）<br>nop<br><br><span class="hljs-comment">/* Step 1: 使用tlbp指令查询TLB表项 */</span><br><span class="hljs-meta"># tlbp：TLB Probe（TLB查询指令）</span><br># 功能：用CP0_ENTRYHI中的VPN匹配TLB表项，匹配结果写入CP0_INDEX<br>tlbp<br>nop  # 等待tlbp指令执行完成<br><br><span class="hljs-comment">/* Step 2: 从CP0_INDEX寄存器读取查询结果 */</span><br># CP0_INDEX：存放TLB匹配结果<br>#  - 若匹配成功：存储对应TLB表项的索引（非负数）<br>#  - 若匹配失败：存储<span class="hljs-number">0x80000000</span>（最高位为<span class="hljs-number">1</span>，值为负数）<br>mfc0    t1, CP0_INDEX<br><br># <span class="hljs-number">6.</span> 恢复汇编器指令重排序（默认模式）<br>.<span class="hljs-built_in">set</span> reorder<br><br># <span class="hljs-number">7.</span> 条件跳转：若t1 &lt; <span class="hljs-number">0</span>（即TLB未找到对应表项），跳转到NO_SUCH_ENTRY<br>bltz    t1, NO_SUCH_ENTRY<br><br># <span class="hljs-number">8.</span> 再次禁止指令重排序（TLB写入操作必须严格顺序）<br>.<span class="hljs-built_in">set</span> noreorder<br><br># <span class="hljs-number">9.</span> 清空CP0_ENTRYHI / ENTRYLO0 / ENTRYLO1 寄存器<br><span class="hljs-meta"># zero是MIPS零寄存器，写入0 = 清空寄存器</span><br># 这三个寄存器是TLB表项的核心数据，清空后代表TLB表项无效<br>mtc0    zero, CP0_ENTRYHI<br>mtc0    zero, CP0_ENTRYLO0<br>mtc0    zero, CP0_ENTRYLO1<br>nop  # 等待寄存器写入完成<br><br><span class="hljs-comment">/* Step 3: 使用tlbwi指令将清空的值写入TLB表项 */</span><br><span class="hljs-meta"># tlbwi：TLB Write Indexed（按索引写入TLB）</span><br># 功能：根据CP0_INDEX中的索引，将ENTRYHI/ENTRYLO0/ENTRYLO1的值写入对应TLB表项<br># 此处写入全<span class="hljs-number">0</span>，实现TLB表项**无效化/删除**<br>tlbwi<br><br># <span class="hljs-number">10.</span> 恢复指令重排序<br>.<span class="hljs-built_in">set</span> reorder<br><br>NO_SUCH_ENTRY:<br>	mtc0    t0, CP0_ENTRYHI<br>	j       ra<br><span class="hljs-title function_">END</span><span class="hljs-params">(tlb_out)</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="Thinking-2-6"><a href="#Thinking-2-6" class="headerlink" title="Thinking 2.6"></a>Thinking 2.6</h3><table>
+<h3 id="Thinking-2-6">Thinking 2.6</h3>
+<table>
 <thead>
 <tr>
-<th align="left">流程图步骤 (硬件行为)</th>
-<th align="left">对应 Lab2 函数 (软件实现)</th>
-<th align="left">逻辑关联说明</th>
+<th style="text-align:left">流程图步骤 (硬件行为)</th>
+<th style="text-align:left">对应 Lab2 函数 (软件实现)</th>
+<th style="text-align:left">逻辑关联说明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>查询目标页面是否存在于 TLB 中</strong></td>
-<td align="left">(由硬件 MMU 自动执行)</td>
-<td align="left">这是访存的第一步，硬件通过虚拟地址匹配 TLB 条目。</td>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>查询目标页面是否存在于 TLB 中</strong></td>
+<td style="text-align:left">(由硬件 MMU 自动执行)</td>
+<td style="text-align:left">这是访存的第一步，硬件通过虚拟地址匹配 TLB 条目。</td>
 </tr>
 <tr>
-<td align="left"><strong>触发 TLB Miss</strong></td>
-<td align="left"><code>do_tlb_refill</code></td>
-<td align="left">TLB 缺失会触发异常。<code>do_tlb_refill</code> 是处理该异常的总入口，负责后续的查表与重填。</td>
+<td style="text-align:left"><strong>触发 TLB Miss</strong></td>
+<td style="text-align:left"><code>do_tlb_refill</code></td>
+<td style="text-align:left">TLB 缺失会触发异常。<code>do_tlb_refill</code> 是处理该异常的总入口，负责后续的查表与重填。</td>
 </tr>
 <tr>
-<td align="left"><strong>根据页目录和虚拟地址寻找页表项</strong></td>
-<td align="left"><code>_do_tlb_refill</code> &#x2F; <code>pgdir_walk</code></td>
-<td align="left">软件模拟硬件查表过程。内核根据 <code>va</code> 在二级页表结构中定位具体的页表项（PTE）。</td>
+<td style="text-align:left"><strong>根据页目录和虚拟地址寻找页表项</strong></td>
+<td style="text-align:left"><code>_do_tlb_refill</code> / <code>pgdir_walk</code></td>
+<td style="text-align:left">软件模拟硬件查表过程。内核根据 <code>va</code> 在二级页表结构中定位具体的页表项（PTE）。</td>
 </tr>
 <tr>
-<td align="left"><strong>页目录中的页表是否有效</strong></td>
-<td align="left"><code>passive_alloc</code> &#x2F; <code>page_alloc</code></td>
-<td align="left">如果对应的二级页表还未分配，内核需要调用 <code>page_alloc</code> 分配一个物理页作为新页表。</td>
+<td style="text-align:left"><strong>页目录中的页表是否有效</strong></td>
+<td style="text-align:left"><code>passive_alloc</code> / <code>page_alloc</code></td>
+<td style="text-align:left">如果对应的二级页表还未分配，内核需要调用 <code>page_alloc</code> 分配一个物理页作为新页表。</td>
 </tr>
 <tr>
-<td align="left"><strong>从页表中查找页表项</strong></td>
-<td align="left"><code>page_lookup</code></td>
-<td align="left">在已有的页表中查找虚拟地址对应的物理页面描述。</td>
+<td style="text-align:left"><strong>从页表中查找页表项</strong></td>
+<td style="text-align:left"><code>page_lookup</code></td>
+<td style="text-align:left">在已有的页表中查找虚拟地址对应的物理页面描述。</td>
 </tr>
 <tr>
-<td align="left"><strong>页表项是否有效</strong></td>
-<td align="left"><code>page_insert</code></td>
-<td align="left">如果页表项为空（未建立映射），则需要分配物理页并使用 <code>page_insert</code> 将其填入页表。</td>
+<td style="text-align:left"><strong>页表项是否有效</strong></td>
+<td style="text-align:left"><code>page_insert</code></td>
+<td style="text-align:left">如果页表项为空（未建立映射），则需要分配物理页并使用 <code>page_insert</code> 将其填入页表。</td>
 </tr>
 <tr>
-<td align="left"><strong>取出相邻奇偶页填入 EntryLo…写回 TLB</strong></td>
-<td align="left"><code>tlb_out</code> &#x2F; <code>tlb_update</code></td>
-<td align="left">将查找到的物理页信息（PPN）和属性位填充到寄存器，并执行 TLB 写指令，完成重填。</td>
+<td style="text-align:left"><strong>取出相邻奇偶页填入 EntryLo…写回 TLB</strong></td>
+<td style="text-align:left"><code>tlb_out</code> / <code>tlb_update</code></td>
+<td style="text-align:left">将查找到的物理页信息（PPN）和属性位填充到寄存器，并执行 TLB 写指令，完成重填。</td>
 </tr>
 <tr>
-<td align="left"><strong>再次访存 &#x2F; 读取 PPN 完成访存</strong></td>
-<td align="left">(硬件重新执行指令)</td>
-<td align="left">TLB 更新后，异常返回，CPU 重新执行刚才失败的访存指令，此时会命中 TLB。</td>
+<td style="text-align:left"><strong>再次访存 / 读取 PPN 完成访存</strong></td>
+<td style="text-align:left">(硬件重新执行指令)</td>
+<td style="text-align:left">TLB 更新后，异常返回，CPU 重新执行刚才失败的访存指令，此时会命中 TLB。</td>
 </tr>
-</tbody></table>
-<h3 id="Thinking-2-7"><a href="#Thinking-2-7" class="headerlink" title="Thinking 2.7"></a>Thinking 2.7</h3><p>x86 与 MIPS 的内存管理区别</p>
+</tbody>
+</table>
+<h3 id="Thinking-2-7">Thinking 2.7</h3>
+<p>x86 与 MIPS 的内存管理区别</p>
 <p>MIPS 作为典型的精简指令集（RISC）代表，与 x86（CISC 演进而来）在设计思路上有本质不同：</p>
 <table>
 <thead>
 <tr>
-<th align="left">特性</th>
-<th align="left">x86 (CISC)</th>
-<th align="left">MIPS (RISC)</th>
+<th style="text-align:left">特性</th>
+<th style="text-align:left">x86 (CISC)</th>
+<th style="text-align:left">MIPS (RISC)</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>地址转换流程</strong></td>
-<td align="left"><strong>分段 + 分页</strong>。逻辑地址 $\rightarrow$ 线性地址 $\rightarrow$ 物理地址。</td>
-<td align="left"><strong>直接分页&#x2F;映射</strong>。虚拟地址通过 TLB 直接转换为物理地址。</td>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>地址转换流程</strong></td>
+<td style="text-align:left"><strong>分段 + 分页</strong>。逻辑地址 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 线性地址 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 物理地址。</td>
+<td style="text-align:left"><strong>直接分页/映射</strong>。虚拟地址通过 TLB 直接转换为物理地址。</td>
 </tr>
 <tr>
-<td align="left"><strong>页表管理方式</strong></td>
-<td align="left"><strong>硬件管理 (Hardware-managed)</strong>。MMU 自动遍历内存中的页表，性能开销由硬件承担。</td>
-<td align="left"><strong>软件管理 (Software-managed)</strong>。MMU 只负责 TLB 匹配。若 TLB 未命中（Miss），由操作系统内核手动处理。</td>
+<td style="text-align:left"><strong>页表管理方式</strong></td>
+<td style="text-align:left"><strong>硬件管理 (Hardware-managed)</strong>。MMU 自动遍历内存中的页表，性能开销由硬件承担。</td>
+<td style="text-align:left"><strong>软件管理 (Software-managed)</strong>。MMU 只负责 TLB 匹配。若 TLB 未命中（Miss），由操作系统内核手动处理。</td>
 </tr>
 <tr>
-<td align="left"><strong>内存布局</strong></td>
-<td align="left">相对统一。通过页表项属性定义访问权限。</td>
-<td align="left"><strong>硬性分段</strong>。虚拟空间被硬性划分为 kuseg, kseg0, kseg1 等，部分区域（如 kseg0）不经过 TLB 直接映射。</td>
+<td style="text-align:left"><strong>内存布局</strong></td>
+<td style="text-align:left">相对统一。通过页表项属性定义访问权限。</td>
+<td style="text-align:left"><strong>硬性分段</strong>。虚拟空间被硬性划分为 kuseg, kseg0, kseg1 等，部分区域（如 kseg0）不经过 TLB 直接映射。</td>
 </tr>
 <tr>
-<td align="left"><strong>复杂性与灵活性</strong></td>
-<td align="left">机制极其复杂，兼容性包袱重，但对编译器和 OS 开发友好。</td>
-<td align="left">机制极其简单，硬件设计精简，但将大量管理负担转嫁给了操作系统软件。</td>
+<td style="text-align:left"><strong>复杂性与灵活性</strong></td>
+<td style="text-align:left">机制极其复杂，兼容性包袱重，但对编译器和 OS 开发友好。</td>
+<td style="text-align:left">机制极其简单，硬件设计精简，但将大量管理负担转嫁给了操作系统软件。</td>
 </tr>
-</tbody></table>
-<h2 id="难点分析"><a href="#难点分析" class="headerlink" title="难点分析"></a>难点分析</h2><ol>
-<li>两级页表结构理解。何时为虚拟地址，何时为物理地址，以及它们在不同阶段的转换关系。<br><img src="/2026/08/07/buaa-os-lab2/image.png" srcset="/img/loading.gif" lazyload alt="alt text"></li>
+</tbody>
+</table>
+<h2 id="难点分析">难点分析</h2>
+<ol>
+<li>两级页表结构理解。何时为虚拟地址，何时为物理地址，以及它们在不同阶段的转换关系。
+<img src="/2026/08/07/buaa-os-lab2/image.png" srcset="/img/loading.gif" lazyload alt="alt text"></li>
 <li>各种宏定义。各个宏定义的作用和使用方式。</li>
 <li>各个函数的作用。页表分配、页表项查找、页表项插入、TLB 更新等函数的作用和实现细节。</li>
 </ol>
-<h2 id="实验体会"><a href="#实验体会" class="headerlink" title="实验体会"></a>实验体会</h2><p>对于C语言指针的理解与应用还有待加强，各种宏定义还需要记忆和理解，函数的作用和实现细节也需要加强理解。<br>页表的具体运作流程也需要熟练掌握，才能更好地理解、实现和扩展相关功能。</p>
-<h2 id="原创声明"><a href="#原创声明" class="headerlink" title="原创声明"></a>原创声明</h2><p>本实验报告大部分原创，少部分参考了<a target="_blank" rel="noopener" href="https://lucky-sheltered-boy.github.io/2025/07/01/%E5%8C%97%E8%88%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-OS-lab2-%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/">lucky-sheltered-boy’s Blog</a>。</p>
+<h2 id="实验体会">实验体会</h2>
+<p>对于C语言指针的理解与应用还有待加强，各种宏定义还需要记忆和理解，函数的作用和实现细节也需要加强理解。
+页表的具体运作流程也需要熟练掌握，才能更好地理解、实现和扩展相关功能。</p>
+<h2 id="原创声明">原创声明</h2>
+<p>本实验报告大部分原创，少部分参考了<a target="_blank" rel="noopener" href="https://lucky-sheltered-boy.github.io/2025/07/01/%E5%8C%97%E8%88%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-OS-lab2-%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/">lucky-sheltered-boy’s Blog</a>。</p>
 
                 
               </div>
@@ -648,6 +666,11 @@
 
 
   
+
+
+  
+  
+
 
 
 

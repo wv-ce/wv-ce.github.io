@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://wv-ce.github.io/2026/08/14/os-notes-memory/image-12.png">
 <meta property="og:image" content="https://wv-ce.github.io/2026/08/14/os-notes-memory/image-5.png">
 <meta property="article:published_time" content="2026-08-14T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-08-23T07:27:41.711Z">
+<meta property="article:modified_time" content="2026-08-23T07:38:53.364Z">
 <meta property="article:author" content="wv-ce">
 <meta property="article:tag" content="BUAA_OS">
 <meta property="article:tag" content="操作系统">
@@ -60,6 +60,8 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
 
 
 
@@ -396,78 +398,96 @@
             
               <div class="markdown-body">
                 
-                <h2 id="内存管理的不同空间"><a href="#内存管理的不同空间" class="headerlink" title="内存管理的不同空间"></a>内存管理的不同空间</h2><h3 id="重定位"><a href="#重定位" class="headerlink" title="重定位"></a>重定位</h3><h4 id="编译时重定位"><a href="#编译时重定位" class="headerlink" title="编译时重定位"></a>编译时重定位</h4><p>如果在编译时知道给程序分配的物理地址空间，就可以直接生成包含物理地址的代码。<br>问题：如果程序要装入其他地址，必须重新编译-不灵活</p>
-<h4 id="装载时重定位"><a href="#装载时重定位" class="headerlink" title="装载时重定位"></a>装载时重定位</h4><p>装载程序时，将指令和数据的地址转换为物理地址<br>装载时重定位，降低装载的速度，实现复杂，同时也缺乏保护。</p>
-<h4 id="执行时重定位（动态重定位）"><a href="#执行时重定位（动态重定位）" class="headerlink" title="执行时重定位（动态重定位）"></a>执行时重定位（动态重定位）</h4><p>问题：寄存器比较和相加产生时间开销</p>
-<h3 id="地址空间"><a href="#地址空间" class="headerlink" title="地址空间"></a>地址空间</h3><ul>
-<li>物理地址空间<ul>
+                <h2 id="内存管理的不同空间">内存管理的不同空间</h2>
+<h3 id="重定位">重定位</h3>
+<h4 id="编译时重定位">编译时重定位</h4>
+<p>如果在编译时知道给程序分配的物理地址空间，就可以直接生成包含物理地址的代码。
+问题：如果程序要装入其他地址，必须重新编译-不灵活</p>
+<h4 id="装载时重定位">装载时重定位</h4>
+<p>装载程序时，将指令和数据的地址转换为物理地址
+装载时重定位，降低装载的速度，实现复杂，同时也缺乏保护。</p>
+<h4 id="执行时重定位（动态重定位）">执行时重定位（动态重定位）</h4>
+<p>问题：寄存器比较和相加产生时间开销</p>
+<h3 id="地址空间">地址空间</h3>
+<ul>
+<li>物理地址空间
+<ul>
 <li>内存中一系列存储信息的物理地址的集合</li>
 <li>内存通常以字节（每个字节为8个二进制位）为编址单位，每个字节都有一个地址与其对应。假定存储器的容量为n个字节，其地址编号顺序为0，1，2，…，n－1。这些地址称为“物理地址”。</li>
 </ul>
 </li>
-<li>逻辑地址空间<ul>
+<li>逻辑地址空间
+<ul>
 <li>对物理内存的抽象</li>
 <li>程序中使用的地址对应逻辑地址空间的地址</li>
 <li>不同进程的逻辑地址空间相互独立</li>
 </ul>
 </li>
 </ul>
-<p>逻辑地址在$0 \sim max$，物理基址$R$</p>
+<p>逻辑地址在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>∼</mo><mi>m</mi><mi>a</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">0 \sim max</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span></span></span></span>，物理基址<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span></span></span></span></p>
 <ul>
-<li>物理地址在${R+0} \sim R+max$</li>
+<li>物理地址在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>R</mi><mo>+</mo><mn>0</mn></mrow><mo>∼</mo><mi>R</mi><mo>+</mo><mi>m</mi><mi>a</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">{R+0} \sim R+max</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">0</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span></span></span></span></li>
 </ul>
 <p>用户在<strong>程序</strong>中使用<strong>逻辑地址</strong>，但用于<strong>内存访问</strong>前必须映射为<strong>物理地址</strong></p>
-<h3 id="地址映射"><a href="#地址映射" class="headerlink" title="地址映射"></a>地址映射</h3><ul>
+<h3 id="地址映射">地址映射</h3>
+<ul>
 <li>从逻辑地址到物理地址的映射</li>
 <li>通过存储管理单元（MMU）完成</li>
 </ul>
-<h2 id="程序的链接和装载"><a href="#程序的链接和装载" class="headerlink" title="程序的链接和装载"></a>程序的链接和装载</h2><h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><p>一个装入内存的可执行程序，除了bss、data和text段外，还需构建一个栈(stack)和一个堆(heap)</p>
+<h2 id="程序的链接和装载">程序的链接和装载</h2>
+<h3 id="基础知识">基础知识</h3>
+<p>一个装入内存的可执行程序，除了bss、data和text段外，还需构建一个栈(stack)和一个堆(heap)</p>
 <p>.bss段与.data段的区别</p>
 <table>
 <thead>
 <tr>
-<th align="left">特性</th>
-<th align="left">程序1 (<code>int ar[30000];</code>)</th>
-<th align="left">程序2 (<code>int ar[300000] = {...};</code>)</th>
+<th style="text-align:left">特性</th>
+<th style="text-align:left">程序1 (<code>int ar[30000];</code>)</th>
+<th style="text-align:left">程序2 (<code>int ar[300000] = {...};</code>)</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>变量类型</strong></td>
-<td align="left">未初始化的全局变量</td>
-<td align="left">已初始化的全局变量</td>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>变量类型</strong></td>
+<td style="text-align:left">未初始化的全局变量</td>
+<td style="text-align:left">已初始化的全局变量</td>
 </tr>
 <tr>
-<td align="left"><strong>所在段</strong></td>
-<td align="left"><code>.bss</code> 段</td>
-<td align="left"><code>.data</code> 段</td>
+<td style="text-align:left"><strong>所在段</strong></td>
+<td style="text-align:left"><code>.bss</code> 段</td>
+<td style="text-align:left"><code>.data</code> 段</td>
 </tr>
 <tr>
-<td align="left"><strong>可执行文件中的存储</strong></td>
-<td align="left">只记录大小，不存储具体值</td>
-<td align="left">存储所有元素的初始值</td>
+<td style="text-align:left"><strong>可执行文件中的存储</strong></td>
+<td style="text-align:left">只记录大小，不存储具体值</td>
+<td style="text-align:left">存储所有元素的初始值</td>
 </tr>
 <tr>
-<td align="left"><strong>可执行文件大小</strong></td>
-<td align="left"><strong>很小</strong> (几乎不受数组大小影响)</td>
-<td align="left"><strong>很大</strong> (与数组总大小成正比)</td>
+<td style="text-align:left"><strong>可执行文件大小</strong></td>
+<td style="text-align:left"><strong>很小</strong> (几乎不受数组大小影响)</td>
+<td style="text-align:left"><strong>很大</strong> (与数组总大小成正比)</td>
 </tr>
 <tr>
-<td align="left"><strong>运行时内存占用</strong></td>
-<td align="left">加载时由系统分配并清零</td>
-<td align="left">从文件中加载初始值</td>
+<td style="text-align:left"><strong>运行时内存占用</strong></td>
+<td style="text-align:left">加载时由系统分配并清零</td>
+<td style="text-align:left">从文件中加载初始值</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>栈(stack)：存放、交换临时数据的内存区</p>
 <ul>
 <li>用户存放程序<strong>局部变量</strong>的内存区域，（但不包括static声明的变量，static意味着在数据段中存放变量）。</li>
-<li>保存&#x2F;恢复调用现场。在<strong>函数被调用</strong>时，其参数也会被压入发起调用的进程栈中，并且待到调用结束后，函数的返回值也会被存放回栈中。</li>
+<li>保存/恢复调用现场。在<strong>函数被调用</strong>时，其参数也会被压入发起调用的进程栈中，并且待到调用结束后，函数的返回值也会被存放回栈中。</li>
 </ul>
 <p>堆（heap）：存放进程运行中动态分配的内存段</p>
 <ul>
 <li>它的大小并不固定，可动态扩张或缩减。当进程调用malloc等函数<strong>分配内存</strong>时，新分配的内存就被动态添加到堆上（堆被扩张）；当利用free等函数释放内存时，被释放的内存从堆中被剔除（堆被缩减）。</li>
 </ul>
-<h2 id="存储管理基础"><a href="#存储管理基础" class="headerlink" title="存储管理基础"></a>存储管理基础</h2><h3 id="存储管理的需求"><a href="#存储管理的需求" class="headerlink" title="存储管理的需求"></a>存储管理的需求</h3><ul>
-<li>支持多道程序和多用户系统：<ul>
+<h2 id="存储管理基础">存储管理基础</h2>
+<h3 id="存储管理的需求">存储管理的需求</h3>
+<ul>
+<li>支持多道程序和多用户系统：
+<ul>
 <li>针对多个应用，将内存划分多个区域</li>
 </ul>
 </li>
@@ -481,71 +501,91 @@
 <li>地址独立：程序指令执行发出的地址与物理地址无关</li>
 <li>地址保护：一个程序不能访问另一个程序的地址空间</li>
 </ol>
-<h3 id="存储管理的功能"><a href="#存储管理的功能" class="headerlink" title="存储管理的功能"></a>存储管理的功能</h3><h4 id="分配和回收"><a href="#分配和回收" class="headerlink" title="分配和回收"></a>分配和回收</h4><ul>
+<h3 id="存储管理的功能">存储管理的功能</h3>
+<h4 id="分配和回收">分配和回收</h4>
+<ul>
 <li>当用户请求内存时，及时响应，<strong>分配</strong>内存</li>
 <li>当用户不需要时及时<strong>回收</strong>内存，让其他用户使用</li>
-<li>这就要求：<ul>
+<li>这就要求：
+<ul>
 <li>用数据结构，记住内存分配状态</li>
 <li>分配：用户请求，分配内存，修改数据结构</li>
 <li>回收：用户释放内存，修改数据结构</li>
 </ul>
 </li>
 </ul>
-<h4 id="扩充容量"><a href="#扩充容量" class="headerlink" title="扩充容量"></a>扩充容量</h4><p>OS要方便用户使用-用户编程不需要考虑内存的容量</p>
+<h4 id="扩充容量">扩充容量</h4>
+<p>OS要方便用户使用-用户编程不需要考虑内存的容量</p>
 <ul>
 <li>需要扩充内存容量，让用户可以用更大的空间</li>
 </ul>
 <p>解决方案</p>
 <ul>
-<li>在MMU内存管理单元的控制下<ul>
+<li>在MMU内存管理单元的控制下
+<ul>
 <li>交换技术</li>
 <li>虚拟存储技术:把内存和外存统一使用，扩充内存</li>
 </ul>
 </li>
 </ul>
-<h4 id="共享"><a href="#共享" class="headerlink" title="共享"></a>共享</h4><p>让多个<strong>进程共用内存</strong>中的相同区域<br><strong>代码共享</strong> 节省内存空间<br><strong>数据共享</strong> 实现进程的通讯</p>
-<h4 id="保护"><a href="#保护" class="headerlink" title="保护"></a>保护</h4><p>让OS，多道程序同时运行又不互相干扰</p>
+<h4 id="共享">共享</h4>
+<p>让多个<strong>进程共用内存</strong>中的相同区域
+<strong>代码共享</strong> 节省内存空间
+<strong>数据共享</strong> 实现进程的通讯</p>
+<h4 id="保护">保护</h4>
+<p>让OS，多道程序同时运行又不互相干扰</p>
 <ul>
 <li>一个程序只能访问自己的区域</li>
 <li>一个程序错误不影响其他程序，防止破坏系统</li>
 </ul>
 <p>存储保护的内容</p>
 <ul>
-<li><strong>地址</strong>越界保护<ul>
+<li><strong>地址</strong>越界保护
+<ul>
 <li>进程地址越界可能会影响其他程序或者OS</li>
 <li>越界—产生异常，交给OS处理</li>
 </ul>
 </li>
-<li><strong>权限</strong>保护<ul>
+<li><strong>权限</strong>保护
+<ul>
 <li>共享区域，权限不同</li>
 <li>读写权限保护</li>
 </ul>
 </li>
 </ul>
-<h3 id="存储管理的数据结构"><a href="#存储管理的数据结构" class="headerlink" title="存储管理的数据结构"></a>存储管理的数据结构</h3><p>给<strong>每个分配单元</strong>对应一位，用来记录该分配单元是否闲置。位取值为0表示单元闲置，取值为1则表示已被占用，这种表示方法就是<strong>位图表示法</strong>。</p>
+<h3 id="存储管理的数据结构">存储管理的数据结构</h3>
+<p>给<strong>每个分配单元</strong>对应一位，用来记录该分配单元是否闲置。位取值为0表示单元闲置，取值为1则表示已被占用，这种表示方法就是<strong>位图表示法</strong>。</p>
 <p>将分配单元按照是否闲置链接起来，这种方法称为<strong>链表表示法</strong>。</p>
 <p><strong>两种方法的特点</strong></p>
 <p>位图表示法：</p>
 <ul>
-<li>空间成本固定：<del>不依赖于内存中的程序数量。</del></li>
+<li>空间成本固定：<s>不依赖于内存中的程序数量。</s></li>
 <li>时间成本低：操作简单，直接修改其位图值即可。</li>
-<li>没有容错能力：<del>如果一个分配单元为1，不能肯定应该为1还是因错误变成1。</del></li>
+<li>没有容错能力：<s>如果一个分配单元为1，不能肯定应该为1还是因错误变成1。</s></li>
 </ul>
 <p>链表表示法：</p>
 <ul>
 <li>空间成本：取决于程序的数量。</li>
 <li>时间成本：链表扫描通常速度较<strong>慢</strong>，还要进行链表项的插入、删除和修改。</li>
-<li>有一定容错能力：<del>因为链表有被占空间和闲置空间的表项，存在信息冗余，可以相互验证。</del></li>
+<li>有一定容错能力：<s>因为链表有被占空间和闲置空间的表项，存在信息冗余，可以相互验证。</s></li>
 </ul>
 <blockquote>
-<p>128-MB的内存，以n个字节为单位进行分配。对于链表表示法，假设内存包含着交替的数据区和空闲区，每个区均为64K。假设链表的每个结点需要32位的内存地址，16位的长度和16位的指向下一个节点的指针。对于每种方法，分别需要多少存储空间？哪种方法更好？<br><img src="/2026/08/14/os-notes-memory/image-6.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>128-MB的内存，以n个字节为单位进行分配。对于链表表示法，假设内存包含着交替的数据区和空闲区，每个区均为64K。假设链表的每个结点需要32位的内存地址，16位的长度和16位的指向下一个节点的指针。对于每种方法，分别需要多少存储空间？哪种方法更好？
+<img src="/2026/08/14/os-notes-memory/image-6.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
 </blockquote>
-<h3 id="存储器分配方法"><a href="#存储器分配方法" class="headerlink" title="存储器分配方法"></a>存储器分配方法</h3><p>存储分配的三种方式</p>
+<h3 id="存储器分配方法">存储器分配方法</h3>
+<p>存储分配的三种方式</p>
 <p>直接指定方式：程序员在编程序时,或编译程序(汇编程序)对源程序进行编译(汇编)时,所用的是实际物理地址。</p>
 <p>静态分配(Static Allocation)：编程采用逻辑地址空间，从0地址开始；当加载（loader）程序对其进行<strong>链接装入</strong>时才确定它们在主存中的<strong>地址</strong>。程序执行时存储空间不变化。</p>
 <p>动态分配(Dynamic Allocation)：编程采用逻辑地址空间，从0地址开始。作业在存储空间中的<strong>位置</strong>,在其<strong>装入</strong>时确定, 在其执行过程中可动态申请或释放空间。</p>
-<h4 id="单一连续分配方式"><a href="#单一连续分配方式" class="headerlink" title="单一连续分配方式"></a>单一连续分配方式</h4><p>内存分为两个区域：系统区，用户区。应用程序装入到用户区，可使用用户区全部空间。<br>最简单，适用于<strong>单用户、单任务</strong>的OS。<br>优点：易于管理。<br>缺点：对要求内存空间少的程序，造成内存浪费；程序全部装入，很少使用的程序部分也占用内存。</p>
-<h4 id="分区分配方式"><a href="#分区分配方式" class="headerlink" title="分区分配方式"></a>分区分配方式</h4><p>把内存分为一些大小相等或不等的分区(partition)，每个应用程序占用一个或几个分区。操作系统占用其中一个分区。<br>适用于<strong>多道程序系统和分时系统</strong>，支持多个程序并发执行，但难以进行内存分区的共享。</p>
+<h4 id="单一连续分配方式">单一连续分配方式</h4>
+<p>内存分为两个区域：系统区，用户区。应用程序装入到用户区，可使用用户区全部空间。
+最简单，适用于<strong>单用户、单任务</strong>的OS。
+优点：易于管理。
+缺点：对要求内存空间少的程序，造成内存浪费；程序全部装入，很少使用的程序部分也占用内存。</p>
+<h4 id="分区分配方式">分区分配方式</h4>
+<p>把内存分为一些大小相等或不等的分区(partition)，每个应用程序占用一个或几个分区。操作系统占用其中一个分区。
+适用于<strong>多道程序系统和分时系统</strong>，支持多个程序并发执行，但难以进行内存分区的共享。</p>
 <ul>
 <li>进程属于不同分区</li>
 </ul>
@@ -559,12 +599,15 @@
 <li>数据结构：分区表或者分区链表</li>
 <li>OS负责维护数据结构</li>
 </ul>
-<h5 id="固定式分区"><a href="#固定式分区" class="headerlink" title="固定式分区"></a>固定式分区</h5><p>固定式分区（静态存储区域）：当系统初始化时，把存储空间划分成若干个任意大小的固定区域；然后，把这些区域分配给每个用户作业。<br>把内存划分为若干个固定大小的连续分区。</p>
+<h5 id="固定式分区">固定式分区</h5>
+<p>固定式分区（静态存储区域）：当系统初始化时，把存储空间划分成若干个任意大小的固定区域；然后，把这些区域分配给每个用户作业。
+把内存划分为若干个固定大小的连续分区。</p>
 <ul>
 <li>分区大小相等：只适合于多个相似程序的并发执行（处理多个类型相同的对象）。</li>
 <li>分区大小不等：多个小分区、适量的中等分区、少量的大分区。根据程序的大小，分配当前空闲的、适当大小的分区。</li>
 </ul>
-<p>优点：易于实现，开销小。<br>缺点：</p>
+<p>优点：易于实现，开销小。
+缺点：</p>
 <ul>
 <li><strong>内碎片</strong>造成浪费；</li>
 <li>分区总数固定，<strong>限制</strong>了并发执行的程序<strong>数目</strong>；</li>
@@ -582,7 +625,8 @@
 <th>状态</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>1</td>
 <td>8K</td>
 <td>16K</td>
@@ -612,28 +656,45 @@
 <td>136K</td>
 <td>占用</td>
 </tr>
-</tbody></table>
-<h5 id="可变式分区"><a href="#可变式分区" class="headerlink" title="可变式分区"></a>可变式分区</h5><p>可变式分区：分区的边界可以移动，即分区的大小可变。<br>分区大小在<strong>程序装入</strong>时大小动态确定，量身定制</p>
+</tbody>
+</table>
+<h5 id="可变式分区">可变式分区</h5>
+<p>可变式分区：分区的边界可以移动，即分区的大小可变。
+分区大小在<strong>程序装入</strong>时大小动态确定，量身定制</p>
 <ul>
 <li>也可以通过系统调用改变分区大小</li>
 </ul>
-<p>优点：没有内碎片。<br>缺点：随着多次分配和回收，产生<strong>外碎片</strong>。</p>
+<p>优点：没有内碎片。
+缺点：随着多次分配和回收，产生<strong>外碎片</strong>。</p>
 <p><img src="/2026/08/14/os-notes-memory/image.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
-<h6 id="可变式分区的内存分配策略"><a href="#可变式分区的内存分配策略" class="headerlink" title="可变式分区的内存分配策略"></a><strong>可变式分区的内存分配策略</strong></h6><ol>
+<h6 id="可变式分区的内存分配策略"><strong>可变式分区的内存分配策略</strong></h6>
+<ol>
 <li>最佳适应算法（Best Fit）：为一个作业选择分区时，总是寻找其<strong>大小最接近</strong>于作业所要求的存储区域。</li>
 <li>最坏适应算法（Worst Fit）：为作业选择存储区域时，总是寻找<strong>最大</strong>的空白区。</li>
 <li>首次适应算法（First Fit）：每个空白区按其在存储空间中地址递增的顺序连在一起，在为作业分配存储区域时，从这个空白区域链的始端开始查找，选择<strong>第一个</strong>足以满足请求的空白块。</li>
 <li>下次适应算法（Next Fit）：把存储空间中空白区构成一个循环链，每次为存储请求查找合适的分区时，总是<strong>从上次查找结束的地方的下一个分区开始</strong>，只要找到一个足够大的空白区，就将它划分后分配出去。</li>
 </ol>
-<h6 id="回收区域空白区邻接的四种情况"><a href="#回收区域空白区邻接的四种情况" class="headerlink" title="回收区域空白区邻接的四种情况"></a>回收区域空白区邻接的四种情况</h6><p><img src="/2026/08/14/os-notes-memory/image-2.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
-<h6 id="可变分区的保护-界限寄存器保护"><a href="#可变分区的保护-界限寄存器保护" class="headerlink" title="可变分区的保护-界限寄存器保护"></a>可变分区的保护-界限寄存器保护</h6><h5 id="基于索引的分配"><a href="#基于索引的分配" class="headerlink" title="基于索引的分配"></a>基于索引的分配</h5><p>基于顺序搜索的动态分区分配算法一般只是适合于较小的系统，如果系统的分区很多，空闲分区表（链）可能很大（很长），检索速度会比较慢。<strong>为了提高</strong>搜索空闲分区的<strong>速度</strong>，大中型系统采用了基于索引搜索的动态分区分配算法。</p>
+<h6 id="回收区域空白区邻接的四种情况">回收区域空白区邻接的四种情况</h6>
+<p><img src="/2026/08/14/os-notes-memory/image-2.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h6 id="可变分区的保护-界限寄存器保护">可变分区的保护-界限寄存器保护</h6>
+<h5 id="基于索引的分配">基于索引的分配</h5>
+<p>基于顺序搜索的动态分区分配算法一般只是适合于较小的系统，如果系统的分区很多，空闲分区表（链）可能很大（很长），检索速度会比较慢。<strong>为了提高</strong>搜索空闲分区的<strong>速度</strong>，大中型系统采用了基于索引搜索的动态分区分配算法。</p>
 <p>快速适应算法，又称为分类搜索法，把空闲分区按容量大小进行分类，经常用到长度的空闲区设立单独的空闲区链表。系统为多个空闲链表设立一张管理索引表。</p>
-<p>优点：<br>查找效率高，仅需要根据程序的长度，寻找到能容纳它的最小空闲区链表，取下第一块进行分配即可。该算法在分配时，不会对任何分区产生分割，所以能保留大的分区，也不会产生内存碎片。</p>
-<p>缺点：<br>在分区<strong>归还</strong>主存时算法复杂，系统开销较大。在分配空闲分区时是以进程为单位，一个分区只属于一个进程，存在一定的浪费。空间换时间。</p>
-<h5 id="伙伴系统"><a href="#伙伴系统" class="headerlink" title="伙伴系统"></a>伙伴系统</h5><p>介于固定分区与可变分区之间的动态分区技术。 动态划分和合并2的幂大小的分区。<br>伙伴：在分配存储块时将一个大的存储块分裂成两个大小相等的小块，这两个小块就称为“伙伴” 。（物理地址仅有一位不同）</p>
-<h5 id="紧凑技术"><a href="#紧凑技术" class="headerlink" title="紧凑技术"></a>紧凑技术</h5><p>通过移动作业从把多个分散的小分区拼接成一个大分区的方法称为紧凑（拼接或紧缩） 。<br>目标：<strong>消除外部碎片</strong>，使本来分散的多个小空闲分区连成一个大的空闲区。<br>紧凑时机：找不到足够大的空闲分区且总空闲分区容量可以满足作业要求时。</p>
-<h4 id="扩充容量-1"><a href="#扩充容量-1" class="headerlink" title="扩充容量"></a>扩充容量</h4><p>扩充容量的思路：把一部分程序和数据放在外存上，把当前执行要使用的程序和数据放在内存</p>
-<h5 id="覆盖"><a href="#覆盖" class="headerlink" title="覆盖"></a>覆盖</h5><p>覆盖：一个程序（作业）的代码段和数据段按照时间先后占用内存空间</p>
+<p>优点：
+查找效率高，仅需要根据程序的长度，寻找到能容纳它的最小空闲区链表，取下第一块进行分配即可。该算法在分配时，不会对任何分区产生分割，所以能保留大的分区，也不会产生内存碎片。</p>
+<p>缺点：
+在分区<strong>归还</strong>主存时算法复杂，系统开销较大。在分配空闲分区时是以进程为单位，一个分区只属于一个进程，存在一定的浪费。空间换时间。</p>
+<h5 id="伙伴系统">伙伴系统</h5>
+<p>介于固定分区与可变分区之间的动态分区技术。 动态划分和合并2的幂大小的分区。
+伙伴：在分配存储块时将一个大的存储块分裂成两个大小相等的小块，这两个小块就称为“伙伴” 。（物理地址仅有一位不同）</p>
+<h5 id="紧凑技术">紧凑技术</h5>
+<p>通过移动作业从把多个分散的小分区拼接成一个大分区的方法称为紧凑（拼接或紧缩） 。
+目标：<strong>消除外部碎片</strong>，使本来分散的多个小空闲分区连成一个大的空闲区。
+紧凑时机：找不到足够大的空闲分区且总空闲分区容量可以满足作业要求时。</p>
+<h4 id="扩充容量-2">扩充容量</h4>
+<p>扩充容量的思路：把一部分程序和数据放在外存上，把当前执行要使用的程序和数据放在内存</p>
+<h5 id="覆盖">覆盖</h5>
+<p>覆盖：一个程序（作业）的代码段和数据段按照时间先后占用内存空间</p>
 <ul>
 <li>必要的部分占据内存，可选的部分放外存</li>
 <li>让相同执行路径的模块同时在内存</li>
@@ -646,7 +707,8 @@
 <li>从外存装入覆盖文件，以<strong>时间开销来换取空间节省</strong>。</li>
 <li>程序的最大长度仍然受限内存</li>
 </ul>
-<h5 id="交换"><a href="#交换" class="headerlink" title="交换"></a>交换</h5><p>广义的说，所谓交换就是把暂时不用的某个（或某些）程序及其数据的部分或全部从主存移到辅存中去，以便腾出必要的存储空间；接着把指定程序或数据从辅存读到相应的主存中，并将控制转给它，让其在系统上运行。</p>
+<h5 id="交换">交换</h5>
+<p>广义的说，所谓交换就是把暂时不用的某个（或某些）程序及其数据的部分或全部从主存移到辅存中去，以便腾出必要的存储空间；接着把指定程序或数据从辅存读到相应的主存中，并将控制转给它，让其在系统上运行。</p>
 <p>优点：增加并发运行的程序数目，并且给用户提供适当的响应时间；编写程序时不影响程序结构</p>
 <p>缺点：对换入和换出的控制增加处理机开销；程序整个地址空间都进行传送，没有考虑执行过程中地址访问的统计特性。</p>
 <p>覆盖与交换技术的区别</p>
@@ -655,34 +717,47 @@
 <li>覆盖是由程序员实现的，操作系统根据程序员提供的覆盖结构来完成程序段之间的覆盖。<strong>交换技术对程序员透明</strong>。</li>
 <li>覆盖技术主要对<strong>同一个作业或程序</strong>进行。交换换主要在<strong>作业或程序之间</strong>进行。</li>
 </ul>
-<h2 id="页式内存管理"><a href="#页式内存管理" class="headerlink" title="页式内存管理"></a>页式内存管理</h2><h3 id="分页式存储管理的基本思想"><a href="#分页式存储管理的基本思想" class="headerlink" title="分页式存储管理的基本思想"></a>分页式存储管理的基本思想</h3><p><img src="/2026/08/14/os-notes-memory/image-3.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h2 id="页式内存管理">页式内存管理</h2>
+<h3 id="分页式存储管理的基本思想">分页式存储管理的基本思想</h3>
+<p><img src="/2026/08/14/os-notes-memory/image-3.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
 <p>纯分页系统（Pure Paging System）</p>
 <ul>
 <li>在分页存储管理方式中，如果不具备页面对换功能，不支持虚拟存储器功能，这种存储管理方式称为纯分页或基本分页存储管理方式。</li>
 <li>在调度一个作业时，必须把它的所有页<strong>一次装到主存的页框内</strong>；如果当时页框数不足，则该作业必须等待，系统再调度另外作业。</li>
 </ul>
-<p>优点：没有外碎片，每个内碎片不超过页大小；一个程序不必连续存放；便于改变程序占用空间的大小。<br>缺点：程序全部装入内存。</p>
-<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>页：在分页存储管理系统中，把每个<strong>作业的地址空间</strong>分成一些大小相等的片，称之为页面（Page）或页，各页从0开始编号。</p>
+<p>优点：没有外碎片，每个内碎片不超过页大小；一个程序不必连续存放；便于改变程序占用空间的大小。
+缺点：程序全部装入内存。</p>
+<h3 id="基本概念">基本概念</h3>
+<p>页：在分页存储管理系统中，把每个<strong>作业的地址空间</strong>分成一些大小相等的片，称之为页面（Page）或页，各页从0开始编号。</p>
 <p>存储块：在分页存储管理系统中，把<strong>主存的存储空间</strong>也分成与页面相同大小的片，这些片称为存储块，或称为<strong>页框</strong>（Frame），同样从0开始编号。</p>
-<h4 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h4><p>页表：为了便于在内存找到进程的每个页面所对应块，分页系统中为每个进程配置一张页表，进程逻辑地址空间中的每一页，在页表中都对应有一个页表项，实现<strong>页面到页框的映射</strong>。</p>
+<h4 id="页表">页表</h4>
+<p>页表：为了便于在内存找到进程的每个页面所对应块，分页系统中为每个进程配置一张页表，进程逻辑地址空间中的每一页，在页表中都对应有一个页表项，实现<strong>页面到页框的映射</strong>。</p>
 <ul>
 <li><strong>存放在内存中</strong></li>
 <li>使用页表后访问一个数据需访问内存 <strong>2 次</strong> (页表一次，内存一次)。</li>
 <li>页表的<strong>基址及长度</strong>由页表寄存器给出。</li>
 </ul>
-<p>将页表始址与页号和页表项长度的乘积相加，得到<del>该表项在页表中的位置</del><strong>页表项在内存中的地址</strong>（是<strong>物理地址</strong>）（页表项由<strong>物理块号</strong>和权限位组成），于是可从中得到该页的物理块号，将之装入物理地址寄存器中。</p>
-<h4 id="两级页表"><a href="#两级页表" class="headerlink" title="两级页表"></a>两级页表</h4><p>将页表再进行分页，离散地将各个页表页面存放在不同的物理块中，同时也再建立一张更高层次页表（一级页表）用以记录页表页面对应的物理块号。<br>正在运行的进程，必须把一级页表（页表的页表）调入内存，而动态调入二级页表。（lazy allocation）<br>当一级页表的某一个条目为空，该条目对应的二级页表不需要调入内存（valid&#x3D;0，没有映射，会触发page fault）</p>
+<p>将页表始址与页号和页表项长度的乘积相加，得到<s>该表项在页表中的位置</s><strong>页表项在内存中的地址</strong>（是<strong>物理地址</strong>）（页表项由<strong>物理块号</strong>和权限位组成），于是可从中得到该页的物理块号，将之装入物理地址寄存器中。</p>
+<h4 id="两级页表">两级页表</h4>
+<p>将页表再进行分页，离散地将各个页表页面存放在不同的物理块中，同时也再建立一张更高层次页表（一级页表）用以记录页表页面对应的物理块号。
+正在运行的进程，必须把一级页表（页表的页表）调入内存，而动态调入二级页表。（lazy allocation）
+当一级页表的某一个条目为空，该条目对应的二级页表不需要调入内存（valid=0，没有映射，会触发page fault）</p>
 <p>多级页表结构中，指令所给出的地址除页内偏移地址之外的各部分全是各级页表的页号，而各级页表中记录的全是<strong>物理页框号</strong>，指向下级页表或最终要访问的页框号。</p>
 <blockquote>
-<p>二级页表为什么节省内存空间?<br>一级页表：32位地址，页面大小4K，需要一百万个（1M）页表项在内存中，每个页表项4字节，占4M<br>二级页表：4G空间，页面大小4K。一级页表1K项，每项代表4M空间。每个二级页代表1K项，每项代表4K页面。假设进程12M，一级页表只需要占用3项，所以二级页表只需要3个在内存，只需要4个页表(16K)在内存</p>
+<p>二级页表为什么节省内存空间?
+一级页表：32位地址，页面大小4K，需要一百万个（1M）页表项在内存中，每个页表项4字节，占4M
+二级页表：4G空间，页面大小4K。一级页表1K项，每项代表4M空间。每个二级页代表1K项，每项代表4K页面。假设进程12M，一级页表只需要占用3项，所以二级页表只需要3个在内存，只需要4个页表(16K)在内存</p>
 </blockquote>
-<h4 id="快表-TLB"><a href="#快表-TLB" class="headerlink" title="快表 TLB"></a>快表 TLB</h4><p>快表是一种特殊的高速缓冲存储器（<strong>Cache</strong>） ，内容是页表中的一部分内容。<br>快表只是页表的一部分</p>
+<h4 id="快表-TLB">快表 TLB</h4>
+<p>快表是一种特殊的高速缓冲存储器（<strong>Cache</strong>） ，内容是页表中的一部分内容。
+快表只是页表的一部分</p>
 <ul>
 <li>容量小，成本可以接受</li>
 <li>程序访存的局部性原理，大部分访存集中在少量的（页面）页表项</li>
 </ul>
 <p>CPU 产生逻辑地址的页号，首先在快表中寻找，若命中就找出其对应的页框；若未命中，再到页表中找其对应的物理块，<strong>并将之复制到快表</strong>。若快表中内容满，则按某种算法淘汰某些页。</p>
-<h5 id="TLB-刷新问题"><a href="#TLB-刷新问题" class="headerlink" title="TLB 刷新问题"></a>TLB 刷新问题</h5><p>没有标签 $\rightarrow$ 进程切换必须刷新TLB</p>
+<h5 id="TLB-刷新问题">TLB 刷新问题</h5>
+<p>没有标签 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 进程切换必须刷新TLB</p>
 <p>使用了ASID之后</p>
 <ul>
 <li>切换页表不再需要刷新TLB</li>
@@ -690,9 +765,13 @@
 </ul>
 <p>多核</p>
 <p><img src="/2026/08/14/os-notes-memory/image-8.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
-<h5 id="命中率"><a href="#命中率" class="headerlink" title="命中率"></a>命中率</h5><p><img src="/2026/08/14/os-notes-memory/image-4.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
-<h3 id="页表类型"><a href="#页表类型" class="headerlink" title="页表类型"></a>页表类型</h3><h4 id="反置页表"><a href="#反置页表" class="headerlink" title="反置页表"></a>反置页表</h4><blockquote>
-<p>64位地址，地址空间为$2^{64}$，如果每页4KB，页表需要$2^{52}$页表项，如果每项8字节，需要占用3千万G（30PB），这样的页表过大了。<br>使用多级页表，多次访问牺牲性能。</p>
+<h5 id="命中率">命中率</h5>
+<p><img src="/2026/08/14/os-notes-memory/image-4.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="页表类型">页表类型</h3>
+<h4 id="反置页表">反置页表</h4>
+<blockquote>
+<p>64位地址，地址空间为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>64</mn></msup></mrow><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">64</span></span></span></span></span></span></span></span></span></span></span></span>，如果每页4KB，页表需要<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>52</mn></msup></mrow><annotation encoding="application/x-tex">2^{52}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">52</span></span></span></span></span></span></span></span></span></span></span></span>页表项，如果每项8字节，需要占用3千万G（30PB），这样的页表过大了。
+使用多级页表，多次访问牺牲性能。</p>
 </blockquote>
 <p>为了解决这个问题，可以使用反置页表（inverted pagetable）</p>
 <ul>
@@ -703,7 +782,7 @@
 <p>反置页表的大小<strong>只与物理内存的大小相关</strong>，与逻辑空间大小和进程数无关。</p>
 <p>优点：页表存储空间大大减少</p>
 <ul>
-<li>64位，4KB页表，1G RAM，1G&#x2F;4KB &#x3D; 256K 表项</li>
+<li>64位，4KB页表，1G RAM，1G/4KB = 256K 表项</li>
 </ul>
 <p>缺点：</p>
 <ul>
@@ -713,44 +792,62 @@
 </ul>
 <p>如何提速？</p>
 <ol>
-<li><del>使用快表</del></li>
+<li><s>使用快表</s></li>
 <li>使用哈希页表配合查询</li>
 </ol>
-<h4 id="哈希页表"><a href="#哈希页表" class="headerlink" title="哈希页表"></a>哈希页表</h4><p>哈希页表作为反置页表的查找索引：</p>
+<h4 id="哈希页表">哈希页表</h4>
+<p>哈希页表作为反置页表的查找索引：</p>
 <ul>
 <li>计算虚拟页号的哈希值，并用来定位到哈希桶</li>
 <li>用&lt;虚拟页号, PID&gt;与反置页表中的每一个元素相比较</li>
 <li>如果匹配，则取出索引作为页框号</li>
 <li>如果不匹配，沿着链表继续查找</li>
 </ul>
-<h3 id="页共享"><a href="#页共享" class="headerlink" title="页共享"></a>页共享</h3><p>各进程把需要共享的数据&#x2F;程序的相应页指向相同物理块。</p>
-<p>页的保护<br>页式存储管理系统提供了两种方式：</p>
+<h3 id="页共享">页共享</h3>
+<p>各进程把需要共享的数据/程序的相应页指向相同物理块。</p>
+<p>页的保护
+页式存储管理系统提供了两种方式：</p>
 <ul>
 <li>地址越界保护</li>
 <li>在页表中设置保护位（定义操作权限：只读，读写，执行等）</li>
 </ul>
-<h2 id="段式内存管理"><a href="#段式内存管理" class="headerlink" title="段式内存管理"></a>段式内存管理</h2><h3 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h3><ul>
-<li><p>方便编程：通常一个作业是由多个程序段和数据段组成的，用户一般按逻辑关系对作业分段，并能根据名字来访问程序段和数据段。</p>
+<h2 id="段式内存管理">段式内存管理</h2>
+<h3 id="基本原理">基本原理</h3>
+<ul>
+<li>
+<p>方便编程：通常一个作业是由多个程序段和数据段组成的，用户一般按逻辑关系对作业分段，并能根据名字来访问程序段和数据段。</p>
 <ul>
 <li>例如：共享库，数据区</li>
 </ul>
 </li>
-<li><p>信息共享：共享是以信息的逻辑单位为基础的。<strong>页是存储信息的物理单位，而段是信息的逻辑单位。</strong><br>页式管理中地址空间是一维的，主程序，子程序都顺序排列，共享公用子程序比较困难，一个共享过程可能需要几十个页面。</p>
+<li>
+<p>信息共享：共享是以信息的逻辑单位为基础的。<strong>页是存储信息的物理单位，而段是信息的逻辑单位。</strong>
+页式管理中地址空间是一维的，主程序，子程序都顺序排列，共享公用子程序比较困难，一个共享过程可能需要几十个页面。</p>
 </li>
-<li><p>信息保护：页式管理中，一个页面中可能装有 2 个不同的子程序段的指令代码，难以通过页面保护实现对特定程序段的保护。<br>段式管理中，可以以信息的逻辑单位进行保护。</p>
+<li>
+<p>信息保护：页式管理中，一个页面中可能装有 2 个不同的子程序段的指令代码，难以通过页面保护实现对特定程序段的保护。
+段式管理中，可以以信息的逻辑单位进行保护。</p>
 </li>
-<li><p>动态增长：实际应用中，某些段（数据段）会不断增长，分页难以实现。<br>——页表频繁修改，TLB miss增多</p>
+<li>
+<p>动态增长：实际应用中，某些段（数据段）会不断增长，分页难以实现。
+——页表频繁修改，TLB miss增多</p>
 </li>
-<li><p>动态链接：动态链接在程序运行时才把主程序和要用到的目标程序（程序段）链接起来。</p>
+<li>
+<p>动态链接：动态链接在程序运行时才把主程序和要用到的目标程序（程序段）链接起来。</p>
 </li>
 </ul>
-<h3 id="地址变换"><a href="#地址变换" class="headerlink" title="地址变换"></a>地址变换</h3><p>一个段可定义为一组逻辑相关信息，每个作业的地址空间是由一些分段构成的（二维空间），每段都有自己的名字（通常是段号），且都是一段<strong>连续</strong>的地址空间，首地址为0。</p>
-<h4 id="段表"><a href="#段表" class="headerlink" title="段表"></a>段表</h4><ul>
-<li><p>段表记录了<strong>段与内存位置的对应关系</strong>。</p>
+<h3 id="地址变换">地址变换</h3>
+<p>一个段可定义为一组逻辑相关信息，每个作业的地址空间是由一些分段构成的（二维空间），每段都有自己的名字（通常是段号），且都是一段<strong>连续</strong>的地址空间，首地址为0。</p>
+<h4 id="段表">段表</h4>
+<ul>
+<li>
+<p>段表记录了<strong>段与内存位置的对应关系</strong>。</p>
 </li>
-<li><p>段表保存在内存中。</p>
+<li>
+<p>段表保存在内存中。</p>
 </li>
-<li><p>段表的基址及长度由段表寄存器给出。</p>
+<li>
+<p>段表的基址及长度由段表寄存器给出。</p>
 <table>
 <thead>
 <tr>
@@ -760,9 +857,11 @@
 </thead>
 </table>
 </li>
-<li><p>访问一个字节的数据&#x2F;指令需访问内存两次 (段表一次，内存一次)。</p>
+<li>
+<p>访问一个字节的数据/指令需访问内存两次 (段表一次，内存一次)。</p>
 </li>
-<li><p>逻辑地址由段号和段内地址组成。</p>
+<li>
+<p>逻辑地址由段号和段内地址组成。</p>
 <table>
 <thead>
 <tr>
@@ -773,7 +872,8 @@
 </table>
 </li>
 </ul>
-<h4 id="地址变换过程"><a href="#地址变换过程" class="headerlink" title="地址变换过程"></a>地址变换过程</h4><ol>
+<h4 id="地址变换过程">地址变换过程</h4>
+<ol>
 <li>系统将逻辑地址中的段号 S 与段表长度 TL 进行比较。</li>
 </ol>
 <ul>
@@ -788,10 +888,11 @@
 <li>若未越界，则将该段的基址与段内地址 d 相加，即可得到要访问的内存物理地址。</li>
 </ul>
 <p><img src="/2026/08/14/os-notes-memory/image-9.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
-<h3 id="段共享"><a href="#段共享" class="headerlink" title="段共享"></a>段共享</h3><p>例：一个多用户系统，可同时接纳 40 个用户，都执行一个文本编辑程序 (Text Editor)。如果文本编辑程序有 160KB 的代码和另外 40 KB 的数据区，如果不共享，则总共需有 8 MB 的内存空间来支持 40 个用户。</p>
-<p>如果 160 KB 的代码是可重入的，则无论是在分页系统还是在分段系统中，该代码都能被共享。 因此在内存中只需保留一份文本编辑程序的副本，此时所需的内存空间仅为1760 KB(40×40+160)，而不是(160+40)×40&#x3D; 8000 KB 。</p>
+<h3 id="段共享">段共享</h3>
+<p>例：一个多用户系统，可同时接纳 40 个用户，都执行一个文本编辑程序 (Text Editor)。如果文本编辑程序有 160KB 的代码和另外 40 KB 的数据区，如果不共享，则总共需有 8 MB 的内存空间来支持 40 个用户。</p>
+<p>如果 160 KB 的代码是可重入的，则无论是在分页系统还是在分段系统中，该代码都能被共享。 因此在内存中只需保留一份文本编辑程序的副本，此时所需的内存空间仅为1760 KB(40×40+160)，而不是(160+40)×40= 8000 KB 。</p>
 <blockquote>
-<p><del>可重入代码(Reentrant Code) 又称为“纯代码”(Pure Code)，是一种允许多个进程安全并发访问的代码。</del></p>
+<p><s>可重入代码(Reentrant Code) 又称为“纯代码”(Pure Code)，是一种允许多个进程安全并发访问的代码。</s></p>
 <ul>
 <li>不能含有静态（全局）变量数据。</li>
 <li>不能返回静态（全局）变量数据的地址。</li>
@@ -800,50 +901,56 @@
 <li>调用(call)的函数也必需是可重入的。</li>
 </ul>
 </blockquote>
-<h3 id="与页式管理优缺点对比"><a href="#与页式管理优缺点对比" class="headerlink" title="与页式管理优缺点对比"></a>与页式管理优缺点对比</h3><table>
+<h3 id="与页式管理优缺点对比">与页式管理优缺点对比</h3>
+<table>
 <thead>
 <tr>
-<th align="left"></th>
-<th align="left">页式存储管理</th>
-<th align="left">段式存储管理</th>
+<th style="text-align:left"></th>
+<th style="text-align:left">页式存储管理</th>
+<th style="text-align:left">段式存储管理</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">目的</td>
-<td align="left">实现非连续分配，解决碎片问题</td>
-<td align="left">更好地满足用户需要</td>
+<tbody>
+<tr>
+<td style="text-align:left">目的</td>
+<td style="text-align:left">实现非连续分配，解决碎片问题</td>
+<td style="text-align:left">更好地满足用户需要</td>
 </tr>
 <tr>
-<td align="left">信息单位</td>
-<td align="left">页（物理单位）</td>
-<td align="left">段（逻辑单位）</td>
+<td style="text-align:left">信息单位</td>
+<td style="text-align:left">页（物理单位）</td>
+<td style="text-align:left">段（逻辑单位）</td>
 </tr>
 <tr>
-<td align="left">大小</td>
-<td align="left">固定（由系统定）</td>
-<td align="left">不定（由用户程序定）</td>
+<td style="text-align:left">大小</td>
+<td style="text-align:left">固定（由系统定）</td>
+<td style="text-align:left">不定（由用户程序定）</td>
 </tr>
 <tr>
-<td align="left">内存分配单位</td>
-<td align="left">页</td>
-<td align="left">段</td>
+<td style="text-align:left">内存分配单位</td>
+<td style="text-align:left">页</td>
+<td style="text-align:left">段</td>
 </tr>
 <tr>
-<td align="left">作业地址空间</td>
-<td align="left">一维</td>
-<td align="left">二维</td>
+<td style="text-align:left">作业地址空间</td>
+<td style="text-align:left">一维</td>
+<td style="text-align:left">二维</td>
 </tr>
 <tr>
-<td align="left">优点</td>
-<td align="left">有效解决了碎片问题（没有外碎片，每个内碎片不超过页大小）；有效提高内存的利用率；程序不必连续存放。</td>
-<td align="left">更好地实现数据共享与保护；段长可动态增长；便于动态链接</td>
+<td style="text-align:left">优点</td>
+<td style="text-align:left">有效解决了碎片问题（没有外碎片，每个内碎片不超过页大小）；有效提高内存的利用率；程序不必连续存放。</td>
+<td style="text-align:left">更好地实现数据共享与保护；段长可动态增长；便于动态链接</td>
 </tr>
-</tbody></table>
-<h3 id="段页式管理"><a href="#段页式管理" class="headerlink" title="段页式管理"></a>段页式管理</h3><p>段式存储管理，如果段规模很大，不适合完全放入内存可以对段进行分页</p>
+</tbody>
+</table>
+<h3 id="段页式管理">段页式管理</h3>
+<p>段式存储管理，如果段规模很大，不适合完全放入内存可以对段进行分页</p>
 <ul>
-<li><p>段页式存储管理是分段和分页原理的结合，即先将用户程序分成若干个段（段式） ，并为每一个段赋一个段名，再把<strong>每个段分成若干个页</strong>（页式） 。</p>
+<li>
+<p>段页式存储管理是分段和分页原理的结合，即先将用户程序分成若干个段（段式） ，并为每一个段赋一个段名，再把<strong>每个段分成若干个页</strong>（页式） 。</p>
 </li>
-<li><p>其地址结构由段号、段内页号、及页内位移三部分所组成。</p>
+<li>
+<p>其地址结构由段号、段内页号、及页内位移三部分所组成。</p>
 <table>
 <thead>
 <tr>
@@ -854,14 +961,18 @@
 </thead>
 </table>
 </li>
-<li><p>段表和页表均存放于内存中。读一字节的指令或数据须<strong>访问内存三次</strong>。为提高执行速度可增设高速缓冲寄存器。</p>
+<li>
+<p>段表和页表均存放于内存中。读一字节的指令或数据须<strong>访问内存三次</strong>。为提高执行速度可增设高速缓冲寄存器。</p>
 </li>
-<li><p>每个进程一张段表，<strong>每个段表项对应一张页表</strong>。</p>
+<li>
+<p>每个进程一张段表，<strong>每个段表项对应一张页表</strong>。</p>
 </li>
-<li><p>段表含段号、页表始址和页表长度。页表含页号和块号。</p>
+<li>
+<p>段表含段号、页表始址和页表长度。页表含页号和块号。</p>
 </li>
 </ul>
-<h4 id="地址变换-1"><a href="#地址变换-1" class="headerlink" title="地址变换"></a>地址变换</h4><ul>
+<h4 id="地址变换-2">地址变换</h4>
+<ul>
 <li>从 PCB 中取出段表始址和段表长度，装入段表寄存器。</li>
 <li>将段号与段表长度进行比较，若段号大于或等于段表长度，产生越界中断。</li>
 <li>利用段表始址与段号得到该段表项在段表中的位置。取出该段的页表始址和页表长度。</li>
@@ -870,8 +981,10 @@
 <li>取出该页的物理块号，与页内地址拼接得到实际的物理地址。</li>
 </ul>
 <p><img src="/2026/08/14/os-notes-memory/image-10.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
-<h2 id="虚拟存储管理"><a href="#虚拟存储管理" class="headerlink" title="虚拟存储管理"></a>虚拟存储管理</h2><p><strong>核心功能：扩容</strong></p>
-<h3 id="局部性原理"><a href="#局部性原理" class="headerlink" title="局部性原理"></a>局部性原理</h3><p>指程序在执行过程中的一个较短时期，所执行的指令地址和数据地址，分别局限于一定区域。具体表现为：</p>
+<h2 id="虚拟存储管理">虚拟存储管理</h2>
+<p><strong>核心功能：扩容</strong></p>
+<h3 id="局部性原理">局部性原理</h3>
+<p>指程序在执行过程中的一个较短时期，所执行的指令地址和数据地址，分别局限于一定区域。具体表现为：</p>
 <ul>
 <li>时间局部性，即一条指令的一次执行和下次执行，一个数据的一次访问和下次访问都集中在一个较短时期内；</li>
 <li>空间局部性，即当前执行指令和邻近的几条指令，当前访问的数据和邻近的数据常会被集中访问。</li>
@@ -883,76 +996,122 @@
 <li>程序中存在相当多对一定数据结构的操作，如数组操作，往往局限在较小范围内。（空间）</li>
 <li>程序中存在相当多的循环结构，它们由少量指令和数据组成，而被多次执行。（时间）</li>
 </ul>
-<h3 id="虚拟存储器"><a href="#虚拟存储器" class="headerlink" title="虚拟存储器"></a>虚拟存储器</h3><p>虚拟存储器，<del>是指具有请求调入功能和置换功能（纯分页系统没有），能从逻辑上对内存容量加以扩充的一种存储器系统。</del> 该系统逻辑容量由内存容量和外存容量之和所决定；其运行速度接近于内存速度，成本接近于外存。</p>
-<h4 id="基本原理-1"><a href="#基本原理-1" class="headerlink" title="基本原理"></a>基本原理</h4><p>在程序装入时，不需要将其全部读入到内存，而<strong>只需将当前需要执行的部分页或段读入到内存</strong>，就可让程序开始执行。<br>在程序执行过程中，如果需执行的指令或访问的数据尚未在内存（称为<strong>缺页</strong>或缺段），则由处理器通知操作系统将相应的页或段调入到内存，然后继续执行程序。（<strong>请求调入</strong>功能）<br>另一方面，操作系统将内存中<strong>暂时不使用的页或段调出保存在外存</strong>上，从而腾出空间存放将要装入的程序以及将要调入的页或段。（<strong>置换</strong>功能）</p>
-<h4 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h4><ul>
+<h3 id="虚拟存储器">虚拟存储器</h3>
+<p>虚拟存储器，<s>是指具有请求调入功能和置换功能（纯分页系统没有），能从逻辑上对内存容量加以扩充的一种存储器系统。</s> 该系统逻辑容量由内存容量和外存容量之和所决定；其运行速度接近于内存速度，成本接近于外存。</p>
+<h4 id="基本原理-2">基本原理</h4>
+<p>在程序装入时，不需要将其全部读入到内存，而<strong>只需将当前需要执行的部分页或段读入到内存</strong>，就可让程序开始执行。
+在程序执行过程中，如果需执行的指令或访问的数据尚未在内存（称为<strong>缺页</strong>或缺段），则由处理器通知操作系统将相应的页或段调入到内存，然后继续执行程序。（<strong>请求调入</strong>功能）
+另一方面，操作系统将内存中<strong>暂时不使用的页或段调出保存在外存</strong>上，从而腾出空间存放将要装入的程序以及将要调入的页或段。（<strong>置换</strong>功能）</p>
+<h4 id="特征">特征</h4>
+<ul>
 <li>多次性：作业被分成多次调入内存运行。正是由于多次性，虚拟存储器才具备了逻辑上扩大内存的功能。多次性是虚拟存储器最重要的特征。</li>
 <li>对换性：允许在作业运行过程中进行换进、换出。换进、换出可提高内存利用率。</li>
 <li>离散性：物理内存分配的不连续；虚拟地址空间使用的不连续（如数据段和栈段之间存在空闲空间，共享段和动态链接库占用的空间）</li>
 <li>虚拟性：通过物理内存和外存相结合，提供大范围的虚拟地址空间</li>
 </ul>
-<h4 id="优点、代价和限制"><a href="#优点、代价和限制" class="headerlink" title="优点、代价和限制"></a>优点、代价和限制</h4><p>优点：</p>
+<h4 id="优点、代价和限制">优点、代价和限制</h4>
+<p>优点：</p>
 <ul>
 <li>可在较小的可用内存中执行较<strong>大</strong>的用户程序；</li>
 <li>可在内存中容纳更<strong>多</strong>程序并发执行；</li>
 <li>不必影响编程时的程序结构（与<a href="#%E8%A6%86%E7%9B%96">覆盖</a>比较）</li>
 <li>提供给用户可用的虚拟内存空间通常大于物理内存(real memory)</li>
 </ul>
-<p>代价：虚拟存储量的扩大是以牺牲 CPU 工作<strong>时间</strong>以及内外存交换时间为代价。<br>限制：虚拟存储器的容量取决于主存与辅存的容量，也受限于计算机的地址结构决定。如 32 位机器，虚拟存储器的最大容量就是 4G。</p>
-<h4 id="与Cache-主存机制的异同"><a href="#与Cache-主存机制的异同" class="headerlink" title="与Cache-主存机制的异同"></a>与Cache-主存机制的异同</h4><p>相同点：</p>
+<p>代价：虚拟存储量的扩大是以牺牲 CPU 工作<strong>时间</strong>以及内外存交换时间为代价。
+限制：虚拟存储器的容量取决于主存与辅存的容量，也受限于计算机的地址结构决定。如 32 位机器，虚拟存储器的最大容量就是 4G。</p>
+<h4 id="与Cache-主存机制的异同">与Cache-主存机制的异同</h4>
+<p>相同点：</p>
 <ol>
 <li>出发点相同：二者都是为了提高存储系统的性能价格比而构造的分层存储体系，都力图使存储系统的性能接近高速存储器，而价格和容量接近低速存储器。</li>
 <li>原理相同：利用了程序运行时的<strong>局部性原理</strong>把最近常用的信息块从相对慢速而大容量的存储器调入相对高速而小容量的存储器。</li>
 </ol>
 <p>不同点：</p>
 <ol>
-<li>侧重点不同：<ol>
+<li>侧重点不同：
+<ol>
 <li>Cache：解决主存与CPU的<strong>速度</strong>差异</li>
 <li>虚存：解决<strong>存储容量</strong>问题，还要解决存储管理、主存分配和存储保护等方面。</li>
 </ol>
 </li>
-<li><del>数据通路不同</del>：<ol>
+<li><s>数据通路不同</s>：
+<ol>
 <li>CPU与cache和主存之间均有直接访问通路，cache不命中时可直接访问主存；</li>
 <li>外存与CPU之间不存在直接的数据通路，当主存不命中时只能通过调页解决，CPU最终还是要访问主存。</li>
 </ol>
 </li>
 <li>透明性不同：Cache的管理完全由硬件完成，对系统程序员和应用程序员均透明；而虚存管理由OS和硬件共同完成，<strong>虚存对系统程序员不透明</strong>，而只对应用程序员透明。</li>
-<li>未命中时的损失不同：<del>由于主存的存取时间是cache的存取时间的5～10倍，而主存的存取速度通常比外存的存取速度快上千倍</del>，故主存未命中时系统的性能损失要远大于cache未命中时的损失。（SSD重要性）</li>
+<li>未命中时的损失不同：<s>由于主存的存取时间是cache的存取时间的5～10倍，而主存的存取速度通常比外存的存取速度快上千倍</s>，故主存未命中时系统的性能损失要远大于cache未命中时的损失。（SSD重要性）</li>
 </ol>
-<h3 id="请求式分页"><a href="#请求式分页" class="headerlink" title="请求式分页"></a>请求式分页</h3><h4 id="MMU"><a href="#MMU" class="headerlink" title="MMU"></a>MMU</h4><p><img src="/2026/08/14/os-notes-memory/image-11.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
-<p>1.处理器向MMU发送虚拟地址<br>2.&amp; 3.MMU从内存获取页表项<br>4.MMU将物理地址发送给Cache&#x2F;Memory<br>5.Cache&#x2F;Memory 将数据发送给处理器</p>
-<h4 id="状态位"><a href="#状态位" class="headerlink" title="状态位"></a>状态位</h4><h4 id="缺页中断"><a href="#缺页中断" class="headerlink" title="缺页中断"></a>缺页中断</h4><p><img src="/2026/08/14/os-notes-memory/image-12.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
-<p>1.处理器向MMU发送虚拟地址<br>2.&amp; 3.MMU从内存获取页表项<br>4.有效位为0，MMU触发缺页异常<br>5.&amp; 6.Handler用需要的页面替换特定页<br>Handler返回最初进程，重启引发缺页中断的指令</p>
-<h3 id="页面置换"><a href="#页面置换" class="headerlink" title="页面置换"></a>页面置换</h3><h4 id="页面调入策略"><a href="#页面调入策略" class="headerlink" title="页面调入策略"></a>页面调入策略</h4><ol>
-<li>请求调页（demand paging）<ul>
+<h3 id="请求式分页">请求式分页</h3>
+<h4 id="MMU">MMU</h4>
+<p><img src="/2026/08/14/os-notes-memory/image-11.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>1.处理器向MMU发送虚拟地址
+2.&amp; 3.MMU从内存获取页表项
+4.MMU将物理地址发送给Cache/Memory
+5.Cache/Memory 将数据发送给处理器</p>
+<h4 id="状态位">状态位</h4>
+<h4 id="缺页中断">缺页中断</h4>
+<p><img src="/2026/08/14/os-notes-memory/image-12.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>1.处理器向MMU发送虚拟地址
+2.&amp; 3.MMU从内存获取页表项
+4.有效位为0，MMU触发缺页异常
+5.&amp; 6.Handler用需要的页面替换特定页
+Handler返回最初进程，重启引发缺页中断的指令</p>
+<h3 id="页面置换">页面置换</h3>
+<h4 id="页面调入策略">页面调入策略</h4>
+<ol>
+<li>请求调页（demand paging）
+<ul>
 <li>只调入发生缺页时所需的页面。</li>
-<li>实现简单，但容易产生较多的缺页中断，造成对外存I&#x2F;O次数多，时间开销过大，容易产生抖动现象。</li>
+<li>实现简单，但容易产生较多的缺页中断，造成对外存I/O次数多，时间开销过大，容易产生抖动现象。</li>
 </ul>
 </li>
-<li>预调页（prepaging）<ul>
+<li>预调页（prepaging）
+<ul>
 <li>在发生缺页需要调入某页时，一次调入该页以及相邻的几个页。</li>
-<li>这种策略提高了调页的I&#x2F;O效率，减少了I&#x2F;O次数。但由于这是一种基于局部性原理的预测，若调入的页在以后很少被访问，则造成浪费。</li>
+<li>这种策略提高了调页的I/O效率，减少了I/O次数。但由于这是一种基于局部性原理的预测，若调入的页在以后很少被访问，则造成浪费。</li>
 <li>常在程序装入时使用。</li>
 </ul>
 </li>
 </ol>
 <p>调入页面的来源：进程装入时，将其全部页面复制到交换区，以后总是从交换区调入。执行时调入速度快，要求交换区空间较大。</p>
-<p>修改（脏）页面的处理：凡是未被修改的页面，被置换时不需调出直接丢弃；已被修改的页面，被置换时需调出到交换区，以后从交换区调<br>入。</p>
+<p>修改（脏）页面的处理：凡是未被修改的页面，被置换时不需调出直接丢弃；已被修改的页面，被置换时需调出到交换区，以后从交换区调
+入。</p>
 <ul>
 <li>修改的页面要写回磁盘，否则可能引发不一致的问题</li>
 </ul>
-<h4 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h4><p>置换算法的出发点应该是，把<strong>未来不再使用的或短期内较少使用</strong>的页面调出，而未来的实际情况是不确定的…<br>目的：是把那些访问概率非常高的页放入内存，减少内外存交换的次数。</p>
+<h4 id="页面置换算法">页面置换算法</h4>
+<p>置换算法的出发点应该是，把<strong>未来不再使用的或短期内较少使用</strong>的页面调出，而未来的实际情况是不确定的…
+目的：是把那些访问概率非常高的页放入内存，减少内外存交换的次数。</p>
 <p>最佳算法（OPT optimal）：选择“未来不再使用的”或“在离当前最远位置上出现的”页面被置换。</p>
-<h5 id="1-最近未使用-NRU"><a href="#1-最近未使用-NRU" class="headerlink" title="1.最近未使用 NRU"></a>1.最近未使用 NRU</h5><h5 id="2-先进先出-FIFO"><a href="#2-先进先出-FIFO" class="headerlink" title="2.先进先出 FIFO"></a>2.先进先出 FIFO</h5><h5 id="3-二次机会"><a href="#3-二次机会" class="headerlink" title="3.二次机会"></a>3.二次机会</h5><h5 id="4-时钟-Clock"><a href="#4-时钟-Clock" class="headerlink" title="4.时钟 Clock"></a>4.时钟 Clock</h5><h5 id="5-最近最久不用-LRU"><a href="#5-最近最久不用-LRU" class="headerlink" title="5.最近最久不用 LRU"></a>5.最近最久不用 LRU</h5><h5 id="6-最不常用-NFU"><a href="#6-最不常用-NFU" class="headerlink" title="6.最不常用 NFU"></a>6.最不常用 NFU</h5><h5 id="7-Aging"><a href="#7-Aging" class="headerlink" title="7.Aging"></a>7.Aging</h5><h5 id="8-页面缓冲算法-page-buffering"><a href="#8-页面缓冲算法-page-buffering" class="headerlink" title="8.页面缓冲算法(page buffering)"></a>8.页面缓冲算法(page buffering)</h5><p>是对FIFO算法的发展，通过被置换页面的缓冲，有机会找回刚被置换的页面</p>
-<h5 id="9-工作集策略-working-set"><a href="#9-工作集策略-working-set" class="headerlink" title="9.工作集策略(working set)"></a>9.工作集策略(working set)</h5><p>进程在任一个时间t，都存在一个集合，包含所有最近k次内存访问过的页面, 这个集合W(k,t)即称为工作集</p>
-<h5 id="10-WSClock"><a href="#10-WSClock" class="headerlink" title="10.WSClock"></a>10.WSClock</h5><p>Clock+工作集<br>不需要扫描整个页表，仅仅在页框循环表中循环</p>
-<h4 id="页面置换策略"><a href="#页面置换策略" class="headerlink" title="页面置换策略"></a>页面置换策略</h4><h5 id="固定分配局部置换"><a href="#固定分配局部置换" class="headerlink" title="固定分配局部置换"></a>固定分配局部置换</h5><p>可基于进程的类型，为每一进程分配<strong>固定的页数的内存空间</strong>，在整个运行期间都不再改变。采用该策略时，如果进程在运行中出现缺页，则只能<strong>从该进程的N个页面中选出一个换出</strong>，然后再调入一页，以保证分配给该进程的内存空间不变。</p>
-<h5 id="可变分配局部置换"><a href="#可变分配局部置换" class="headerlink" title="可变分配局部置换"></a>可变分配局部置换</h5><p>同样基于进程的类型，为每一进程分配一定数目的内存空间。但当某进程发生缺页时，只允许<strong>从该进程的页面中选出一页换出</strong>，这样就不影响其它进程的运行。如果进程在运行的过程中，频繁的发生缺页中断，则系统<strong>再为该进程分配若干物理块，直到进程的缺页率降低到适当程度</strong>为止。</p>
-<h5 id="可变分配全局置换"><a href="#可变分配全局置换" class="headerlink" title="可变分配全局置换"></a>可变分配全局置换</h5><p>采用这种策略时，先为系统中的每一进程分配一定数量的物理块，操作系统本身也保持一个<strong>空闲物理块队列</strong>。当某进程发生缺页时，由系统的空闲物理块队列中取出一些物理块分配给该进程。但当空闲物理块队列中的物理块用完时，操作系统才<strong>从内存中选择一块调出。该块可能是系统中任意一个进程的页。</strong></p>
-<h4 id="缺页中断率"><a href="#缺页中断率" class="headerlink" title="缺页中断率"></a>缺页中断率</h4><p>如果程序执行中访问页面的总次数为$A$，其中有$F$次访问的页面尚未装入内存，故产生了$F$次缺页中断。现定义：</p>
-<p>$$f ＝ F &#x2F; A$$</p>
-<p>把$f$称为“缺页中断率”。</p>
-<h5 id="置换算法与分配策略的关系"><a href="#置换算法与分配策略的关系" class="headerlink" title="置换算法与分配策略的关系"></a>置换算法与分配策略的关系</h5><p>同时适合局部分配策略和全局分配策略</p>
+<h5 id="1-最近未使用-NRU">1.最近未使用 NRU</h5>
+<h5 id="2-先进先出-FIFO">2.先进先出 FIFO</h5>
+<h5 id="3-二次机会">3.二次机会</h5>
+<h5 id="4-时钟-Clock">4.时钟 Clock</h5>
+<h5 id="5-最近最久不用-LRU">5.最近最久不用 LRU</h5>
+<h5 id="6-最不常用-NFU">6.最不常用 NFU</h5>
+<h5 id="7-Aging">7.Aging</h5>
+<h5 id="8-页面缓冲算法-page-buffering">8.页面缓冲算法(page buffering)</h5>
+<p>是对FIFO算法的发展，通过被置换页面的缓冲，有机会找回刚被置换的页面</p>
+<h5 id="9-工作集策略-working-set">9.工作集策略(working set)</h5>
+<p>进程在任一个时间t，都存在一个集合，包含所有最近k次内存访问过的页面, 这个集合W(k,t)即称为工作集</p>
+<h5 id="10-WSClock">10.WSClock</h5>
+<p>Clock+工作集
+不需要扫描整个页表，仅仅在页框循环表中循环</p>
+<h4 id="页面置换策略">页面置换策略</h4>
+<h5 id="固定分配局部置换">固定分配局部置换</h5>
+<p>可基于进程的类型，为每一进程分配<strong>固定的页数的内存空间</strong>，在整个运行期间都不再改变。采用该策略时，如果进程在运行中出现缺页，则只能<strong>从该进程的N个页面中选出一个换出</strong>，然后再调入一页，以保证分配给该进程的内存空间不变。</p>
+<h5 id="可变分配局部置换">可变分配局部置换</h5>
+<p>同样基于进程的类型，为每一进程分配一定数目的内存空间。但当某进程发生缺页时，只允许<strong>从该进程的页面中选出一页换出</strong>，这样就不影响其它进程的运行。如果进程在运行的过程中，频繁的发生缺页中断，则系统<strong>再为该进程分配若干物理块，直到进程的缺页率降低到适当程度</strong>为止。</p>
+<h5 id="可变分配全局置换">可变分配全局置换</h5>
+<p>采用这种策略时，先为系统中的每一进程分配一定数量的物理块，操作系统本身也保持一个<strong>空闲物理块队列</strong>。当某进程发生缺页时，由系统的空闲物理块队列中取出一些物理块分配给该进程。但当空闲物理块队列中的物理块用完时，操作系统才<strong>从内存中选择一块调出。该块可能是系统中任意一个进程的页。</strong></p>
+<h4 id="缺页中断率">缺页中断率</h4>
+<p>如果程序执行中访问页面的总次数为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span>，其中有<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span></span></span></span>次访问的页面尚未装入内存，故产生了<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span></span></span></span>次缺页中断。现定义：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>f</mi><mtext>＝</mtext><mi>F</mi><mi mathvariant="normal">/</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">f ＝ F / A
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord cjk_fallback">＝</span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mord">/</span><span class="mord mathnormal">A</span></span></span></span></span></p>
+<p>把<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span></span>称为“缺页中断率”。</p>
+<h5 id="置换算法与分配策略的关系">置换算法与分配策略的关系</h5>
+<p>同时适合局部分配策略和全局分配策略</p>
 <ul>
 <li>FIFO： 替换所有内存（v.s. 当前进程）最老的页面</li>
 <li>LRU：将所有内存（v.s. 当前进程）最近最少页面替换</li>
@@ -962,7 +1121,10 @@
 <li>工作集和WSClock</li>
 <li>工作集其实是和特定进程对应的，并不存在整个机器的工作集</li>
 </ul>
-<h5 id="抖动问题"><a href="#抖动问题" class="headerlink" title="抖动问题"></a>抖动问题</h5><p>随着驻留内存的进程数目增加，或者说进程并发水平的上升，处理器利用率先 是上升，然后下降。<br>这里处理器利用率下降的原因通常称为虚拟存储器发生“抖动”，也就是：每个进程的常驻集不断减小，缺页率不断上升，频繁调页使得调页开销增大。<br>OS要选择一个适当的进程数目，以在并发水平和缺页率之间达到一个平衡。</p>
+<h5 id="抖动问题">抖动问题</h5>
+<p>随着驻留内存的进程数目增加，或者说进程并发水平的上升，处理器利用率先 是上升，然后下降。
+这里处理器利用率下降的原因通常称为虚拟存储器发生“抖动”，也就是：每个进程的常驻集不断减小，缺页率不断上升，频繁调页使得调页开销增大。
+OS要选择一个适当的进程数目，以在并发水平和缺页率之间达到一个平衡。</p>
 <p>抖动的预防</p>
 <ul>
 <li>局部置换策略</li>
@@ -970,22 +1132,27 @@
 <li>预留部分页面</li>
 <li>挂起若干进程</li>
 </ul>
-<h3 id="内存保护"><a href="#内存保护" class="headerlink" title="内存保护"></a>内存保护</h3><blockquote>
-<p>应用是否可以修改自己的页表？<br>No！如果可以，应用可以访问任何内存位置，包括内核和其他应用的内存，这违反基本的安全要求。</p>
+<h3 id="内存保护">内存保护</h3>
+<blockquote>
+<p>应用是否可以修改自己的页表？
+No！如果可以，应用可以访问任何内存位置，包括内核和其他应用的内存，这违反基本的安全要求。</p>
 </blockquote>
-<h2 id="自映射"><a href="#自映射" class="headerlink" title="自映射"></a>自映射</h2><p>页表存储在内存中</p>
+<h2 id="自映射">自映射</h2>
+<p>页表存储在内存中</p>
 <ul>
 <li>每个页表项需要4字节，所以1M个页表项需要4MB字节存储，所以整个页表占用的内存大小就是4MB</li>
-<li>4MB页表也要分页存储，共需要4MB&#x2F;4KB&#x3D;1024个页面存储（我们把存放页表的页称为:<strong>页表页</strong>）</li>
+<li>4MB页表也要分页存储，共需要4MB/4KB=1024个页面存储（我们把存放页表的页称为:<strong>页表页</strong>）</li>
 </ul>
 <p>页表也被映射到进程的4G逻辑地址空间内</p>
 <ul>
-<li>操作系统把页表所在的物理内存，映射到内核虚拟地址空间（kernel space）<ul>
-<li>好处：统一访问方式 $\rightarrow$ 和其他内存访问方式一致，不用关MMU</li>
+<li>操作系统把页表所在的物理内存，映射到内核虚拟地址空间（kernel space）
+<ul>
+<li>好处：统一访问方式 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 和其他内存访问方式一致，不用关MMU</li>
 <li>方便修改页表</li>
 </ul>
 </li>
-<li>进程的4GB虚拟地址空间，有一部分留给内核空间（通常 1GB），并且在所有进程中共享<ul>
+<li>进程的4GB虚拟地址空间，有一部分留给内核空间（通常 1GB），并且在所有进程中共享
+<ul>
 <li>避免进入内核态切换页表，方便内核访问所有进程资源</li>
 </ul>
 </li>
@@ -1151,6 +1318,11 @@
 
 
   
+
+
+  
+  
+
 
 
 
