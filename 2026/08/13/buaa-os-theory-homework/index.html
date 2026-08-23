@@ -1,0 +1,1410 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wv-ce">
+  <meta name="keywords" content="wv-ce,博客,技术,随笔">
+  
+    <meta name="description" content="操作系统理论作业汇总。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统理论作业汇总">
+<meta property="og:url" content="https://wv-ce.github.io/2026/08/13/buaa-os-theory-homework/index.html">
+<meta property="og:site_name" content="wv-ce">
+<meta property="og:description" content="操作系统理论作业汇总。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-13T10:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-23T07:27:41.697Z">
+<meta property="article:author" content="wv-ce">
+<meta property="article:tag" content="BUAA_OS">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>操作系统理论作业汇总 - wv-ce</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wv-ce.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="操作系统理论作业汇总"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-13 10:00" pubdate>
+          2026年8月13日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          15k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          126 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">操作系统理论作业汇总</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="作业-1"><a href="#作业-1" class="headerlink" title="作业 1"></a>作业 1</h2><ol>
+<li><p>什么是多道程序设计？多道程序设计与分时系统的区别是什么？</p>
+<ul>
+<li>多道程序设计：指在内存中同时存放多道作业，使它们共享 CPU 和外部设备。当一道程序因等待 I&#x2F;O 而暂停执行时，CPU 立即转去执行另一道程序，从而提高资源利用率和系统吞吐量。</li>
+<li>主要区别：<ul>
+<li><strong>目标不同：</strong> 多道程序设计的主要目标是<strong>提高 CPU 利用率</strong>；分时系统的目标是<strong>提高人机交互性</strong>，使用户感觉自己独占计算机。</li>
+<li><strong>调度方式：</strong> 多道程序设计通常在程序遇到 I&#x2F;O 阻塞时才切换；分时系统引入了<strong>时间片</strong>概念，强制程序在规定时间内轮流使用 CPU。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>什么原因推动了操作系统从批处理发展到多道程序，进而发展到分时系统？</p>
+<ul>
+<li><strong>批处理 $\rightarrow$ 多道程序：</strong> 主要是为了解决 <strong>CPU 与 I&#x2F;O 设备速度不匹配</strong>的问题。单道批处理中 CPU 经常处于等待 I&#x2F;O 的闲置状态，多道程序通过“交替执行”大幅提升了硬件利用率。</li>
+<li><strong>多道程序 $\rightarrow$ 分时系统：</strong> 主要是为了满足<strong>用户交互</strong>的需求。多道程序系统下，用户无法在程序运行期间进行干预，调试困难；分时系统通过快速切换，提供了实时响应能力。</li>
+</ul>
+</li>
+<li><p>什么是陷阱？与中断的区别是什么？什么是系统调用？</p>
+<ul>
+<li><strong>陷阱：</strong> 是一种<strong>内部中断</strong>，通常由软件引起（如执行了非法指令、地址越界或显式调用陷阱指令）。</li>
+<li><strong>与中断的区别：</strong> 陷阱是<strong>同步</strong>的，由当前执行的指令触发；中断（通常指外部中断）是<strong>异步</strong>的，由外部硬件设备产生，与当前指令执行无关。</li>
+<li><strong>系统调用：</strong> 是操作系统提供给应用程序的接口，允许用户程序请求内核服务（如读写文件、创建进程）。它通常通过触发一个特定的陷阱来实现从用户态到内核态的切换。</li>
+</ul>
+</li>
+<li><p>关于操作系统的可移植性</p>
+<ul>
+<li>判断： 错误。可移植的操作系统在迁移到不同架构时，通常仍需要进行少量底层代码的修改或重新编译。</li>
+</ul>
+<ol>
+<li>为什么完全可移植是不可能的？ 因为操作系统必须直接与硬件交互。不同架构的指令集 (ISA)、内存管理单元 (MMU) 结构、中断处理机制和寄存器定义各不相同，这些底层相关的代码无法直接在异构硬件上运行。</li>
+<li>高度可移植系统的两个设计层次：<ol>
+<li><strong>硬件抽象层 (HAL):</strong> 将所有与硬件直接相关的操作（如时钟管理、中断分配）封装在此层，屏蔽底层差异。</li>
+<li><strong>内核核心&#x2F;体系结构无关层:</strong> 处理进程调度、文件系统等逻辑逻辑，这部分代码使用高级语言（如 C）编写，无需修改即可在不同架构间复用。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>矛盾的设计实例</p>
+<ul>
+<li><strong>资源利用率 vs. 健壮性：</strong> 为了追求极高的资源利用率，系统可能会减少冗余校验和隔离保护，但这会导致系统在某个组件出错时更容易崩溃，降低了健壮性。</li>
+<li><strong>吞吐量 vs. 响应时间：</strong> 增加时间片长度可以减少进程切换开销，从而提高系统总吞吐量，但这会导致单个用户的响应时间变长，影响交互体验。</li>
+</ul>
+</li>
+<li><p>最简单的启动过程功能总结<br>一个最简化的系统启动（Bootstrap）至少需要具备以下功能：</p>
+<ol>
+<li><strong>硬件初始化：</strong> 检查并配置基本的硬件环境（如内存、CPU 状态）。</li>
+<li><strong>加载引导程序：</strong> 从预定义的固定位置（如磁盘首扇区）将操作系统内核的一部分或引导加载程序读入内存。</li>
+<li><strong>跳转执行：</strong> 将控制权交给内核入口点，开始执行操作系统内核程序。</li>
+</ol>
+</li>
+</ol>
+<h2 id="作业-2"><a href="#作业-2" class="headerlink" title="作业 2"></a>作业 2</h2><h3 id="1-动态分区分配算法"><a href="#1-动态分区分配算法" class="headerlink" title="1. 动态分区分配算法"></a>1. 动态分区分配算法</h3><p><strong>初始空闲区序列：</strong> 10KB, 4KB, 20KB, 18KB, 7KB, 9KB, 12KB, 15KB<br><strong>请求序列：</strong> 12KB, 10KB, 9KB</p>
+<ul>
+<li><strong>First Fit (首次适应):</strong><ul>
+<li>12KB $\rightarrow$ 20KB区</li>
+<li>10KB $\rightarrow$ 10KB区</li>
+<li>9KB $\rightarrow$ 18KB区</li>
+</ul>
+</li>
+<li><strong>Best Fit (最佳适应):</strong><ul>
+<li>12KB $\rightarrow$ 12KB区</li>
+<li>10KB $\rightarrow$ 10KB区</li>
+<li>9KB $\rightarrow$ 9KB区</li>
+</ul>
+</li>
+<li><strong>Worst Fit (最坏适应):</strong><ul>
+<li>12KB $\rightarrow$ 20KB区</li>
+<li>10KB $\rightarrow$ 18KB区</li>
+<li>9KB $\rightarrow$ 15KB区</li>
+</ul>
+</li>
+<li><strong>Next Fit (下次适应):</strong><ul>
+<li>12KB $\rightarrow$ 20KB区</li>
+<li>10KB $\rightarrow$ 18KB区</li>
+<li>9KB $\rightarrow$ 9KB区</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-地址概念解释"><a href="#2-地址概念解释" class="headerlink" title="2. 地址概念解释"></a>2. 地址概念解释</h3><ul>
+<li><strong>逻辑地址:</strong> 程序员在源码中使用的地址（如变量名或汇编中的偏移量），由CPU生成。</li>
+<li><strong>物理地址:</strong> 内存单元的真实单元地址，是加载到内存地址寄存器中的最终地址。</li>
+<li><strong>地址映射:</strong> 将逻辑地址转换为物理地址的过程（通常由MMU硬件完成）。<ul>
+<li><strong>例子:</strong> 在页式管理中，逻辑地址 <code>页号 + 页内偏移</code> 通过页表查找到物理块号，拼接成物理地址。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-页表、段表与快表"><a href="#3-页表、段表与快表" class="headerlink" title="3. 页表、段表与快表"></a>3. 页表、段表与快表</h3><ul>
+<li><strong>设置原因:</strong> 解决内存碎片问题，实现离散分配。<strong>页表&#x2F;段表</strong>记录了逻辑单元与物理单元的映射关系。<strong>快表 (TLB)</strong> 是一种高速缓存，用于存放常用页表项，以加速地址转换（减少访问内存次数）。</li>
+<li><strong>转换过程:</strong> 逻辑地址 $\rightarrow$ 提取页号 $\rightarrow$ <strong>查TLB</strong>（若命中则直接获取物理块号；若不命中则查内存页表） $\rightarrow$ 结合页内偏移 $\rightarrow$ 生成物理地址。</li>
+</ul>
+<h3 id="4-缺页中断处理流程"><a href="#4-缺页中断处理流程" class="headerlink" title="4. 缺页中断处理流程"></a>4. 缺页中断处理流程</h3><ol>
+<li>处理器向MMU发送虚拟地址</li>
+<li>MMU从内存获取页表项</li>
+<li>有效位为0，MMU触发缺页异常</li>
+<li>Handler用需要的页面替换特定页</li>
+<li>Handler返回最初进程，重启引发缺页中断的指令</li>
+</ol>
+<h3 id="5-多级页表计算"><a href="#5-多级页表计算" class="headerlink" title="5. 多级页表计算"></a>5. 多级页表计算</h3><p><strong>(1) 优点:</strong> <strong>节省内存</strong>，只有当前需要的页表才会被调入内存。对于稀疏的虚拟地址空间，不需要为整个空间预留全部页表空间。<br><strong>(2) 计算:</strong></p>
+<ul>
+<li>页面大小 &#x3D; 16KB &#x3D; $2^{14}$ B，则<strong>页内偏移位 &#x3D; 14位</strong>。</li>
+<li>剩余位数 &#x3D; 38位 - 14位 &#x3D; 24位（用于页表索引）。</li>
+<li>页表项大小 &#x3D; 4B，一个页面能容纳 $16KB &#x2F; 4B &#x3D; 2^{12}$ 个项。</li>
+<li>为了使一级、二级页表刚好各占一个页面，分配如下：<ul>
+<li>第二级页表索引 &#x3D; 12位</li>
+<li>第一级页表索引 &#x3D; 24 - 12 &#x3D; 12位</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-页面置换算法思考"><a href="#6-页面置换算法思考" class="headerlink" title="6. 页面置换算法思考"></a>6. 页面置换算法思考</h3><p><strong>(1) 效果评估:</strong><br>将物理页框数设为 $m$<br>情况 A：$m \ge 512$ (内存充足)</p>
+<ul>
+<li><strong>表现</strong>：非常优秀</li>
+<li><strong>分析</strong>：<ul>
+<li>一旦预热完成（即 0-511 号页面都已调入内存），整个循环序列都会驻留在内存中。</li>
+<li><strong>LRU&#x2F;FIFO&#x2F;Clock</strong> 都能实现循环部分 100% 的命中率。</li>
+<li>只有在周期之间出现的“随机页面”可能会导致少量的缺页中断，但由于内存空间足够，这些算法都能很好地处理。</li>
+</ul>
+</li>
+</ul>
+<p>情况 B：$m &lt; 512$ (内存不足，如题目第二小题提到的 500)</p>
+<ul>
+<li><strong>表现</strong>：<strong>极差（发生颠簸）</strong>。</li>
+<li><strong>分析</strong>：<ul>
+<li>当 $m &lt; 512$ 时，这三种算法都会在循环访问中表现出“最差性能”。</li>
+<li><strong>LRU</strong>：在循环到第 $m+1$ 个页面时，会把第 1 个页面踢出，而第 1 个页面恰恰是下一个周期最先需要的。这会导致<strong>每一次循环访问都发生缺页</strong>（如果忽略随机访问的干扰）。</li>
+<li><strong>FIFO&#x2F;Clock</strong>：同样遵循类似的换出逻辑，在处理步长为 1 的大循环时，命中率会趋近于 0。</li>
+</ul>
+</li>
+</ul>
+<p><strong>(2) 优化算法:</strong><br>针对性改进<br>策略：固定其中的 499 个页面。</p>
+<p>具体设计：<br>将 499 个页框永久分配给循环序列的前 499 个页面（0-498）。<br>剩下的 1 个页框用来轮换处理剩余的页面（499-511 以及随机页面）。</p>
+<h3 id="7-伙伴系统-Buddy-System"><a href="#7-伙伴系统-Buddy-System" class="headerlink" title="7. 伙伴系统 (Buddy System)"></a>7. 伙伴系统 (Buddy System)</h3><p>合并过程: 当释放一个大小为 $2^k$ 的块时，系统检查其伙伴块是否也空闲。若是，则合并成一个 $2^{k+1}$ 的块，并递归向上尝试合并。<br>伙伴条件:</p>
+<ol>
+<li>大小相同。</li>
+<li>物理地址连续。</li>
+<li><strong>对齐要求:</strong> 从同一个更大的块拆分出来的（起始地址满足 $Address \pmod{2^{k+1}} &#x3D; 0$）。</li>
+</ol>
+<h3 id="8-EAT-计算"><a href="#8-EAT-计算" class="headerlink" title="8. EAT 计算"></a>8. EAT 计算</h3><p>(1) 最佳情况 (TLB Hit + Cache Hit):<br>$$Time &#x3D; 10ns + 5ns &#x3D; 15ns$$</p>
+<p>(2) 平均内存访问时间 (EAT):</p>
+<ul>
+<li>访问内存&#x2F;Cache项的平均时间 $E_a &#x3D; h_c \times t_c + (1-h_c) \times (t_c + t_m) &#x3D; 0.98 \times 5 + 0.02 \times 105 &#x3D; 4.9 + 2.1 &#x3D; 7ns$。</li>
+<li>获取页表项(PTE)的平均时间 $E_p &#x3D; h_t \times t_b + (1-h_t) \times (t_b + 2 \times E_{mem}) &#x3D; 0.95 \times 10 + 0.05 \times (10 + 2 \times 7) &#x3D; 9.5 + 1.2 &#x3D; 10.7ns$。</li>
+<li>$EAT &#x3D; E_p + E_a &#x3D; 10.7ns + 7ns &#x3D; 17.7ns$。</li>
+</ul>
+<h2 id="作业-3"><a href="#作业-3" class="headerlink" title="作业 3"></a>作业 3</h2><h3 id="第1题"><a href="#第1题" class="headerlink" title="第1题"></a>第1题</h3><p>（1）画出逻辑地址结构、页目录项（页表项）结构</p>
+<table>
+<thead>
+<tr>
+<th align="center">页目录索引（10位）</th>
+<th align="center">页表索引（10位）</th>
+<th align="center">页内偏移（12位）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">31-22位</td>
+<td align="center">21-12位</td>
+<td align="center">11-0位</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">物理页框号（20位）</th>
+<th align="center">标志位（12位）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">31-12位</td>
+<td align="center">11-0位</td>
+</tr>
+</tbody></table>
+<p>（2）进程地址空间与页大小<br>进程地址空间：$2^{32}$ 字节 &#x3D; 4 GB<br>页大小：页内偏移为12位，即 $2^{12}$ 字节 &#x3D; 4 KB</p>
+<p>（3）二级页表占用空间与连续性<br>最多占用物理页框：一级页表有 $2^{10} &#x3D; 1024$ 个页目录项，每个项对应一个二级页表，故最多占用 1024 个物理页框 。<br>连续性：不需要连续。二级页表通过一级页表项中的物理页框号进行寻址，可以离散分布在内存中 。</p>
+<p>（4）页表空间映射分析<br>第一级页表起始逻辑地址：虚拟地址 <code>0x77800000</code> 对应的页目录索引为 <code>0x77800000 &gt;&gt; 22 = 0x1de</code><br>每个页表大小4KB，所以页目录对于页表虚拟地址起始位置的地址偏移为 <code>0x1de &lt;&lt;12 = 0x1de000</code><br>起始逻辑地址为：<code>0x77800000 + 0x1de000 = 0x779de000</code><br>第一级页表的物理地址（即页目录基地址）存储在页目录中指向它自身的那个表项里。<br>在该自映射方案中，页目录的第 478 个表项指向了页目录自己的物理地址。<br>该表项在虚拟地址空间中的位置，就是页目录起始地址加上该项的偏移：<br><code>0x779de000 + (0x1de x 4) = 0x779de000 + 0x778 = 0x779de778</code></p>
+<p>（5）逻辑地址转换过程描述</p>
+<ol>
+<li><p>逻辑地址：<code>0x0</code><br>地址拆分: PDI &#x3D; 0, PTI &#x3D; 0, Offset &#x3D; 0。<br>一级访问: 查找页目录（基址 <code>0x1000</code>）第 0 项。图中页目录 Index 0 的内容为 <code>0x0</code>。<br>结论: 有效位为 0，发生缺页异常 (Page Fault)或非法访问。无法读取数据。</p>
+</li>
+<li><p>逻辑地址：<code>0x00803004</code><br> 地址拆分：<code>0000 0000 10 | 00 0000 0011 | 0000 0000 0100</code><br> PDI &#x3D; <code>0x2</code> (2)<br> PTI &#x3D; <code>0x3</code> (3)<br> Offset &#x3D; <code>0x004</code><br> 转换过程：</p>
+<ol>
+<li>一级访问: 页目录第 2 项内容为 <code>0x5001</code>。有效位为 1，二级页表物理基址为 <code>0x5000</code>。</li>
+<li>二级访问: 在物理地址 <code>0x5000</code> 的页表中查找第 3 项。图中该项内容为 <code>0x20001</code>。有效位为 1，物理页框号 (PFN) 为 <code>0x20</code>。</li>
+<li>最终物理地址: <code>0x20 &lt;&lt; 12 + 0x004 = 0x20004</code>。</li>
+</ol>
+<p> 读取数据: 物理地址 <code>0x20004</code> 对应“物理地址 <code>0x20000</code> 页表”中的第 1 项。图中该位置的值为 <code>0x326001</code>。</p>
+</li>
+<li><p>逻辑地址：<code>0x00402001</code><br> 地址拆分：<code>0000 0000 01 | 00 0000 0010 | 0000 0000 0001</code><br> PDI &#x3D; <code>0x1</code> (1)<br> PTI &#x3D; <code>0x2</code> (2)<br> Offset &#x3D; <code>0x001</code><br> 转换过程：</p>
+<ol>
+<li>一级访问: 页目录第 1 项内容为 <code>0x1001</code>。这表明该进程使用了页表自映射，二级页表其实就是页目录本身（基址 <code>0x1000</code>）。</li>
+<li>二级访问: 在物理地址 <code>0x1000</code> 的页表中查找第 2 项（Index 2）。内容为 <code>0x5001</code>。有效位为 1，物理页框号为 <code>0x5</code>。</li>
+<li>最终物理地址: <code>0x5 &lt;&lt; 12 + 0x001 = 0x5001</code>。</li>
+</ol>
+<p> 读取数据: 物理地址 <code>0x5001</code> 位于“物理地址 <code>0x5000</code> 页表”的第 0 项内部。图中 Index 0 的内容为 <code>0x0</code>。</p>
+</li>
+</ol>
+<p>（6）访问物理地址 <code>0x326028</code> 所需的逻辑地址<br><code>0x00C01028</code></p>
+<h3 id="第2题"><a href="#第2题" class="headerlink" title="第2题"></a>第2题</h3><table>
+<thead>
+<tr>
+<th align="left">指令</th>
+<th align="left">结果</th>
+<th align="left">简要寻址说明（依据  逻辑）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Store [0x00C07222]</td>
+<td align="left">Error</td>
+<td align="left">目录索引3查 <code>0x0020000C</code> 得 <code>0x00103007</code> (Valid&#x2F;RW)；页表索引7查 <code>0x0010301C</code> 得 <code>0xEEFF0001</code> (Valid&#x2F;RO)；只读。</td>
+</tr>
+<tr>
+<td align="left">Store [0x00C005BF]</td>
+<td align="left">OK</td>
+<td align="left">目录索引3查 <code>0x0020000C</code> 得 <code>0x00103007</code>；页表索引0查 <code>0x00103000</code> 得 <code>0x11220067</code>（RW）可写。</td>
+</tr>
+<tr>
+<td align="left">Load [0x00003013]</td>
+<td align="left">0x19</td>
+<td align="left">目录索引0查 <code>0x00200000</code> 得 <code>0x00100007</code>；页表索引3查 <code>0x0010000C</code> 得 <code>0x00004007</code>；物理地址 <code>0x00004013</code> 处数据为 <code>0x19</code> 。</td>
+</tr>
+<tr>
+<td align="left">Load [0xFF80078F]</td>
+<td align="left">Error</td>
+<td align="left">目录索引0x3FE查 <code>0x00200FF8</code> 得 <code>0x001FE007</code>；页表索引0查 <code>0x001FE000</code> 得 <code>0x00000000</code>，有效位为0，应报 Error 。</td>
+</tr>
+<tr>
+<td align="left">Load [0xFFFFF005]</td>
+<td align="left">0x66</td>
+<td align="left">目录索引0x3FF查 <code>0x00200FFC</code> 得 <code>0x001FF007</code>；页表索引0x3FF查 <code>0x001FFFFC</code> 得 <code>0x00103067</code>；物理地址 <code>0x00103005</code> 处数据为 <code>0x66</code> 。</td>
+</tr>
+</tbody></table>
+<h2 id="作业-4"><a href="#作业-4" class="headerlink" title="作业 4"></a>作业 4</h2><h3 id="1-读者写者问题"><a href="#1-读者写者问题" class="headerlink" title="1. 读者写者问题"></a>1. 读者写者问题</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> readcount = <span class="hljs-number">0</span>;      <span class="hljs-comment">// 正在读的读者数量</span><br><span class="hljs-type">int</span> writecount = <span class="hljs-number">0</span>;     <span class="hljs-comment">// 正在等待或准准备写的写者数量</span><br>Semaphore r_mutex = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 保护 readcount</span><br>Semaphore w_mutex = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 保护 writecount</span><br>Semaphore read_lock = <span class="hljs-number">1</span>;<span class="hljs-comment">// 控制读者进入的栅栏（有写者时堵住读者）</span><br>Semaphore resource = <span class="hljs-number">1</span>; <span class="hljs-comment">// 资源访问互斥锁（读写互斥、写写互斥）</span><br><br>Writer() &#123;<br>    P(w_mutex);<br>    <span class="hljs-keyword">if</span> (++writecount == <span class="hljs-number">1</span>) P(read_lock); <span class="hljs-comment">// 第一个写者到达，封锁读者流</span><br>    V(w_mutex);<br><br>    P(resource);        <span class="hljs-comment">// 互斥访问资源</span><br>    <span class="hljs-comment">// --- 执行写操作 ---</span><br>    write();<br>    V(resource);<br><br>    P(w_mutex);<br>    <span class="hljs-keyword">if</span> (--writecount == <span class="hljs-number">0</span>) V(read_lock); <span class="hljs-comment">// 最后一个写者离开，释放读者流</span><br>    V(w_mutex);<br>&#125;<br><br>Reader() &#123;<br>    P(read_lock);       <span class="hljs-comment">// 检查是否有写者在等待（如有，则在此排队）</span><br>    P(r_mutex);<br>    <span class="hljs-keyword">if</span> (++readcount == <span class="hljs-number">1</span>) P(resource);   <span class="hljs-comment">// 第一个读者占用资源锁</span><br>    V(r_mutex);<br>    V(read_lock);       <span class="hljs-comment">// 释放栅栏，允许后续读者进入</span><br><br>    <span class="hljs-comment">// --- 执行读操作 ---</span><br>    read();<br><br>    P(r_mutex);<br>    <span class="hljs-keyword">if</span> (--readcount == <span class="hljs-number">0</span>) V(resource);   <span class="hljs-comment">// 最后一个读者释放资源锁</span><br>    V(r_mutex);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="2-寿司店问题"><a href="#2-寿司店问题" class="headerlink" title="2. 寿司店问题"></a>2. 寿司店问题</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;          <span class="hljs-comment">// 当前就坐人数</span><br>Semaphore mutex = <span class="hljs-number">1</span>;    <span class="hljs-comment">// 保护 count 变量的互斥信号量</span><br>Semaphore empty = <span class="hljs-number">5</span>;    <span class="hljs-comment">// 可用座位信号量</span><br>Semaphore waitAll = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 用于控制“全走完才能再进”的同步信号量</span><br><br>Customer() &#123;<br>    P(empty);           <span class="hljs-comment">// 申请座位</span><br>    P(mutex);<br>    count++;<br>    V(mutex);<br><br>    <span class="hljs-comment">// --- 就餐中 ---</span><br>    eat();<br><br>    P(mutex);<br>    count--;<br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) &#123;   <span class="hljs-comment">// 如果我是最后一个走的</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">5</span>; i++) V(empty); <span class="hljs-comment">// 释放5个位置给下一拨</span><br>    &#125;<br>    V(mutex);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-进门问题"><a href="#3-进门问题" class="headerlink" title="3. 进门问题"></a>3. 进门问题</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;<br>Semaphore mutex = <span class="hljs-number">1</span>;    <span class="hljs-comment">// 保护 count</span><br>Semaphore barrier = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 等待所有人刷卡</span><br>Semaphore door = <span class="hljs-number">1</span>;     <span class="hljs-comment">// 保证一个一个过大门</span><br><br>Employee() &#123;<br>    <span class="hljs-comment">// 阶段1：刷卡同步</span><br>    P(mutex);<br>    count++;<br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">5</span>) V(barrier); <span class="hljs-comment">// 第5个人唤醒第一位开始进入</span><br>    V(mutex);<br>    <br>    P(barrier);         <span class="hljs-comment">// 等待信号</span><br>    V(barrier);         <span class="hljs-comment">// 传递信号给下一个同事</span><br><br>    <span class="hljs-comment">// 阶段2：一个一个过大门</span><br>    P(door);<br>    <span class="hljs-comment">// --- 通过大门 ---</span><br>    pass_door();<br>    V(door);<br><br>    <span class="hljs-comment">// 阶段3：最后一人关门</span><br>    P(mutex);<br>    count--;<br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">// 关门操作</span><br>        close_door();<br>    &#125;<br>    V(mutex);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-搜索-插入-删除问题"><a href="#4-搜索-插入-删除问题" class="headerlink" title="4. 搜索-插入-删除问题"></a>4. 搜索-插入-删除问题</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> scount = <span class="hljs-number">0</span>;         <span class="hljs-comment">// 搜索者数量</span><br>Semaphore r_mutex = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 保护 scount</span><br>Semaphore i_mutex = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 插入者之间的互斥</span><br>Semaphore s_d_lock = <span class="hljs-number">1</span>; <span class="hljs-comment">// 搜索与删除的互斥</span><br>Semaphore i_d_lock = <span class="hljs-number">1</span>; <span class="hljs-comment">// 插入与删除的互斥</span><br><br>Searcher() &#123;<br>    P(r_mutex);<br>    <span class="hljs-keyword">if</span> (++scount == <span class="hljs-number">1</span>) P(s_d_lock); <span class="hljs-comment">// 第一个搜索者阻止删除</span><br>    V(r_mutex);<br>    <br>    <span class="hljs-comment">// --- 执行搜索 ---</span><br>    search();<br>    P(r_mutex);<br>    <span class="hljs-keyword">if</span> (--scount == <span class="hljs-number">0</span>) V(s_d_lock); <span class="hljs-comment">// 最后一个搜索者释放删除</span><br>    V(r_mutex);<br>&#125;<br><br>Inserter() &#123;<br>    P(i_mutex);      <span class="hljs-comment">// 插入者之间互斥</span><br>    P(i_d_lock);     <span class="hljs-comment">// 阻止删除</span><br>    <br>    <span class="hljs-comment">// --- 执行插入 ---</span><br>    insert();<br>    V(i_d_lock);<br>    V(i_mutex);<br>&#125;<br><br>Deleter() &#123;<br>    P(s_d_lock);     <span class="hljs-comment">// 确保没有人在搜索</span><br>    P(i_d_lock);     <span class="hljs-comment">// 确保没有人在插入</span><br>    <br>    <span class="hljs-comment">// --- 执行删除 ---</span><br>    delete();<br>    V(i_d_lock);<br>    V(s_d_lock);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-公园购票问题"><a href="#5-公园购票问题" class="headerlink" title="5. 公园购票问题"></a>5. 公园购票问题</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> readcount = <span class="hljs-number">0</span>;      <span class="hljs-comment">// 当前正在查询的人数</span><br><span class="hljs-type">int</span> quota = N;          <span class="hljs-comment">// 剩余票数</span><br>Semaphore rmutex = <span class="hljs-number">1</span>;   <span class="hljs-comment">// 保护 readcount 变量的互斥访问</span><br>Semaphore mutex = <span class="hljs-number">1</span>;    <span class="hljs-comment">// 保护 quota 变量（写操作）的互斥访问</span><br>Semaphore in = <span class="hljs-number">1</span>;       <span class="hljs-comment">// 保证购票者和查询者按到达顺序排队的“大门”信号量</span><br><br><span class="hljs-comment">// --- 购票者 B (相当于写者) ---</span><br>buy() &#123;<br>    <span class="hljs-comment">// 第一次检查：如果已经没票，直接返回</span><br>    <span class="hljs-keyword">if</span> (quota == <span class="hljs-number">0</span>) &#123;<br>        print(<span class="hljs-string">&quot;sold out!&quot;</span>);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    P(in);          <span class="hljs-comment">// 步入排队区，保证顺序</span><br>    P(mutex);       <span class="hljs-comment">// 申请对票数 quota 的独占访问权</span><br><br>    <span class="hljs-comment">// 第二次检查：在获取锁后再次确认余票（防止在等待锁时票被买光）</span><br>    <span class="hljs-keyword">if</span> (quota == <span class="hljs-number">0</span>) &#123;<br>        print(<span class="hljs-string">&quot;sold out!&quot;</span>);<br>        V(mutex);   <span class="hljs-comment">// 注意释放锁</span><br>        V(in);<br>        <span class="hljs-keyword">return</span>;<br>    &#125; <br>    <span class="hljs-keyword">else</span> &#123;<br>        quota--;    <span class="hljs-comment">// 执行写操作：扣减票数</span><br>    &#125;<br><br>    V(mutex);       <span class="hljs-comment">// 释放票数锁</span><br>    V(in);          <span class="hljs-comment">// 离开排队区</span><br>&#125;<br><br><span class="hljs-comment">// --- 查询者 Q (相当于读者) ---</span><br>query() &#123;<br>    P(in);          <span class="hljs-comment">// 步入排队区，按序等待</span><br>    P(rmutex);      <span class="hljs-comment">// 保护 readcount 的修改</span><br><br>    <span class="hljs-keyword">if</span> (++readcount == <span class="hljs-number">1</span>) &#123;<br>        P(mutex);   <span class="hljs-comment">// 第一个查询者要占住 quota 锁，防止购票者修改</span><br>    &#125;<br><br>    V(rmutex);<br>    V(in);          <span class="hljs-comment">// 释放排队锁，允许后续的人（包括购票者）排队</span><br><br>    read the <span class="hljs-string">&quot;quota&quot;</span>; <span class="hljs-comment">// 执行读操作：查看余票</span><br><br>    P(rmutex);<br>    <span class="hljs-keyword">if</span> (--readcount == <span class="hljs-number">0</span>) &#123;<br>        V(mutex);   <span class="hljs-comment">// 最后一个查询者离开，释放 quota 锁</span><br>    &#125;<br>    V(rmutex);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="作业-5"><a href="#作业-5" class="headerlink" title="作业 5"></a>作业 5</h2><h3 id="1-进程调度算法分析"><a href="#1-进程调度算法分析" class="headerlink" title="1. 进程调度算法分析"></a>1. 进程调度算法分析</h3><p>(1) 执行次序：</p>
+<ul>
+<li>先来先服务 (FCFS)： P1 -&gt; P2 -&gt; P3 -&gt; P4 -&gt; P5</li>
+<li>短作业优先 (SJF)： P2 -&gt; P4 -&gt; P3 -&gt; P5 -&gt; P1 (按时间：1, 1, 2, 5, 10，时间相同按原顺序)</li>
+<li>非抢占式优先级： P2 -&gt; P5 -&gt; P1 -&gt; P3 -&gt; P4 (按优先级：1, 2, 3, 3, 4)</li>
+<li>轮转法 (RR, 时间片&#x3D;2)： P1(2) -&gt; P2(1,完) -&gt; P3(2,完) -&gt; P4(1,完) -&gt; P5(2) -&gt; P1(2) -&gt; P5(2) -&gt; P1(2) -&gt; P5(1,完) -&gt; P1(2) -&gt; P1(2,完)</li>
+</ul>
+<p>(2) 时间计算：</p>
+<table>
+<thead>
+<tr>
+<th align="left">算法</th>
+<th align="left">指标</th>
+<th align="left">P1</th>
+<th align="left">P2</th>
+<th align="left">P3</th>
+<th align="left">P4</th>
+<th align="left">P5</th>
+<th align="left">平均</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">FCFS</td>
+<td align="left">周转时间</td>
+<td align="left">10</td>
+<td align="left">11</td>
+<td align="left">13</td>
+<td align="left">14</td>
+<td align="left">19</td>
+<td align="left">13.4</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">等待时间</td>
+<td align="left">0</td>
+<td align="left">10</td>
+<td align="left">11</td>
+<td align="left">13</td>
+<td align="left">14</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">SJF</td>
+<td align="left">周转时间</td>
+<td align="left">19</td>
+<td align="left">1</td>
+<td align="left">4</td>
+<td align="left">2</td>
+<td align="left">9</td>
+<td align="left">7.0</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">等待时间</td>
+<td align="left">9</td>
+<td align="left">0</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">4</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">优先级</td>
+<td align="left">周转时间</td>
+<td align="left">16</td>
+<td align="left">1</td>
+<td align="left">18</td>
+<td align="left">19</td>
+<td align="left">6</td>
+<td align="left">12.0</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">等待时间</td>
+<td align="left">6</td>
+<td align="left">0</td>
+<td align="left">16</td>
+<td align="left">18</td>
+<td align="left">1</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">RR(q&#x3D;2)</td>
+<td align="left">周转时间</td>
+<td align="left">19</td>
+<td align="left">3</td>
+<td align="left">5</td>
+<td align="left">6</td>
+<td align="left">15</td>
+<td align="left">9.6</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">等待时间</td>
+<td align="left">9</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">5</td>
+<td align="left">10</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="2-死锁讨论"><a href="#2-死锁讨论" class="headerlink" title="2. 死锁讨论"></a>2. 死锁讨论</h3><p>结论：该系统不会发生死锁。<br>理由：<br>死锁发生的必要条件之一是“循环等待”。<br>假设系统处于死锁状态，意味着所有 $n$ 个进程都在等待资源，且每个进程至少已持有一台打印机（否则它不会进入等待状态）。<br>设 $x_i$ 为进程 $i$ 已持有的打印机数，$y_i$ 为其还需要的打印机数。<br>在死锁状态下，所有打印机已被分配且无法满足任何进程的进一步需求：</p>
+<ol>
+<li>$\sum x_i &#x3D; m$ （所有资源已分配完毕）</li>
+<li>每个进程都在等待，故 $y_i \geq 1$。</li>
+</ol>
+<p>由此可得：$\sum x_i + \sum y_i \geq m + n$。<br>但已知条件给出 $\sum (\text{已分配} + \text{还需要}) &lt; m + n$，这与死锁的假设矛盾。<br>因此，至少存在一个进程 $k$，其 $y_k &#x3D; 0$（即不再需要额外打印机），该进程可以执行完毕并释放资源，从而打破死锁风险。</p>
+<h3 id="3-动态优先级设计"><a href="#3-动态优先级设计" class="headerlink" title="3. 动态优先级设计"></a>3. 动态优先级设计</h3><p>(1) 饥饿现象原因：<br>如果只使用静态的 <code>nice</code> 值作为优先级，当系统中不断有 <code>nice</code> 值很小（优先级高）的新进程加入时，<code>nice</code> 值较大（优先级低）的进程将永远无法获得 CPU，导致“饥饿”甚至“饿死”。</p>
+<p>(2) 动态优先级设计：<br>设计公式：$Priority &#x3D; nice + cpuTime - waitTime$<br>(注：结果越小优先级越高)</p>
+<p><code>waitTime</code>（等待时间）的作用：随着进程在就绪队列中等待时间变长，<code>waitTime</code> 增大，导致 <code>Priority</code> 数值减小（优先级提高）。这保证了任何进程无论初始优先级多低，最终都能因为等待时长足够久而获得执行机会，从而避免饥饿。</p>
+<h3 id="4-同步与互斥"><a href="#4-同步与互斥" class="headerlink" title="4. 同步与互斥"></a>4. 同步与互斥</h3><ul>
+<li>同步关系：指多个进程为了完成同一个任务，在执行次序上产生的协作关系。一个进程的执行依赖于另一个进程发送的信号或完成的结果。</li>
+<li>互斥关系（Mutual Exclusion）：指多个进程因争用临界资源（如打印机、共享变量）而产生的制约关系。当一个进程进入临界区访问资源时，其他由于该资源而请求进入临界区的进程必须等待。</li>
+</ul>
+<h3 id="5-银行家算法（安全性检查）"><a href="#5-银行家算法（安全性检查）" class="headerlink" title="5. 银行家算法（安全性检查）"></a>5. 银行家算法（安全性检查）</h3><p>首先计算各个进程的需要的资源：</p>
+<ul>
+<li>NeedA &#x3D; 11213 - 10211 &#x3D; (0, 1, 0, 0, 2)</li>
+<li>NeedB &#x3D; 22210 - 20110 &#x3D; (0, 2, 1, 0, 0)</li>
+<li>NeedC &#x3D; 21310 - 11010 &#x3D; (1, 0, 3, 0, 0)</li>
+<li>NeedD &#x3D; 11221 - 11110 &#x3D; (0, 0, 1, 1, 1)</li>
+</ul>
+<p>当前可用资源: (0, 0, x, 1, 2)</p>
+<p>分析：</p>
+<ol>
+<li><p>检查谁能第一个运行：<br>显然，只有 D 可能先行，必须满足 $x \geq 1$。</p>
+</li>
+<li><p>假设 $x \geq 1$，D 执行完释放资源：<br>newAvailable &#x3D; (0, 0, x, 1, 2) + (1, 1, 1, 1, 0) &#x3D; (1, 1, x+1, 2, 2)</p>
+</li>
+<li><p>现在检查 A、B、C：</p>
+<ul>
+<li>A 需要 (0, 1, 0, 0, 2)，满足。A 执行完释放资源：<br>newAvailable &#x3D; (1, 1, x+1, 2, 2) + (1, 0, 2, 1, 1) &#x3D; (2, 1, x+3, 3, 3)</li>
+<li>B、C 也可满足</li>
+</ul>
+</li>
+</ol>
+<p>因此，$x$ 的最小值是 1。</p>
+<h2 id="作业-6"><a href="#作业-6" class="headerlink" title="作业 6"></a>作业 6</h2><h3 id="1-选择题"><a href="#1-选择题" class="headerlink" title="1. 选择题"></a>1. 选择题</h3><p>B</p>
+<h3 id="2-I-O-控制方式排序"><a href="#2-I-O-控制方式排序" class="headerlink" title="2. I&#x2F;O 控制方式排序"></a>2. I&#x2F;O 控制方式排序</h3><p>四种主要类型按 CPU 干预程度从高到低排序为：</p>
+<ol>
+<li>程序控制</li>
+<li>中断驱动方式</li>
+<li>DMA</li>
+<li>通道技术</li>
+</ol>
+<h3 id="3-场景选择与理由"><a href="#3-场景选择与理由" class="headerlink" title="3. 场景选择与理由"></a>3. 场景选择与理由</h3><p>场景 A（读取键盘单个字符）：中断驱动方式。<br>理由： 键盘输入速度极慢且具有随机性。由于数据量极小（1字节），不值得用 DMA；而中断驱动能让 CPU 在没有按键时处理其他任务，不必忙等，提高效率。</p>
+<p>场景 B（读取磁盘 4KB 文件块）：DMA 方式。<br>理由： 磁盘是块设备，数据传输以块为单位，数据量较大且速率较快。DMA 可以在不占用 CPU 的情况下将一整块数据直接传送到内存，仅在传输结束时触发一次中断通知 CPU。</p>
+<p>场景 C（连续打印 100 页文档）：通道控制方式（或 DMA 方式，取决于系统复杂度）。<br>理由： 面对大量且连续的输出任务，通道控制方式可以执行专门的通道指令，自主管理复杂的数据传输逻辑，最大程度释放 CPU，使其专注于计算而非管理频繁的打印任务。</p>
+<h3 id="4-路径命名与设备独立性"><a href="#4-路径命名与设备独立性" class="headerlink" title="4. 路径命名与设备独立性"></a>4. 路径命名与设备独立性</h3><p>(1) 程序变化：</p>
+<ul>
+<li>物理命名： 程序会失效。因为路径中包含了具体的硬件设备名 <code>sda1</code>，硬件更换为 <code>nvme0n1</code> 后，原路径无法找到文件。</li>
+<li>逻辑命名： 程序正常运行。逻辑命名通过挂载点屏蔽了底层硬件差异，用户程序无感知。</li>
+</ul>
+<p>(2) 推荐方式：逻辑命名。</p>
+<ul>
+<li>理由： 操作系统追求设备无关性。使用逻辑命名可以将用户程序与物理设备解耦，当硬件升级、维护或更换接口时，无需修改应用程序，提高了系统的可维护性和程序的移植性。</li>
+</ul>
+<h3 id="5-缓冲区计算"><a href="#5-缓冲区计算" class="headerlink" title="5. 缓冲区计算"></a>5. 缓冲区计算</h3><ul>
+<li>单缓冲：<ul>
+<li>第一块准备好并传送到用户区需 $4+1&#x3D;5$ms，此时 CPU 开始处理（2ms），同时开始读第二块。因为 $T &gt; C$，每块的处理瓶颈在 $T$。</li>
+<li>总时间 &#x3D; $10 \times 5 + 2 &#x3D; 52 ms$。</li>
+</ul>
+</li>
+<li>双缓冲：<ul>
+<li>双缓冲允许读入和处理流程完全并行。每块处理时间 &#x3D; $max(T, M+C) &#x3D; max(4, 1+2) &#x3D; 4$ ms。</li>
+<li>总时间 &#x3D; $T \times n + M + C &#x3D; 10 \times 4 + 1 + 2 &#x3D; $ 43 ms。</li>
+</ul>
+</li>
+</ul>
+<p>可减少：$52 - 43 &#x3D; 9ms$</p>
+<h3 id="6-SPOOLing-技术"><a href="#6-SPOOLing-技术" class="headerlink" title="6. SPOOLing 技术"></a>6. SPOOLing 技术</h3><p>原理： SPOOLing（外部设备联机并行操作）在磁盘上开辟输入井和输出井。</p>
+<ul>
+<li>打印示例： 当多个用户进程请求打印时，系统并不直接把物理打印机分配给进程（打印机是独占设备）。系统接收打印请求后，将数据快速存入磁盘的“输出井”中并排队。</li>
+<li>效果： 对用户进程而言，打印操作似乎已“立即可用”并完成；而物理打印机则在后台由 SPOOLing 管理程序按顺序依次打印。这样就把一台独占的物理设备虚拟成了多台可并发使用的逻辑设备。</li>
+</ul>
+<h3 id="7-同步-I-O-与-异步-I-O"><a href="#7-同步-I-O-与-异步-I-O" class="headerlink" title="7. 同步 I&#x2F;O 与 异步 I&#x2F;O"></a>7. 同步 I&#x2F;O 与 异步 I&#x2F;O</h3><ul>
+<li>核心区别： 阶段 2（数据从内核拷贝到用户空间）是否会导致进程阻塞。</li>
+<li>同步 I&#x2F;O： 在阶段 1 结束后，进程在阶段 2 必须亲自参与或等待拷贝完成，即拷贝过程中进程是阻塞的，直到数据进入用户空间。</li>
+<li>异步 I&#x2F;O： 进程发起请求后立即返回。阶段 1 和阶段 2 全由系统完成。进程只需等系统通知“数据已在用户空间就绪”即可，在整个 I&#x2F;O 期间，进程都在执行其他任务。</li>
+</ul>
+<hr>
+<h3 id="拓展思考题"><a href="#拓展思考题" class="headerlink" title="拓展思考题"></a>拓展思考题</h3><p>MSI-X 的性能优势：</p>
+<ol>
+<li>负载均衡： 传统单中断所有 I&#x2F;O 都由一个核心（通常是 CPU 0）处理，容易导致该核过载。MSI-X 允许将不同的 I&#x2F;O 中断分发到不同的 CPU 核心上处理。</li>
+<li>减少上下文切换： I&#x2F;O 线程可以和处理该 I&#x2F;O 中断的核心绑定，提高缓存命中率。</li>
+<li>支持高并发： NVMe 磁盘拥有极高的 IOPS，多中断向量能充分发挥多核 CPU 的并行处理能力，消除单核处理中断的性能瓶颈。</li>
+</ol>
+<h2 id="作业-7"><a href="#作业-7" class="headerlink" title="作业 7"></a>作业 7</h2><h3 id="1-磁盘调度算法"><a href="#1-磁盘调度算法" class="headerlink" title="1. 磁盘调度算法"></a>1. 磁盘调度算法</h3><p>（1）先来先服务（FCFS）</p>
+<ul>
+<li>磁头移动路径：$15 \to 10 \to 35 \to 20 \to 70 \to 2 \to 3 \to 38$</li>
+<li>移动总柱面数：$|10-15| + |35-10| + |20-35| + |70-20| + |2-70| + |3-2| + |38-3| &#x3D; 5 + 25 + 15 + 50 + 68 + 1 + 35 &#x3D; 199$</li>
+<li>寻道时间：$199 \times 5\text{ ms} &#x3D; 995\text{ ms}$</li>
+</ul>
+<p>（2）最短寻道时间优先（SSTF）</p>
+<ul>
+<li>磁头移动路径：$15 \to 10 \to 3 \to 2 \to 20 \to 35 \to 38 \to 70$</li>
+<li>移动总柱面数：$|10-15| + |3-10| + |2-3| + |20-2| + |35-20| + |38-35| + |70-38| &#x3D; 5 + 7 + 1 + 18 + 15 + 3 + 32 &#x3D; 81$</li>
+<li>寻道时间：$81 \times 5\text{ ms} &#x3D; 405\text{ ms}$</li>
+</ul>
+<p>（3）SCAN 算法</p>
+<ul>
+<li>磁头移动路径：$15 \to 20 \to 35 \to 38 \to 70 \to 10 \to 3 \to 2$</li>
+<li>移动总柱面数：$(70 - 15) + (70 - 2) &#x3D; 55 + 68 &#x3D; 123$</li>
+<li>寻道时间：$123 \times 5\text{ ms} &#x3D; 615\text{ ms}$</li>
+</ul>
+<p>（4）CSCAN 算法</p>
+<ul>
+<li>磁头移动路径：$15 \to 20 \to 35 \to 38 \to 70 \to (\text{回位至 } 2) \to 3 \to 10$</li>
+<li>移动总柱面数：$(70 - 15) + (10 - 2) &#x3D; 55 + 8 &#x3D; 63$</li>
+<li>寻道时间：$63 \times 5\text{ ms} &#x3D; 315\text{ ms}$</li>
+</ul>
+<h3 id="2-RAID"><a href="#2-RAID" class="headerlink" title="2. RAID"></a>2. RAID</h3><p>在采用 RAID 0+1 的系统中，共有 $2\times n$ 块磁盘，分为两组，每组有 $n$ 块磁盘。</p>
+<ul>
+<li>每组内部采用 RAID 0（条带化），只要组内的任意一块磁盘故障，整组 RAID 0 就会失效。</li>
+<li>两组之间采用 RAID 1（镜像），Group 1 与 Group 2 互为镜像备份。</li>
+</ul>
+<ol>
+<li>故障情况计算：</li>
+</ol>
+<ul>
+<li>系统中共有 $2n$ 块磁盘，随机出现 2 块磁盘故障的总组合数为：<br>$$C_{2n}^{2} &#x3D; \frac{2n(2n-1)}{2} &#x3D; n(2n-1)$$</li>
+</ul>
+<ol start="2">
+<li>数据未丢失的概率：</li>
+</ol>
+<ul>
+<li><p>要想数据不丢失，必须保证发生故障的两块磁盘刚好属于同一组。</p>
+</li>
+<li><p>2 块故障盘在同一组的组合数为：</p>
+<p>$$C_{n}^{2} + C_{n}^{2} &#x3D; 2 \times \frac{n(n-1)}{2} &#x3D; n(n-1)$$</p>
+</li>
+<li><p>不发生数据丢失的概率为：</p>
+<p>$$P_{\text{安全}} &#x3D; \frac{n(n-1)}{n(2n-1)} &#x3D; \frac{n-1}{2n-1}$$</p>
+</li>
+</ul>
+<ol start="3">
+<li><p>发生数据丢失的概率 (求发生的概率)：</p>
+<p>$$P_{\text{丢失}} &#x3D; 1 - P_{\text{安全}} &#x3D; 1 - \frac{n-1}{2n-1} &#x3D; \frac{(2n-1) - (n-1)}{2n-1} &#x3D; \frac{n}{2n-1}$$</p>
+</li>
+</ol>
+<h3 id="3-文件系统性能"><a href="#3-文件系统性能" class="headerlink" title="3. 文件系统性能"></a>3. 文件系统性能</h3><p>提高文件系统性能主要可以从以下五个方面进行：</p>
+<ol>
+<li><p>引入内存高速缓存（Caching）</p>
+<ul>
+<li>块&#x2F;页高速缓存：在内存中缓存常用磁盘块，避免重复读盘。</li>
+<li>延迟写与合并写：在内存中攒够数据后再批量写入磁盘，减少写盘次数。</li>
+<li>提前读取：利用局部性原理，顺序读文件时提前将后继块读入缓存。</li>
+</ul>
+</li>
+<li><p>优化磁盘布局与局部性（Locality）</p>
+<ul>
+<li>块组&#x2F;柱面群技术：将文件的 inode、数据块及其所在目录分配在同一个物理区域，减少磁头寻道。</li>
+<li>区分配（Extent）：使用连续物理块分配（如 Ext4、NTFS），减少文件碎片，提升顺序读写速度。</li>
+<li>目录项与 FCB 分离：使目录块能装下更多目录项，加速路径解析。</li>
+</ul>
+</li>
+<li><p>改进磁盘移臂调度（Disk Scheduling）</p>
+<ul>
+<li>采用 SSTF、SCAN（电梯算法） 或 CSCAN 对磁盘请求队列进行重新排序，最小化磁头寻道时间和延迟。</li>
+</ul>
+</li>
+<li><p>加速目录检索与路由（Path Lookup）</p>
+<ul>
+<li>路径缓存（dentry cache）：在内存中缓存解析好的目录路径映射，避免重复逐级读盘检索。</li>
+<li>高级数据结构：在大型目录中使用 哈希表（Hash） 或 树状结构（B-Tree） 代替线性拉链，实现快速定位。</li>
+</ul>
+</li>
+<li><p>采用快速一致性机制（Journaling）</p>
+<ul>
+<li>日志文件系统：通过先顺序写日志区、再异步写入数据区的方式提高写入效率，并在系统崩溃后实现秒级快速恢复。</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-文件控制块"><a href="#4-文件控制块" class="headerlink" title="4. 文件控制块"></a>4. 文件控制块</h3><p>文件控制块（FCB）所管理的主要信息包括以下三类：</p>
+<ol>
+<li><p>基本信息（文件标识与物理结构）</p>
+<ul>
+<li>文件名：标识文件的字符序列。</li>
+<li>物理位置：文件在外存上的存放地址（如起始块号、索引结点号）。</li>
+<li>文件逻辑结构：是否有结构（记录式文件、流式文件）。</li>
+<li>文件物理结构：文件的分配和组织方式（连续文件、链接文件或索引文件）。</li>
+</ul>
+</li>
+<li><p>访问控制信息（安全与保护）</p>
+<ul>
+<li>属主信息：文件创建者或当前所有者的用户标识（UID&#x2F;GID）。</li>
+<li>访问权限：针对不同用户群（所有者、同组用户、其他用户）的读（R）、写（W）、执行（X）权限。</li>
+</ul>
+</li>
+<li><p>使用与管理信息（元数据属性）</p>
+<ul>
+<li>文件属性：文件大小、文件类型（如普通文件、目录、设备文件）等。</li>
+<li>时间戳：创建时间、最后修改时间和最后访问时间。</li>
+<li>使用状态：共享计数（有多少进程或硬链接指向该文件）、锁状态等。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-文件系统"><a href="#5-文件系统" class="headerlink" title="5. 文件系统"></a>5. 文件系统</h3><p>（1）60 次</p>
+<ul>
+<li>计算检索目录的磁盘访问次数：<ul>
+<li>根目录已读入内存，因此定位第二级目录不需要读盘。</li>
+<li>读取第二级目录的内容以找到第三级目录的目录项：第二级目录下有 128 个目录项。一个物理块可存放的目录项数为：$1024 &#x2F; 128 &#x3D; 8$ 个。要存放 128 个目录项，需要：$128 &#x2F; 8 &#x3D; 16$ 个物理块。平均需要查找的目录块数为：$(1 + 16) &#x2F; 2 &#x3D; 8.5$ 次（即读盘 $8.5$ 次）。</li>
+<li>读取第三级目录的内容需要读盘 1 次。</li>
+<li>检索目录阶段平均读盘次数为：$8.5 + 1 &#x3D; 9.5$ 次。</li>
+</ul>
+</li>
+<li>计算访问文件数据块的磁盘访问次数：<ul>
+<li>文件采用串联（链接）文件方式组织，平均大小为 $100\text{ KB}$，需要 100 个数据块。</li>
+<li>访问串联文件的第 $i$ 块需要从头开始读入前 $i$ 块。平均访问一个块需要读入的数据块数为：$(1 + 100) &#x2F; 2 &#x3D; 50.5$ 次。</li>
+</ul>
+</li>
+<li>答案：<br>访问文件 <code>f</code> 中的一个块平均需要访问磁盘：$9.5 + 50.5 &#x3D; \mathbf{60}$ 次。</li>
+</ul>
+<p>（2）7.5 次</p>
+<p>采用 i 节点方式。</p>
+<p>文件名占 14B，i 节点指针占 2B，因此一个目录项大小为：$14+2&#x3D;16B$</p>
+<p>每个磁盘块可存放目录项数为：$1024&#x2F;16&#x3D;64$<br>根目录的 i 节点已在内存中。<br>访问第三级目录下文件的一个块：</p>
+<ol>
+<li><p>读根目录数据块，根目录只有 usr1、usr2、usr3，1 个块即可：1</p>
+</li>
+<li><p>读第二级目录对应的 i 节点：1</p>
+</li>
+<li><p>第二级目录有 128 个目录项，需要：128&#x2F;64&#x3D;2 个磁盘块，平均查找需要：$\frac{2+1}{2}&#x3D;1.5$</p>
+</li>
+<li><p>读第三级目录对应的 i 节点：1</p>
+</li>
+<li><p>每个第三级目录下文件数不超过 50 个，一个块可放 64 个目录项，所以读第三级目录数据块：1</p>
+</li>
+<li><p>读目标文件的 i 节点：1</p>
+</li>
+<li><p>采用直接索引访问文件数据块，读目标数据块：1</p>
+</li>
+</ol>
+<p>总次数为：</p>
+<p>$<br>1+1+1.5+1+1+1+1&#x3D;7.5<br>$</p>
+<p>（3）8 MB</p>
+<p>计算磁盘地址所占字节数：</p>
+<ul>
+<li>系统最大容量为 $16\text{ ZB} &#x3D; 16 \times 2^{70}\text{ B} &#x3D; 2^{74}\text{ B}$。</li>
+<li>物理块大小为 $1\text{ KB} &#x3D; 2^{10}\text{ B}$。</li>
+<li>系统包含的物理块总数为：$2^{74} &#x2F; 2^{10} &#x3D; 2^{64}$ 块。</li>
+<li>指向块的物理地址（块号指针）需要 $\mathbf{8}$ 字节（$64\text{ bits}$）来表示。</li>
+</ul>
+<p>计算最大支持的文件大小：</p>
+<ul>
+<li>FCB 中的索引区大小为 $512$ 字节，允许采用一级索引组织。</li>
+<li>一个物理块作为一级索引块，可存放的地址项个数为：$1024\text{ B} &#x2F; 8\text{ B} &#x3D; 128$ 个。</li>
+<li>FCB 的索引区直接存放了索引块的地址指针，由于索引区大小为 $512$ 字节，每个指针占 $8$ 字节，则最多可以存放 $512 &#x2F; 8 &#x3D; 64$ 个一级索引指针（对应 64 个一级索引块）。</li>
+<li>文件包含的最大数据块总数为：$64 \times 128 &#x3D; 8192$ 块。</li>
+<li>最大文件大小为：$8192 \times 1\text{ KB} &#x3D; 8192\text{ KB} &#x3D; \mathbf{8\text{ MB}}$。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E4%BD%9C%E4%B8%9A/" class="category-chain-item">理论作业</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/BUAA-OS/" class="print-no-link">#BUAA_OS</a>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>操作系统理论作业汇总</div>
+      <div>https://wv-ce.github.io/2026/08/13/buaa-os-theory-homework/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wv-ce</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/14/os-notes-memory/" title="OS 理论笔记：内存管理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OS 理论笔记：内存管理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/12/buaa-os-review/" title="BUAA OS 知识结构梳理">
+                        <span class="hidden-mobile">BUAA OS 知识结构梳理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>© 2024 wv-ce</span> <i class="iconfont icon-love"></i> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

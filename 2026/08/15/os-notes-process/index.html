@@ -1,0 +1,2057 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wv-ce">
+  <meta name="keywords" content="wv-ce,博客,技术,随笔">
+  
+    <meta name="description" content="OS 理论笔记：进程管理与死锁。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS 理论笔记：进程管理与死锁">
+<meta property="og:url" content="https://wv-ce.github.io/2026/08/15/os-notes-process/index.html">
+<meta property="og:site_name" content="wv-ce">
+<meta property="og:description" content="OS 理论笔记：进程管理与死锁。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-1.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-2.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-3.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-7.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-4.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-5.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-6.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-8.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-9.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-10.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-23.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-24.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-25.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-26.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-27.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-28.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-14.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-15.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-16.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-17.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-18.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-11.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-12.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-13.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-22.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-19.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-20.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-21.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-29.png">
+<meta property="article:published_time" content="2026-08-15T10:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-23T07:27:41.731Z">
+<meta property="article:author" content="wv-ce">
+<meta property="article:tag" content="BUAA_OS">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://wv-ce.github.io/2026/08/15/os-notes-process/image-1.png">
+  
+  
+  
+  <title>OS 理论笔记：进程管理与死锁 - wv-ce</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wv-ce.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OS 理论笔记：进程管理与死锁"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-15 10:00" pubdate>
+          2026年8月15日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          29k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          238 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OS 理论笔记：进程管理与死锁</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><h3 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h3><p>并发Concurrent：设有两个活动a1和a2，如果在某一指定的时间t，只要a1和a2都处在各自的起点和终点之间的某一处，则称a1和a2是并发执行的。</p>
+<p>程序的并发执行是指若干个程序（或程序段）<strong>同时</strong>在系统中运行，这些程序（或程序段）的执行在时间上是重叠的。</p>
+<p>并行Parallel：如果考虑两个程序,它们在同一时间度量下<strong>同时运行在不同的处理机（或核心）上</strong>，则称这两个程序是并行执行的。</p>
+<ul>
+<li>并行一定并发，反之不然</li>
+</ul>
+<h4 id="程序的顺序执行与特征"><a href="#程序的顺序执行与特征" class="headerlink" title="程序的顺序执行与特征"></a>程序的顺序执行与特征</h4><p>顺序性：按照程序结构所指定的次序（可能有分支或循环）<br>封闭性：独占全部资源，计算机的状态只由于该程序的控制逻辑所决定<br>可再现性：初始条件相同则结果相同。</p>
+<h4 id="程序并发执行时的特征"><a href="#程序并发执行时的特征" class="headerlink" title="程序并发执行时的特征"></a>程序并发执行时的特征</h4><p>间断性：并发程序具有“执行—暂停—执行”这种间断性的活动规律。<br>非封闭性：多个程序共享系统中的资源（如共享内存），这些资源的状态将由多个程序来改变，致使程序之间相互影响。<br>不可再现性：在所有输入相同的情况下，程序的执行结果还依赖于执行的次序。</p>
+<p>原因：调度产生了不确定性，发生了<strong>数据竞争</strong>：</p>
+<ul>
+<li>数据竞争：多个进程在没有同步保护的情况下访问同一个共享变量， 而且至少有一个是写。</li>
+<li>数据竞争非常难以循环调试：每次执行不确定，调试的时候可能会消失，Heisenbug。</li>
+</ul>
+<blockquote>
+<p>数据竞争，原子性违反，死锁是三类典型的并发错误</p>
+</blockquote>
+<p><img src="/2026/08/15/os-notes-process/image-1.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="Bernstein条件"><a href="#Bernstein条件" class="headerlink" title="Bernstein条件"></a>Bernstein条件</h4><p>并发进程的无关性是进程与时间无关的一个<strong>充分</strong>条件，这一条件在1966年首先由Bernstein提出，称为Bernstein条件。</p>
+<p>定义：</p>
+<ul>
+<li>R(Si)：Si的读子集，其值在Si中被引用的变量的集合</li>
+<li>W(Si)：Si的写子集，其值在Si中被改变的变量的集合</li>
+</ul>
+<p>Bernstein条件：</p>
+<ul>
+<li>两个进程S1和S2可并发，当且仅当下列条件同时成立：<ul>
+<li>$R(S1) \cap W(S2) &#x3D; \Phi$</li>
+<li>$W(S1) \cap R(S2) &#x3D; \Phi$</li>
+<li>$W(S1) \cap W(S2) &#x3D; \Phi$</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image-2.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="进程概念"><a href="#进程概念" class="headerlink" title="进程概念"></a>进程概念</h3><blockquote>
+<p>“程序”与“计算”不是一一对应的关系：一个程序段可能对应多个“计算”<br>多道程序＋资源的限制：执行-暂停-执行</p>
+<ul>
+<li>直接制约：逻辑上相互依赖（合作）</li>
+<li>间接制约：使用共享资源（竞争）</li>
+</ul>
+<p>使用“程序”不能揭示多道程序、分时系统引发的动态特性，因此引入“进程”（Process）<br>进程是对CPU资源的一种抽象</p>
+</blockquote>
+<p>进程是程序在一个数据集合上运行的过程，它是系统进行资源分配和调度的一个独立单位。</p>
+<p>动态性：进程是程序的一次执行过程。动态性还表现为它因创建而产生，因调度而执行，因无资源而暂停，因撤消而消亡。而<strong>程序是静态实体</strong>。<br>并发性：多个进程实体同时存在于内存中，能在一段时间内同时运行。<br>独立性：在传统OS中，进程是独立运行的基本单位<br>异步性：也叫制约性，进程之间相互制约，进程以各自独立的不可预知的速度向前推进。<br>结构特征：程序段，数据段，进程控制块PCB</p>
+<p>一个进程应该包括</p>
+<ul>
+<li>程序的代码；</li>
+<li>程序的数据；</li>
+<li>PC中的值，用来指示下一条将运行的指令；</li>
+<li>一组通用的寄存器的当前值，堆、栈；</li>
+<li>一组系统资源（如打开的文件）</li>
+</ul>
+<p>引入进程的利弊</p>
+<ul>
+<li>利：对CPU抽象，方便使用</li>
+<li>弊：空间开销、时间开销。<ul>
+<li>空间：进程的页表，堆栈，堆</li>
+<li>时间：进程切换的开销</li>
+</ul>
+</li>
+</ul>
+<p>进程与程序的区别</p>
+<ul>
+<li>进程是动态的，程序是静态的：程序是有序代码的集合；<strong>进程是程序的执行</strong>。通常进程不可在计算机之间迁移；而程序通常对应着文件、静态和可以复制。</li>
+<li>进程是暂时的，程序是永久的：进程是一个状态变化的过程，程序可长久保存。</li>
+<li>进程与程序的组成不同：进程的组成包括程序、数据和进程控制块（即进程状态信息）。</li>
+<li>进程与程序的对应关系：通过多次执行，<strong>一个程序可对应多个进程</strong>；通过调用关系，<strong>一个进程可包括多个程序</strong>。</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image-3.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="进程状态与控制"><a href="#进程状态与控制" class="headerlink" title="进程状态与控制"></a>进程状态与控制</h3><h4 id="原语"><a href="#原语" class="headerlink" title="原语"></a>原语</h4><p>由若干条指令所组成的指令序列，来实现某个特定的操作功能</p>
+<ul>
+<li>指令序列执行是<strong>连续的，不可分割</strong></li>
+<li>是操作系统内核组成部分</li>
+<li>必须在管态（<strong>内核态</strong>）下执行，且常驻内存</li>
+</ul>
+<p>与系统调用的区别？</p>
+<ul>
+<li>原语不可中断</li>
+<li>常常执行时关闭中断实现</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image-7.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="Fork-函数"><a href="#Fork-函数" class="headerlink" title="Fork()函数"></a>Fork()函数</h4><p>例1</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span>  <span class="hljs-comment">// fork函数所在头文件</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;进程启动，PID=%d\n&quot;</span>, getpid());<br><br>    <span class="hljs-comment">// 创建子进程</span><br>    <span class="hljs-type">pid_t</span> pid = fork();<br><br>    <span class="hljs-keyword">if</span> (pid &lt; <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">// 创建失败</span><br>        perror(<span class="hljs-string">&quot;fork失败&quot;</span>);<br>    &#125; <br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (pid == <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">// 子进程执行这里</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;我是子进程，PID=%d，父PID=%d\n&quot;</span>, getpid(), getppid());<br>    &#125; <br>    <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 父进程执行这里</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;我是父进程，PID=%d，子PID=%d\n&quot;</span>, getpid(), pid);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">进程启动，<span class="hljs-attribute">PID</span>=20739<br>我是父进程，<span class="hljs-attribute">PID</span>=20739，子PID=20740<br>我是子进程，<span class="hljs-attribute">PID</span>=20740，父PID=20739<br></code></pre></td></tr></table></figure>
+
+<p>fork调用的一个奇妙之处就是它仅仅被调用一次，调用成功时却能够返回两次，它可能有三种不同的返回值：</p>
+<ol>
+<li>在父进程中，fork返回<strong>新创建子进程的进程ID</strong>；</li>
+<li>在子进程中，fork返回0；</li>
+<li>如果出现错误，fork返回一个负值；</li>
+</ol>
+<p>例2</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">char</span> str[<span class="hljs-number">10</span>];<br><span class="hljs-type">int</span> fd = open(<span class="hljs-string">&quot;file.txt&quot;</span>, O_RDWR);<br><span class="hljs-keyword">if</span> (fork() == <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-comment">// 子进程</span><br>    <span class="hljs-type">ssize_t</span> cnt = read(fd, str, <span class="hljs-number">10</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Child process: %s\n&quot;</span>, str);<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">// 父进程</span><br>    <span class="hljs-type">ssize_t</span> cnt = read(fd, str, <span class="hljs-number">10</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Parent process: %s\n&quot;</span>, str);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs arduino">Parent process: abcdefghij<br>Child process: klmnopqrst<br></code></pre></td></tr></table></figure>
+
+<p>fd虽然被复制，但指向同一个文件结构体，所以两个进程共享了同一个指向文件的结构体<br>父子进程会<strong>共享偏移量和状态</strong></p>
+<p><img src="/2026/08/15/os-notes-process/image-4.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h4><p>进程的三种基本状态</p>
+<ul>
+<li>就绪状态：进程已获得除处理机外的所需资源，等待分配处理机资源；只要分配CPU就可执行。</li>
+<li>执行状态：占用处理机资源；处于此状态的进程的数目小于等于CPU的数目。在没有其他进程可以执行时（如所有进程都阻塞），通常会自动执行系统的idle进程（相当于空操作）。</li>
+<li>阻塞状态：正在执行的进程，由于发生某种事件而暂时无法执行，便放弃处理机处于阻塞状态。</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>就绪 $\rightarrow$ 运行</p>
+<ul>
+<li>调度程序选择一个进程运行</li>
+</ul>
+<p>运行 $\rightarrow$ 就绪</p>
+<ul>
+<li>运行进程用完了时间片</li>
+<li>运行进程被中断，因为一高优先级进程处于就绪状态（抢占式调度）</li>
+</ul>
+<p>运行 $\rightarrow$ 阻塞</p>
+<ul>
+<li>当一进程所需的资源必须等待时</li>
+<li>OS尚未完成服务</li>
+<li>对一资源的访问尚不能进行</li>
+<li>初始化 I&#x2F;O 且必须等待结果</li>
+<li>等待某一进程提供输入(IPC)</li>
+</ul>
+<p>阻塞 $\rightarrow$ 就绪</p>
+<ul>
+<li>当等待的事件发生时</li>
+</ul>
+<blockquote>
+<p>就绪 $\rightarrow$ 阻塞能否发生？<br>只有运行的进程才能阻塞。就绪的进程无法执行I&#x2F;O或其他引发阻塞的操作。</p>
+</blockquote>
+<p><img src="/2026/08/15/os-notes-process/image-5.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h4><h5 id="进程控制块-PCB"><a href="#进程控制块-PCB" class="headerlink" title="进程控制块 PCB"></a>进程控制块 PCB</h5><p>系统为每个进程定义了一个数据结构：进程控制块 PCB（Process Control Block）。</p>
+<p>作用：</p>
+<ul>
+<li>实现进程创建、撤消；</li>
+<li>包含进程唯一标志；</li>
+<li>限制系统进程数目。</li>
+</ul>
+<p>内容：</p>
+<p>进程标识符(PID)<br>程序和数据地址<br>当前状态：</p>
+<ul>
+<li>为了管理的方便，系统设计时会将相同的状态的进程组成一个<strong>队列</strong>，如就绪进程队列。</li>
+<li>等待进程则要根据等待的事件组成多个等待队列，如等待打印机队列、等待磁盘I&#x2F;O完成队列等等。</li>
+</ul>
+<p>现场保护区：</p>
+<ul>
+<li>当进程因某种原因不能继续占用CPU时（等待打印机），释放CPU，这时就要将CPU的各种状态信息保护起来（如<strong>寄存器</strong>），再次得到处理机，恢复CPU的各种状态，继续运行。</li>
+</ul>
+<p>同步与互斥机制<br>优先级<br>资源清单：如拥有的I&#x2F;O设备，打开的文件列表等<br>链接字：即指向队列中下一个进程PCB的首地址的指针<br>其他信息：进程记账信息，进程占用CPU的时间等。</p>
+<p><img src="/2026/08/15/os-notes-process/image-6.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>具体代码实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Env</span> &#123;</span><br>    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Trapframe</span> <span class="hljs-title">env_tf</span>;</span>	 <span class="hljs-comment">// saved context (registers) before switching</span><br>	LIST_ENTRY(Env) env_link;	 <span class="hljs-comment">// intrusive entry in &#x27;env_free_list&#x27;</span><br>	u_int env_id;			 <span class="hljs-comment">// unique environment identifier</span><br>	u_int env_asid;			 <span class="hljs-comment">// ASID of this env</span><br>	u_int env_parent_id;		 <span class="hljs-comment">// env_id of this env&#x27;s parent</span><br>	u_int env_status;		 <span class="hljs-comment">// status of this env</span><br>	Pde *env_pgdir;			 <span class="hljs-comment">// page directory</span><br>	TAILQ_ENTRY(Env) env_sched_link; <span class="hljs-comment">// intrusive entry in &#x27;env_sched_list&#x27;</span><br>	u_int env_pri;			 <span class="hljs-comment">// schedule priority</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>env_tf : Trapframe 结构体的定义在 include&#x2F;trap.h 中在发生进程调度或当陷入内核时，会将当时的进程上下文环境保存在 env_tf 中。<br>env_link : env_link 和 env_free_list来构造空闲进程表<br>env_id : 进程独一无二的标识符。<br>env_parent_id : 存储了创建本进程的父进程id。这样父子进程之间关联可以形成一棵进程树。<br>env_status : 进程状态</p>
+<ul>
+<li>ENV_FREE : 表明进程是不活动的，即进程控制块处于进程空闲链表中。</li>
+<li>ENV_NOT_RUNNABLE : 表明进程处于阻塞状</li>
+<li>ENV_RUNNABLE : 进程处于执行状态或就绪状态即其可以是正在运行也可以是正在等待调度。</li>
+</ul>
+<p>env_pgdir : 进程页目录的内核虚拟地址。<br>env_cr3 : 进程页目录的物理地址。<br>env_sched_link : 用于构造调度队列。<br>env_pri : 保存进程的优先级。</p>
+<h4 id="PCB-组织方式"><a href="#PCB-组织方式" class="headerlink" title="PCB 组织方式"></a>PCB 组织方式</h4><p>线性表<br>索引方式<br>链接方式：系统按照进程的状态将进程的PCB组成队列，从而形成就绪队列、阻塞队列、运行队列等。</p>
+<h4 id="中断处理触发的进程切换流程"><a href="#中断处理触发的进程切换流程" class="headerlink" title="中断处理触发的进程切换流程"></a>中断处理触发的进程切换流程</h4><p>中断处理 &#x3D; 当前程序暂停 $\rightarrow$ 保存现场 $\rightarrow$ 处理中断数据 $\rightarrow$ 可能切换进程 $\rightarrow$ 恢复进程执行</p>
+<p><strong>与陷入内核的不同</strong></p>
+<p>用户态 $\rightarrow$ 内核态 $\rightarrow$ 执行 $\rightarrow$ 返回用户态<br>同一个进程，地址空间不变，只需要保存PC&#x2F;PSW少量寄存器</p>
+<p>进程 A $\rightarrow$ 进程 B<br>保存所有寄存器，<strong>地址空间切换(页表,TLB刷新)</strong>，PCB以及调度队列的更新</p>
+<p><img src="/2026/08/15/os-notes-process/image-8.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p><strong>进程上下文切换</strong>是由操作系统<strong>内核</strong>完成的操作，需要修改 CPU 寄存器、页表、PCB 等关键数据，这些操作都属于内核态特权指令，用户态进程无法直接执行。因此，进程切换必须通过系统调用 &#x2F; 中断陷入内核，由内核完成调度与切换。<br>大部分系统调用处理完成后，会直接返回原进程继续执行，不会发生进程切换。</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><h3 id="线程概念"><a href="#线程概念" class="headerlink" title="线程概念"></a>线程概念</h3><p>进程的不足：</p>
+<ul>
+<li>一个进程只能在一个时间干一件事，如果想同时干两件事或多件事，进程就无能为力了。</li>
+<li>进程之间切换开销很大。</li>
+<li>多个进程共享数据或通讯开销很大</li>
+</ul>
+<p>进程包含了两个概念：资源拥有者和可执行单元。操作系统将资源拥有者称为进程（process, task），可执行单元称为线程（Thread）。<br>线程也称为轻量级进程 将资源与计算分离，提高并发效率。</p>
+<blockquote>
+<p><strong>进程与线程的区别</strong></p>
+<ol>
+<li>基本单位不同<ul>
+<li>进程：资源分配的基本单位</li>
+<li>线程：CPU 调度与执行的基本单位</li>
+</ul>
+</li>
+<li>资源拥有情况<ul>
+<li>进程拥有独立的地址空间、内存、文件描述符、打开的文件等<strong>完整资源</strong>。</li>
+<li>线程<strong>不独立拥有资源</strong>，共享所属进程的地址空间、数据段、堆、文件等，只拥有自己的栈、程序计数器、寄存器等少量私有信息。</li>
+</ul>
+</li>
+<li>切换开销<ul>
+<li>进程切换：开销大，需要切换页表、刷新 TLB、保存完整上下文。</li>
+<li>线程切换：开销小，只需保存和恢复执行上下文（寄存器和栈）。</li>
+</ul>
+</li>
+<li>通信与同步<ul>
+<li>进程间通信（IPC）复杂：管道、消息队列、共享内存、信号量等。</li>
+<li>线程间通信简单：直接读写进程的全局变量、堆数据即可，但需要同步（互斥锁、条件变量等）。</li>
+</ul>
+</li>
+<li>独立性与健壮性<ul>
+<li>进程相互独立，一个进程崩溃一般<strong>不会影响其他进程</strong>。</li>
+<li>同一进程内的线程共享资源，一个线程崩溃（如段错误）<strong>通常会导致整个进程崩溃</strong>。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p><img src="/2026/08/15/os-notes-process/image-9.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>引入进程好处 多个程序可以并发执行，改善资源使用率，提高系统效率<br>引入线程好处 减少并发程序执行时所付出的时空开销，使得并发粒度更细、并发性更好</p>
+<p><img src="/2026/08/15/os-notes-process/image-10.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="线程的实现方式"><a href="#线程的实现方式" class="headerlink" title="线程的实现方式"></a>线程的实现方式</h3><h4 id="用户级线程"><a href="#用户级线程" class="headerlink" title="用户级线程"></a>用户级线程</h4><p>线程在用户空间,通过library模拟实现的thread,不需要或仅需要极少的kernel支持<br>上下文切换比较快,因为线程切换不用更改页表等,使用起来较为轻便快速</p>
+<p>用户级的线程库的主要功能：</p>
+<ul>
+<li>创建和销毁线程</li>
+<li>线程之间<strong>传递消息和数据</strong></li>
+<li>调度线程执行</li>
+<li>保存和恢复线程上下文</li>
+</ul>
+<p>用户级线程的优缺点</p>
+<p>优点</p>
+<ul>
+<li>线程切换与内核无关</li>
+<li>线程的调度由应用决定，容易进行优化</li>
+<li>可运行在<strong>任何操作系统</strong>上，只需要线程库的支持</li>
+</ul>
+<p>不足</p>
+<ul>
+<li>很多<strong>系统调用会引起阻塞</strong>，内核会因此而<strong>阻塞所有相关的线程</strong>。</li>
+<li>内核只能将处理器分配给进程，即使有多个处理器，也<strong>无法实现一个进程中的多个线程的并行执行</strong>。</li>
+</ul>
+<h4 id="内核级线程"><a href="#内核级线程" class="headerlink" title="内核级线程"></a>内核级线程</h4><p>内核级线程就是kernel有好几个分身,一个分身可以处理一件事.<br>这用来处理<strong>异步事件</strong>很有用, kernel可以对每个异步事件产生一个线程来处理.<br>支持内核线程的操作系统内核称作多线程内核</p>
+<p>内核级线程的优缺点</p>
+<p>优点</p>
+<ul>
+<li>内核可以在多个处理器上调度<strong>一个进程的多个线程实现同步并行执行</strong></li>
+<li>阻塞发生在线程级别</li>
+<li>内核本身的处理可以通过多线程实现</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>一个进程中的线程切换需要内核参与，涉及到内核的状态转换</li>
+<li><strong>降低效率</strong></li>
+</ul>
+<h4 id="混合的线程实现方式"><a href="#混合的线程实现方式" class="headerlink" title="混合的线程实现方式"></a>混合的线程实现方式</h4><ul>
+<li>系统实现内核级线程</li>
+<li>用户使用用户级线程</li>
+<li>实现从用户空间的线程到内核空间线程的多路复用</li>
+</ul>
+<h1 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="CPU调度"><a href="#CPU调度" class="headerlink" title="CPU调度"></a>CPU调度</h3><p>CPU 调度（CPU Scheduling）的任务是协调多个进程（或线程）对 CPU 的竞争。</p>
+<p>本质：按照某种调度策略，从就绪队列中选择一个实体执行。</p>
+<p>典型场景：</p>
+<ul>
+<li>N 个进程处于就绪态，等待 CPU；</li>
+<li>系统有 M 个 CPU（M &gt;&#x3D; 1）；</li>
+<li>OS 必须决定“哪个进程使用哪个 CPU”。</li>
+</ul>
+<p>什么时候调度最有价值？</p>
+<ul>
+<li>当 CPU 是稀缺资源时。</li>
+<li>多道程序分时系统、服务器场景、主机系统通常更依赖调度质量。</li>
+</ul>
+<h3 id="进程状态与调度触发"><a href="#进程状态与调度触发" class="headerlink" title="进程状态与调度触发"></a>进程状态与调度触发</h3><p>三态模型：就绪、运行、阻塞。</p>
+<p>常见调度时机：</p>
+<ul>
+<li><strong>新进程创建</strong>后（父子谁先运行）；</li>
+<li>进程运行结束；</li>
+<li>进程因 I&#x2F;O&#x2F;信号量等原因阻塞；</li>
+<li>I&#x2F;O 中断完成，阻塞进程转就绪；</li>
+<li>时钟中断到来（时间片用完）。</li>
+</ul>
+<p>只要 OS 重新获得 CPU 控制权，就可能发生切换：</p>
+<ul>
+<li>用户态系统调用（可能阻塞）；</li>
+<li>外部中断；</li>
+<li>异常&#x2F;陷阱（如非法访问）。</li>
+</ul>
+<h3 id="调度执行与上下文切换"><a href="#调度执行与上下文切换" class="headerlink" title="调度执行与上下文切换"></a>调度执行与上下文切换</h3><p>一次切换通常包括：</p>
+<ul>
+<li>保存当前进程 CPU 上下文（PC、寄存器等）；</li>
+<li>保存&#x2F;更新内存映像信息（如页表）；</li>
+<li>更新当前 PCB 状态并入对应队列（就绪&#x2F;阻塞）；</li>
+<li>选择下一个可运行进程；</li>
+<li>恢复其上下文并切换执行。</li>
+</ul>
+<blockquote>
+<p>上下文切换有开销（寄存器保存恢复、缓存&#x2F;TLB影响、内核路径），应避免无意义的频繁切换。</p>
+</blockquote>
+<h3 id="传统三级调度"><a href="#传统三级调度" class="headerlink" title="传统三级调度"></a>传统三级调度</h3><p>高级调度（宏观&#x2F;作业调度）：从<strong>用户</strong>工作流程的角度，一次提交的若干个作业，对每个作业进行调度。</p>
+<ul>
+<li>决定接纳哪些作业、接纳多少；</li>
+<li>时间尺度通常为分钟&#x2F;小时&#x2F;天。</li>
+</ul>
+<p>中级调度（内外存交换）：从<strong>存储器资源</strong>的角度。将进程的部分或全部换出到外存上，将当前所需部分换入到内存。</p>
+<ul>
+<li>决定进程换入换出，缓解内存压力。</li>
+</ul>
+<p>低级调度（微观&#x2F;进程或线程调度）：从<strong>CPU资源</strong>的角度，执行的单位。</p>
+<ul>
+<li>直接分配 CPU；</li>
+<li>时间尺度通常为毫秒，频繁且要求实现高效。</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image-23.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h2 id="调度算法设计要考虑的问题"><a href="#调度算法设计要考虑的问题" class="headerlink" title="调度算法设计要考虑的问题"></a>调度算法设计要考虑的问题</h2><h3 id="进程类型"><a href="#进程类型" class="headerlink" title="进程类型"></a>进程类型</h3><p>I&#x2F;O 密集型（I&#x2F;O-bound）：</p>
+<ul>
+<li>CPU burst 短，频繁等待 I&#x2F;O。</li>
+</ul>
+<p>CPU 密集型（CPU-bound）：</p>
+<ul>
+<li>计算为主，CPU burst 长。</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image-24.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="调度分类"><a href="#调度分类" class="headerlink" title="调度分类"></a>调度分类</h3><p>按是否抢占：根据是否在时钟中断作出调度决策</p>
+<ul>
+<li>非抢占式：进程主动放弃或阻塞后才切换；</li>
+<li>抢占式：时钟中断到达可强制切换。</li>
+</ul>
+<p>按应用领域：根据不同的应用领域，优化目标不同</p>
+<ul>
+<li>批处理系统：追求吞吐量与平均周转；</li>
+<li>交互式系统：追求响应时间；</li>
+<li>实时系统：追求截止时间可满足性和可预测性。</li>
+</ul>
+<h3 id="目标与评价指标"><a href="#目标与评价指标" class="headerlink" title="目标与评价指标"></a>目标与评价指标</h3><p>通用目标：</p>
+<ul>
+<li>公平性：给每个进程公平的CPU份额<ul>
+<li>相似的进程应该得到相似的CPU份额</li>
+<li>不同类型的进程可以有区别<br>核反应控制 v.s. 薪水计算</li>
+</ul>
+</li>
+<li>策略可执行：必须能够严格执行策略</li>
+<li>平衡性：让 CPU&#x2F;I&#x2F;O 等资源尽量都忙起来</li>
+</ul>
+<p>批处理常用指标：</p>
+<ul>
+<li>吞吐量：单位时间（每小时）完成<strong>作业数</strong></li>
+<li>周转时间：完成时刻 - 提交时刻</li>
+<li>带权周转时间：周转时间 &#x2F; 服务时间（执行时间）</li>
+<li>平均周转时间：$\bar{T}&#x3D;\frac{1}{n}\sum_{i&#x3D;1}^{n}T_i$</li>
+<li>平均带权周转时间：$\bar{W}&#x3D;\frac{1}{n}\sum_{i&#x3D;1}^{n}\frac{T_i}{T_{s,i}}$</li>
+<li>CPU利用率<ul>
+<li>常常被用做评估批处理系统的指标</li>
+<li>不如吞吐量有效</li>
+<li>CPU利用率接近100% -&gt; 需要购买额外的硬件了</li>
+</ul>
+</li>
+</ul>
+<p>交互式目标：</p>
+<ul>
+<li>最小化响应时间：用户输入一个请求（如击键）到系统给出首次响应（如屏幕显示）的时间</li>
+<li>等比例变化：任务花费时间随任务复杂度“近似线性”增长，避免卡顿和长尾。</li>
+</ul>
+<p>实时系统目标：</p>
+<ul>
+<li>满足截止时间：满足所有或者大多数应用的截止时间<ul>
+<li>例如飞控系统需要100ms内完成飞行控制命令</li>
+</ul>
+</li>
+<li>可预测性：保证可预测性和确定性<br>保证最坏情况可预测，而不只是平均快。</li>
+</ul>
+<p>调度算法本身的目标</p>
+<ul>
+<li>易于实现</li>
+<li>执行的性能开销小</li>
+</ul>
+<h3 id="时间片（Time-Slice-Quantum）"><a href="#时间片（Time-Slice-Quantum）" class="headerlink" title="时间片（Time Slice &#x2F; Quantum）"></a>时间片（Time Slice &#x2F; Quantum）</h3><p>一个时间段，分配给调度上CPU的进程，以确定允许该进程运行的时间长度。</p>
+<p>时间片设置的权衡：</p>
+<ul>
+<li>太短：切换频繁，系统开销大；</li>
+<li>太长：响应变差，交互体验下降。</li>
+</ul>
+<p>经验：</p>
+<ul>
+<li>一般在“响应性”和“切换开销”之间取折中（如几十 ms 量级）。</li>
+</ul>
+<h2 id="批处理系统调度算法"><a href="#批处理系统调度算法" class="headerlink" title="批处理系统调度算法"></a>批处理系统调度算法</h2><h3 id="先来先服务-FCFS"><a href="#先来先服务-FCFS" class="headerlink" title="先来先服务 FCFS"></a>先来先服务 FCFS</h3><p>基本思想：按到达先后进入就绪队列，队首先执行（非抢占）。</p>
+<p>特点：</p>
+<ul>
+<li>优点：简单、公平、易实现；</li>
+<li>缺点：短作业可能被长作业拖慢（护航效应），平均周转可能偏大。</li>
+</ul>
+<h3 id="最短作业优先-SJF"><a href="#最短作业优先-SJF" class="headerlink" title="最短作业优先 SJF"></a>最短作业优先 SJF</h3><p>基本思想：优先选择估计运行时间最短的作业（非抢占）。</p>
+<p>特点：</p>
+<ul>
+<li>优点：在作业同时就绪时，可显著降低平均周转时间；</li>
+<li>缺点：长作业可能长期等待；执行时间难以精准预测。</li>
+</ul>
+<blockquote>
+<p>结论：在可预估运行时间的前提下，SJF 对平均周转时间通常优于 FCFS。</p>
+</blockquote>
+<h3 id="最短剩余时间优先-SRTN"><a href="#最短剩余时间优先-SRTN" class="headerlink" title="最短剩余时间优先 SRTN"></a>最短剩余时间优先 SRTN</h3><p>SJF 的抢占式版本：</p>
+<ul>
+<li>当新到达作业的“剩余时间”小于当前运行作业时，立即抢占。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>优点：对短任务更友好；</li>
+<li>缺点：若短任务源源不断，长任务可能饥饿。</li>
+</ul>
+<h3 id="最高响应比优先-HRRN"><a href="#最高响应比优先-HRRN" class="headerlink" title="最高响应比优先 HRRN"></a>最高响应比优先 HRRN</h3><p>折中思想：同时考虑等待时间和服务时间。</p>
+<p>响应比：</p>
+<ul>
+<li>$RP &#x3D; 1 + \frac{等待时间}{服务时间}$</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>短作业通常响应比高，容易先执行；</li>
+<li>长作业等待足够久后响应比也会提升，能抑制饥饿；</li>
+<li>需每次调度前计算响应比，有额外开销。</li>
+</ul>
+<h2 id="交互式系统调度算法"><a href="#交互式系统调度算法" class="headerlink" title="交互式系统调度算法"></a>交互式系统调度算法</h2><h3 id="时间片轮转-RR"><a href="#时间片轮转-RR" class="headerlink" title="时间片轮转 RR"></a>时间片轮转 RR</h3><p>基本思想：</p>
+<ul>
+<li>所有就绪进程按 FCFS 排队；</li>
+<li>每次给队首一个时间片；</li>
+<li>时间片到且未完成则移到队尾。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>公平、简单、响应性较好；</li>
+<li>性能高度依赖时间片大小。</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image-25.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="优先级调度"><a href="#优先级调度" class="headerlink" title="优先级调度"></a>优先级调度</h3><p>给每个进程分配优先级，高优先级优先执行。</p>
+<p>静态优先级：创建时确定，运行中不变。依据：</p>
+<ul>
+<li>进程类型（系统进程和交互进程优先级较高）</li>
+<li>对资源的需求（对CPU和内存需求较少的进程，优先级较高）</li>
+<li>用户要求（紧迫程度和付费多少）</li>
+</ul>
+<p>动态优先级：</p>
+<ul>
+<li>可根据等待时长、近期 CPU 使用、I&#x2F;O 行为动态调整；</li>
+<li>常用于兼顾响应性与公平性。</li>
+</ul>
+<p>潜在问题：</p>
+<ul>
+<li>低优先级进程可能长期得不到 CPU（饥饿）。</li>
+</ul>
+<h3 id="多级队列-MQ"><a href="#多级队列-MQ" class="headerlink" title="多级队列 MQ"></a>多级队列 MQ</h3><p>思想：</p>
+<ul>
+<li>按任务类型划分多个就绪队列；</li>
+<li>队列间按优先级调度，队列内可用 FCFS 或 RR。</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image-26.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>问题：</p>
+<ul>
+<li><p>饥饿 </p>
+<ul>
+<li>高优先级队列一直有进程</li>
+<li>低优先级队列永远得不到CPU -&gt; 饥饿</li>
+</ul>
+</li>
+<li><p>优先级静态</p>
+<ul>
+<li>优先级不会变化 -&gt; 错误的分配无法纠错</li>
+</ul>
+</li>
+<li><p>对进程行为“不敏感”</p>
+<ul>
+<li>I&#x2F;O密集v.s.交互进程v.s.CPU密集 -&gt; 无法区别对待</li>
+<li>预先难以知道进程对执行时间的要求</li>
+</ul>
+</li>
+</ul>
+<h3 id="多级反馈队列-MFQ"><a href="#多级反馈队列-MFQ" class="headerlink" title="多级反馈队列 MFQ"></a>多级反馈队列 MFQ</h3><p>思想：</p>
+<ol>
+<li><strong>分级与特征</strong>：设置多个优先级队列。<strong>优先级越高，时间片越短</strong>（等级越高，给你的时间越少）。</li>
+<li><strong>降级机制</strong>：新进程先入最高级队列。若在当前时间片内<strong>未执行完，则降入下一级</strong>队列末尾。</li>
+<li><strong>抢占规则</strong>：始终优先执行高优先级队列。若有新进程进入高级队列，<strong>立即抢占</strong>当前正在执行的低级进程。</li>
+</ol>
+<p><img src="/2026/08/15/os-notes-process/image-27.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>I&#x2F;O型进程：让其进入最高优先级队列，以及时响应I&#x2F;O交互。通常执行一个时间片，要求可处理完一次I&#x2F;O请求的数据，然后转入到阻塞队列。<br>计算型进程：每次都执行完时间片，进入更低级队列。最终采用最大时间片来执行，减少调度次数。<br>为适应一个进程在不同时间段的运行特点，I&#x2F;O完成时，提高优先级；时间片用完时，降低优先级；</p>
+<p>特点：</p>
+<ul>
+<li>兼顾响应性与吞吐；</li>
+<li>可以在不了解任务时长时自适应区分任务类型；</li>
+<li>是 RR + 优先级 + 动态调整的综合。</li>
+</ul>
+<h3 id="彩票调度与-Stride-调度"><a href="#彩票调度与-Stride-调度" class="headerlink" title="彩票调度与 Stride 调度"></a>彩票调度与 Stride 调度</h3><p>彩票调度（Lottery Scheduling）：</p>
+<ul>
+<li>通过“彩票张数”按概率分配 CPU；</li>
+<li>长期看资源份额接近权重比例，短期有随机波动。</li>
+</ul>
+<p>Stride 调度：</p>
+<ul>
+<li>彩票调度的确定性近似；</li>
+<li>$stride &#x3D; MaxStride &#x2F; ticket$ （步长，任务一次执行增加的虚拟时间）；</li>
+<li>每次选 pass （累计执行的虚拟时间）最小者运行，并更新 pass。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>更容易做按权重公平共享；</li>
+<li>相比随机抽签，短期公平性更稳定。</li>
+</ul>
+<h3 id="Linux-CFS（Complete-Fair-Scheduler）"><a href="#Linux-CFS（Complete-Fair-Scheduler）" class="headerlink" title="Linux CFS（Complete Fair Scheduler）"></a>Linux CFS（Complete Fair Scheduler）</h3><p>核心思想：</p>
+<ul>
+<li>模拟“理想公平 CPU”，让每个任务按权重公平推进。</li>
+</ul>
+<p>关键量：</p>
+<ul>
+<li>$vruntime &#x3D; 运行时间 &#x2F; 权重$</li>
+<li>每次选择 vruntime 最小的实体运行（优先补偿“落后者”）。</li>
+</ul>
+<p>实现要点：</p>
+<ul>
+<li>CFS 运行队列常用红黑树按 vruntime 排序；</li>
+<li>最左节点（最小 vruntime）优先调度。</li>
+</ul>
+<h2 id="实时系统调度"><a href="#实时系统调度" class="headerlink" title="实时系统调度"></a>实时系统调度</h2><h3 id="实时系统与任务模型"><a href="#实时系统与任务模型" class="headerlink" title="实时系统与任务模型"></a>实时系统与任务模型</h3><p>实时系统强调“按时正确”：迟到结果可能比错误更糟。</p>
+<p>分类：</p>
+<ul>
+<li>硬实时：必须满足截止时间；</li>
+<li>软实时：允许小比例超时。</li>
+</ul>
+<p>周期任务集常见表示：</p>
+<ul>
+<li>任务 $\tau_i$ 周期 $T_i$，执行时间 $C_i$，截止期 $D_i$（通常 $D_i&#x3D;T_i$）。</li>
+</ul>
+<p>CPU 利用率：</p>
+<ul>
+<li>$U&#x3D;\sum_{i&#x3D;1}^{n}\frac{C_i}{T_i}$</li>
+</ul>
+<h3 id="静态表调度"><a href="#静态表调度" class="headerlink" title="静态表调度"></a>静态表调度</h3><p>离线分析并生成固定调度表，运行时按表执行。</p>
+<p>特点：</p>
+<ul>
+<li>运行开销小；</li>
+<li>灵活性差，只适用于完全固定的任务场景。</li>
+</ul>
+<h3 id="单调速率调度-RMS"><a href="#单调速率调度-RMS" class="headerlink" title="单调速率调度 RMS"></a>单调速率调度 RMS</h3><p>RMS（Rate Monotonic Scheduling）是单处理器下的最优<strong>静态</strong>调度算法</p>
+<p>规则：</p>
+<ul>
+<li>周期越短（频率越高）优先级越高；</li>
+<li>固定优先级、<strong>可抢占</strong>。</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image-28.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>特点：</p>
+<ul>
+<li>经典静态优先级实时调度算法；</li>
+<li>易分析、易实现；</li>
+<li>利用率较高时可能不可调度。</li>
+</ul>
+<h3 id="最早截止时间优先算法-EDF"><a href="#最早截止时间优先算法-EDF" class="headerlink" title="最早截止时间优先算法 EDF"></a>最早截止时间优先算法 EDF</h3><p>EDF（Earliest Deadline First）是单处理器下全局最优调度算法</p>
+<p>规则：</p>
+<ul>
+<li>谁的绝对截止时间最近，谁优先。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>动态优先级；</li>
+<li>单处理机下可达到更高可调度性（理论上当 $U&lt;&#x3D;1$ 时可调度）。</li>
+</ul>
+<blockquote>
+<p>实时系统核心不是“平均快”，而是“最坏情况可保证”。</p>
+</blockquote>
+<h2 id="多处理机调度"><a href="#多处理机调度" class="headerlink" title="多处理机调度"></a>多处理机调度</h2><h3 id="与单处理机调度的差异"><a href="#与单处理机调度的差异" class="headerlink" title="与单处理机调度的差异"></a>与单处理机调度的差异</h3><p>多处理机更关注：</p>
+<ul>
+<li>系统整体吞吐与负载均衡；</li>
+<li>调度数据结构并发访问的互斥开销；</li>
+<li>线程通常是更常见的调度单位。</li>
+</ul>
+<h3 id="AMP-与-SMP"><a href="#AMP-与-SMP" class="headerlink" title="AMP 与 SMP"></a>AMP 与 SMP</h3><p>AMP（非对称多处理）：</p>
+<ul>
+<li>主从结构，主处理机负责调度与管理。</li>
+<li>各个处理机有固定分工，如一个处理机执行 OS 的系统功能，另一个处理 I&#x2F;O。</li>
+</ul>
+<p>SMP（对称多处理）：</p>
+<ul>
+<li>处理机地位对等，常见三类策略：</li>
+<li>静态分配：任务绑定某 CPU，迁移少但可能失衡；</li>
+<li>动态分配：公共队列，空闲 CPU 取任务；</li>
+<li>自调度：各 CPU 自行从共享队列取任务（常用，但锁竞争可能成瓶颈）。</li>
+</ul>
+<h3 id="成组调度与专用处理机分配"><a href="#成组调度与专用处理机分配" class="headerlink" title="成组调度与专用处理机分配"></a>成组调度与专用处理机分配</h3><p>成组调度（Gang Scheduling）：</p>
+<ul>
+<li>将同一并行任务的多个线程成组同时调度。</li>
+<li>适合线程间强协作，减少同步等待。</li>
+</ul>
+<p>专用处理机分配（Dedicated Processor Assignment）：</p>
+<ul>
+<li>为某些关键并行任务保留处理机资源。</li>
+<li>有利于稳定性能与通信局部性，但资源弹性较差。</li>
+</ul>
+<h3 id="机制与策略分离"><a href="#机制与策略分离" class="headerlink" title="机制与策略分离"></a>机制与策略分离</h3><p>思路：</p>
+<ul>
+<li>内核提供通用调度机制；</li>
+<li>上层通过参数&#x2F;权重&#x2F;优先级接口表达策略。</li>
+</ul>
+<p>意义：</p>
+<ul>
+<li>让“最了解业务目标”的应用参与调度意图表达；</li>
+<li>在公平、吞吐、响应等目标间更灵活折中。</li>
+</ul>
+<h1 id="进程同步"><a href="#进程同步" class="headerlink" title="进程同步"></a>进程同步</h1><h2 id="同步与互斥问题"><a href="#同步与互斥问题" class="headerlink" title="同步与互斥问题"></a>同步与互斥问题</h2><p>间接相互制约，主要原因是资源共享。<br>直接相互制约，主要源于进程合作。</p>
+<p>进程同步：指多个相关进程在执行次序上的协调，用于保证这种关系的相应机制称为同步机制。<br>数据竞争：多个进程同时访问同一个共享变量，并且至少有一个是写。</p>
+<p><img src="/2026/08/15/os-notes-process/image-14.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h3><p>一次只允许一个进程使用的资源称为临界资源。例如打印机、共享变量。<br>对临界资源（如共享变量）进行访问的程序片段称为临界区</p>
+<h4 id="临界区解决方案需要满足的条件"><a href="#临界区解决方案需要满足的条件" class="headerlink" title="临界区解决方案需要满足的条件"></a>临界区解决方案需要满足的条件</h4><p>任何两个进程都不能同时进入临界区；<br>• 基本要求<br>不能事先假定CPU的个数和运行速度；<br>• 对并发硬件无限制<br>临界区外的进程不能妨碍其他的进程进入临界区；<br>• 对临界区的互斥访问仅仅发生在临界区内<br>一个进程不能在临界区外无限等待<br>• 公平</p>
+<p><img src="/2026/08/15/os-notes-process/image-15.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="同步机制应遵循的准则"><a href="#同步机制应遵循的准则" class="headerlink" title="同步机制应遵循的准则"></a>同步机制应遵循的准则</h4><p>空闲让进：临界资源处于空闲状态，允许进程进入临界区；临界区内仅有一个进程执行</p>
+<p>忙则等待：有进程正在执行临界区代码，所有其他进程则不可以进入临界区</p>
+<p>有限等待：对要求访问临界区的进程，应在保证在有限时间内进入自己的临界区，避免无限等。</p>
+<p>让权等待：当进程（长时间）不能进入自己的临界区时，应立即释放处理机，尽量避免忙等耗费CPU资源。</p>
+<p><img src="/2026/08/15/os-notes-process/image-16.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h2 id="基于忙等待的互斥方法"><a href="#基于忙等待的互斥方法" class="headerlink" title="基于忙等待的互斥方法"></a>基于忙等待的互斥方法</h2><h3 id="简单尝试"><a href="#简单尝试" class="headerlink" title="简单尝试"></a>简单尝试</h3><h4 id="屏蔽中断"><a href="#屏蔽中断" class="headerlink" title="屏蔽中断"></a>屏蔽中断</h4><p>进入临界区关闭中断，离开临界区打开中断<br>临界区中可以独自访问共享变量<br>时钟中断和各种外设的中断会关闭<br>抢占式调度无法工作，当前进程可能独占CPU<br><em>进程可以通过阻塞的系统调用或者yield放弃CPU</em></p>
+<h4 id="共享锁变量"><a href="#共享锁变量" class="headerlink" title="共享锁变量"></a>共享锁变量</h4><p>锁变量：设置共享变量lock<br>锁：0表示临界区无进程，1表示临界区有进程<br>锁变量初始值0<br>进程要进入临界区，测试（read）这把锁，如果锁的值为0，进程就将其设置(write)为1，并进入临界区<br>如果锁已经为1，则需要等待其变为0</p>
+<p>问题：如何保证锁变量访问自身的原子性？（读取和设置必须是原子操作）</p>
+<h4 id="严格轮换法-翻牌子"><a href="#严格轮换法-翻牌子" class="headerlink" title="严格轮换法-翻牌子"></a>严格轮换法-翻牌子</h4><p>设立一个公用整型变量 turn：描述允许进入临界区的进程标识</p>
+<ul>
+<li>在进入临界区循环检查是否允许本进程进入：turn为0时，进程0可进入；turn为1时，进程1可进入；</li>
+<li>在退出区修改允许进入进程标识：进程0退出时，改turn为1；进程1退出时，改turn为0</li>
+</ul>
+<p>问题</p>
+<ul>
+<li>强制轮流进入临界区，没有考虑进程的实际需要。效率较低</li>
+<li>违反规则：一个进程可能被一个不在临界区的进程阻止进入临界区</li>
+</ul>
+<h4 id="Peterson算法"><a href="#Peterson算法" class="headerlink" title="Peterson算法"></a>Peterson算法</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> FALSE 0</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> TRUE  1</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> N     2    <span class="hljs-comment">/* 进程的数量 */</span></span><br><br><span class="hljs-type">int</span> turn;          <span class="hljs-comment">/* 轮到谁了？ */</span><br><span class="hljs-type">int</span> interested[N]; <span class="hljs-comment">/* 所有初始值均为 0 (FALSE) */</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">enter_region</span><span class="hljs-params">(<span class="hljs-type">int</span> process)</span>; <span class="hljs-comment">/* 进程为 0 或 1 */</span><br>&#123;<br>    <span class="hljs-type">int</span> other; <span class="hljs-comment">/* 另一个进程的编号 */</span><br><br>    other = <span class="hljs-number">1</span> - process;          <span class="hljs-comment">/* 当前进程的对立进程 */</span><br>    interested[process] = TRUE;   <span class="hljs-comment">/* 表示当前进程想要进入临界区 */</span><br>    turn = process;               <span class="hljs-comment">/* 设置标志位 */</span><br>    <span class="hljs-keyword">while</span> (turn == process &amp;&amp; interested[other] == TRUE) <span class="hljs-comment">/* 空语句 */</span> ;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">leave_region</span><span class="hljs-params">(<span class="hljs-type">int</span> process)</span> <span class="hljs-comment">/* 参数 process: 哪个进程正在离开 */</span><br>&#123;<br>    interested[process] = FALSE; <span class="hljs-comment">/* 表示离开临界区 */</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Peterson算法在抢占式和非抢占式调度下都可行么？<br>抢占式OK.非抢占式No:可能先运行进程霸占CPU。</p>
+</blockquote>
+<p><img src="/2026/08/15/os-notes-process/image-17.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="硬件指令机制"><a href="#硬件指令机制" class="headerlink" title="硬件指令机制"></a>硬件指令机制</h4><p>Test and Set Lock指令</p>
+<ul>
+<li>IBM370系列机器中称为<strong>TSL</strong>；在INTEL8086中称为<strong>XCHG</strong>指令。</li>
+<li>TSL：将lock变量读入寄存器，然后置位1</li>
+<li>测试（读）并加锁（写）：<strong>保证读写是一个原子操作</strong></li>
+<li>实现：执行TSL指令的CPU会通过锁住内存总线，禁止其他CPU访问内存</li>
+</ul>
+<h4 id="问题–优先级反转"><a href="#问题–优先级反转" class="headerlink" title="问题–优先级反转"></a>问题–优先级反转</h4><p>Peterson，TSL XCHG算法的问题：<br>如果不能满足进入临界区条件，都要进行<strong>忙等</strong><br>忙等，不仅仅浪费CPU时间还会导致<strong>优先级反转</strong></p>
+<p>低优先级任务先拿到了锁（进入临界区）<br>高优先级任务想要这把锁，被阻塞 &#x2F; 忙等<br>调度器会抢占低优先级任务的 CPU，让高优先级任务运行<br>→ 结果：低优先级任务没法释放锁，高优先级任务一直等，被 “反转” 成了实际的低优先级。</p>
+<h3 id="生产者－消费者问题"><a href="#生产者－消费者问题" class="headerlink" title="生产者－消费者问题"></a>生产者－消费者问题</h3><p>若干进程通过有限的<strong>共享缓冲区</strong>交换数据。其中，“生产者”进程不断写入，而“消费者”进程不断读出；共享缓冲区共有N个；任何时刻只能有一个进程可对共享缓冲区进行操作。</p>
+<p>简单的（但有问题的）实现：</p>
+<ul>
+<li>当缓冲区满，让生产者睡眠，等待消费者取出数据再唤醒生产者</li>
+<li>当缓冲区空，让消费者睡眠，等待生产者放入数据再唤醒消费者</li>
+<li>使用count变量来追踪缓冲区满或者空的状态</li>
+</ul>
+<h2 id="基于信号量的方法"><a href="#基于信号量的方法" class="headerlink" title="基于信号量的方法"></a>基于信号量的方法</h2><h3 id="信号量机制"><a href="#信号量机制" class="headerlink" title="信号量机制"></a>信号量机制</h3><p>新的变量类型Semaphore（信号量）<br><code>S &gt;= 0</code> 表示当前可用的资源的数目<br>对信号量P(S)&amp;V(S)操作原语。<br>P: down&#x2F;wait&#x2F;获取资源 V：up&#x2F;signal&#x2F;释放资源<br>S的初值</p>
+<ul>
+<li><code>S=1</code> 实现互斥：二元信号量(等于mutex)</li>
+<li><code>S&gt;1</code> 实现同步：通用信号量</li>
+</ul>
+<p>信号量使用：<br>必须置一次且只能置一次初值（代表资源的个数）<br>只能由P、V操作来改变<br>P&#x2F;V操作是原语：原子操作不会被打断</p>
+<h4 id="物理意义"><a href="#物理意义" class="headerlink" title="物理意义"></a>物理意义</h4><p>P（down）操作分配资源：检查信号量初值是否大于0，如果大于0，减1，继续执行；如果等于0，进程被直接阻塞（将当前进程从运行队列移动到信号量的队列），减1的操作暂时不做。</p>
+<ul>
+<li>P是原子操作：一组操作，要么都执行，要么都不执行</li>
+<li>当S&#x3D;1，A和B同时调用P(S), 只有一个进程能够完成P(S)继续执行</li>
+</ul>
+<p>当进程执行P操作阻塞到某个信号量，进程不在运行态，所以在唤醒前都不会占用CPU资源</p>
+<p>V（up）操作释放资源：首先将信号量S增加1 (原子操作)。但是如果有一个或者多个进程在信号量的队列睡眠（这时S&#x3D;1），就会随机唤醒一个进程（将进程从信号量的队列移入就绪队列），并使得其运行后能完成P操作的减1，所以最终S还是0。</p>
+<ul>
+<li>V(S)原子操作</li>
+<li>实现时，操作前关闭中断，操作后打开中断。</li>
+<li>注意 V(S) !&#x3D; S&#x3D;S+1</li>
+<li>如果S&#x3D;6，进程A，B任意顺序调用V(S), 那么结果<strong>一定</strong>是8</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image-18.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>数据结构：一个整数+一个队列</p>
+<p>对于单CPU系统；</p>
+<ul>
+<li>系统在关闭中断的情况下，测试信号量，更新信号量，将进程睡眠或者唤醒。</li>
+</ul>
+<p>对于多CPU系统：</p>
+<ul>
+<li>需要有一个锁变量来保护信号量，并使用TSL指令或者XCHG指令来访问锁变量，从而保证每次只能有一个CPU检查信号量</li>
+</ul>
+<h4 id="信号量机制解决生产者消费者问题"><a href="#信号量机制解决生产者消费者问题" class="headerlink" title="信号量机制解决生产者消费者问题"></a>信号量机制解决生产者消费者问题</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> N 100                  <span class="hljs-comment">/* number of slots in the buffer */</span></span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> semaphore;         <span class="hljs-comment">/* semaphores are a special kind of int */</span><br>semaphore mutex = <span class="hljs-number">1</span>;           <span class="hljs-comment">/* controls access to critical region */</span><br>semaphore empty = N;           <span class="hljs-comment">/* counts empty buffer slots */</span><br>semaphore full = <span class="hljs-number">0</span>;            <span class="hljs-comment">/* counts full buffer slots */</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    <span class="hljs-type">int</span> item;<br><br>    <span class="hljs-keyword">while</span> (TRUE) &#123;             <span class="hljs-comment">/* TRUE is the constant 1 */</span><br>        item = produce_item(); <span class="hljs-comment">/* generate something to put in buffer */</span><br>        down(&amp;empty);          <span class="hljs-comment">/* decrement empty count */</span><br>        down(&amp;mutex);          <span class="hljs-comment">/* enter critical region */</span><br>        insert_item(item);     <span class="hljs-comment">/* put new item in buffer */</span><br>        up(&amp;mutex);            <span class="hljs-comment">/* leave critical region */</span><br>        up(&amp;full);             <span class="hljs-comment">/* increment count of full slots */</span><br>    &#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">consumer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    <span class="hljs-type">int</span> item;<br><br>    <span class="hljs-keyword">while</span> (TRUE) &#123;             <span class="hljs-comment">/* infinite loop */</span><br>        down(&amp;full);           <span class="hljs-comment">/* decrement full count */</span><br>        down(&amp;mutex);          <span class="hljs-comment">/* enter critical region */</span><br>        item = remove_item();  <span class="hljs-comment">/* take item from buffer */</span><br>        up(&amp;mutex);            <span class="hljs-comment">/* leave critical region */</span><br>        up(&amp;empty);            <span class="hljs-comment">/* increment count of empty slots */</span><br>        consume_item(item);    <span class="hljs-comment">/* do something with the item */</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>注意不能将down(&amp;mutex)放在down(&amp;empty)之前，否则可能会导致死锁：如果缓冲区是满的，生产者先将mutex设置为0，然后会阻塞在empty。这时消费者访问缓冲区，会对mutex执行P操作，就会阻塞在mutex。</p>
+<h3 id="信号量用法"><a href="#信号量用法" class="headerlink" title="信号量用法"></a>信号量用法</h3><h4 id="信号量用于互斥"><a href="#信号量用于互斥" class="headerlink" title="信号量用于互斥"></a>信号量用于互斥</h4><p><img src="/2026/08/15/os-notes-process/image-11.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>初值S&#x3D;1,等价于锁</p>
+<h4 id="信号量同步"><a href="#信号量同步" class="headerlink" title="信号量同步"></a>信号量同步</h4><p><img src="/2026/08/15/os-notes-process/image-12.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>初值S&#x3D;0; 代码B $\rightarrow$ 代码A</p>
+<h4 id="信号量实现汇合"><a href="#信号量实现汇合" class="headerlink" title="信号量实现汇合"></a>信号量实现汇合</h4><p>使用信号量实现线程A和线程B的汇合(Rendezvous)。使得a1永远在b2之前，而b1永远在a2之前。</p>
+<p><img src="/2026/08/15/os-notes-process/image-13.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="使用信号量实现多路复用"><a href="#使用信号量实现多路复用" class="headerlink" title="使用信号量实现多路复用"></a>使用信号量实现多路复用</h4><p>实现mutex的泛化，使得n个线程能够同时运行在临界区，有时候也称为限流阀。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">Semaphore multiplex = n<br>    P(multiplex)<br>    critical section<br>    V(multiplex)<br></code></pre></td></tr></table></figure>
+
+<h4 id="使用信号量实现屏障"><a href="#使用信号量实现屏障" class="headerlink" title="使用信号量实现屏障"></a>使用信号量实现屏障</h4><p>用信号量实现n个线程的屏障（Barrier）。使得所有线程都到达某个点之后才能继续执行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c">n = the number of threads<br>count = <span class="hljs-number">0</span> <span class="hljs-comment">//到达汇合点的线程数</span><br>semaphore mutex = <span class="hljs-number">1</span> <span class="hljs-comment">//保护count</span><br>semaphore barrier = <span class="hljs-number">0</span><span class="hljs-comment">//线程到达之前都是0或者负值。到达后取正值</span><br><br>P(mutex)<br>count = count + <span class="hljs-number">1</span><br>V(mutex)<br><br><span class="hljs-keyword">if</span> count == n: V(barrier) # 第n个进程到来，唤醒一个线程，触发<br>P(barrier) # 前n<span class="hljs-number">-1</span>个进程在此排队<br>V(barrier) # 一旦线程被唤醒，有责任唤醒下一个线程<br></code></pre></td></tr></table></figure>
+
+<h3 id="“信号量集”机制"><a href="#“信号量集”机制" class="headerlink" title="“信号量集”机制"></a>“信号量集”机制</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c">Process A:<br>  P(Dmutex);<br>  P(Emutex);<br>Process B:<br>  P(Emutex);<br>  P(Dmutex);<br>Dmutex, Emutex = <span class="hljs-number">1</span>;<br>Process A: P(Dmutex);<br>Process B: P(Emutex);<br>Process A: P(Emutex);<br>Process B: P(Dmutex);<br></code></pre></td></tr></table></figure>
+
+<p>需要同时获取两个或多个临界资源时，就可能出现由于各进程分别获得部分临界资源并等待其余的临界资源的<strong>死锁</strong>局面</p>
+<h4 id="AND型信号量集机制"><a href="#AND型信号量集机制" class="headerlink" title="AND型信号量集机制"></a>AND型信号量集机制</h4><p>将进程需要的所有共享资源一次全部分配给它；待该进程使用完后再一起释放。</p>
+<h4 id="一般“信号量集”机制"><a href="#一般“信号量集”机制" class="headerlink" title="一般“信号量集”机制"></a>一般“信号量集”机制</h4><p>基本思想：在AND型信号量集的基础上进行扩充：进程对信号量Si的测试值为ti（用于信号量的判断，即Si &gt;&#x3D; ti，表示资源数量低于ti时，便不予分配），资源的申请量为di（用于信号量的增减，即Si &#x3D; Si - di和Si &#x3D; Si +di）</p>
+<figure class="highlight pascal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs pascal">SP(S1, t1, d1, … , Sn, tn, dn)<br>  <span class="hljs-keyword">if</span> S1&gt;=t1 <span class="hljs-keyword">and</span> … <span class="hljs-keyword">and</span> Sn&gt;=tn <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">for</span> I :=<span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span><br>      Si := Si - di;<br>    endfor<br>  <span class="hljs-keyword">else</span><br>    wait <span class="hljs-keyword">in</span> Si;<br>  endif<br><br>SV(S1, d1, … ,Sn, dn)<br>  <span class="hljs-keyword">for</span> I :=<span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span><br>    Si := Si + di;<br>    wake waited process<br>  endfor<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2026/08/15/os-notes-process/image-22.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="互斥量-Mutex"><a href="#互斥量-Mutex" class="headerlink" title="互斥量 (Mutex)"></a>互斥量 (Mutex)</h3><h3 id="条件变量-Condition-Variable"><a href="#条件变量-Condition-Variable" class="headerlink" title="条件变量 (Condition Variable)"></a>条件变量 (Condition Variable)</h3><h2 id="基于管程的同步与互斥"><a href="#基于管程的同步与互斥" class="headerlink" title="基于管程的同步与互斥"></a>基于管程的同步与互斥</h2><p>管程：把分散的临界区集中起来，为每个临界资源设计一个专门机构来统一管理各进程对该资源的访问，这个专门机构称为管程。<br>管程可以函数库的形式实现。相比之下，管程比信号量易于使用。<br>管程是一种<strong>高级同步原语</strong>。</p>
+<h3 id="管程的实现"><a href="#管程的实现" class="headerlink" title="管程的实现"></a>管程的实现</h3><p>对于共享资源，管程需要提供互斥的访问和同步的机制<br>管程的机制保证<strong>只有一个进程在管程内执行</strong>(互斥)<br>同步机制使用</p>
+<ul>
+<li>wait和signal，两个同步变量</li>
+</ul>
+<figure class="highlight pascal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs pascal">monitor ProducerConsumer<br>    condition full, empty;<br>    integer count;<br><br>    <span class="hljs-function"><span class="hljs-keyword">procedure</span> <span class="hljs-title">insert</span><span class="hljs-params">(item: integer)</span>;</span><br>    <span class="hljs-keyword">begin</span><br>        <span class="hljs-keyword">if</span> count = N <span class="hljs-keyword">then</span> wait(full);<br>        insert_item(item);<br>        count := count + <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">if</span> count = <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> signal(empty)<br>    <span class="hljs-keyword">end</span>;<br><br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span>:</span> integer;<br>    <span class="hljs-keyword">begin</span><br>        <span class="hljs-keyword">if</span> count = <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> wait(empty);<br>        remove := remove_item;<br>        count := count - <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">if</span> count = N - <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> signal(full)<br>    <span class="hljs-keyword">end</span>;<br><br>    count := <span class="hljs-number">0</span>;<br><span class="hljs-keyword">end</span> monitor;<br><br><span class="hljs-function"><span class="hljs-keyword">procedure</span> <span class="hljs-title">producer</span>;</span><br><span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">while</span> true <span class="hljs-keyword">do</span><br>    <span class="hljs-keyword">begin</span><br>        item = produce_item;<br>        ProducerConsumer.insert(item)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span>;<br><br><span class="hljs-function"><span class="hljs-keyword">procedure</span> <span class="hljs-title">consumer</span>;</span><br><span class="hljs-keyword">begin</span><br>    <span class="hljs-keyword">while</span> true <span class="hljs-keyword">do</span><br>    <span class="hljs-keyword">begin</span><br>        item = ProducerConsumer.remove;<br>        consume_item(item)<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Java中的管程实现"><a href="#Java中的管程实现" class="headerlink" title="Java中的管程实现"></a>Java中的管程实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ProducerConsumer</span> &#123;<br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">N</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span>; <span class="hljs-comment">// constant giving the buffer size</span><br>    <span class="hljs-keyword">static</span> <span class="hljs-type">producer</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">producer</span>(); <span class="hljs-comment">// instantiate a new producer thread</span><br>    <span class="hljs-keyword">static</span> <span class="hljs-type">consumer</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">consumer</span>(); <span class="hljs-comment">// instantiate a new consumer thread</span><br>    <span class="hljs-keyword">static</span> <span class="hljs-type">our_monitor</span> <span class="hljs-variable">mon</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">our_monitor</span>(); <span class="hljs-comment">// instantiate a new monitor</span><br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String args[])</span> &#123;<br>        p.start(); <span class="hljs-comment">// start the producer thread</span><br>        c.start(); <span class="hljs-comment">// start the consumer thread</span><br>    &#125;<br><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">producer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Thread</span> &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123; <span class="hljs-comment">// run method contains the thread code</span><br>            <span class="hljs-type">int</span> item;<br>            <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123; <span class="hljs-comment">// producer loop</span><br>                item = produce_item();<br>                mon.insert(item);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">produce_item</span><span class="hljs-params">()</span> &#123; ... &#125; <span class="hljs-comment">// actually produce</span><br>    &#125;<br><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">consumer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Thread</span> &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-type">int</span> item;<br>            <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>                item = mon.remove();<br>                consume_item(item);<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">consume_item</span><span class="hljs-params">(<span class="hljs-type">int</span> item)</span> &#123; ... &#125; <span class="hljs-comment">// actually consume</span><br>    &#125;<br><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">our_monitor</span> &#123; <span class="hljs-comment">// this is a monitor</span><br>        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> buffer[] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[N];<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, lo = <span class="hljs-number">0</span>, hi = <span class="hljs-number">0</span>; <span class="hljs-comment">// counters and indices</span><br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> &#123;<br>            <span class="hljs-keyword">if</span> (count == N) go_to_sleep(); <span class="hljs-comment">// if the buffer is full, go to sleep</span><br>            buffer[hi] = val; <span class="hljs-comment">// insert an item into the buffer</span><br>            hi = (hi + <span class="hljs-number">1</span>) % N; <span class="hljs-comment">// slot to place next item in</span><br>            count = count + <span class="hljs-number">1</span>; <span class="hljs-comment">// one more item in the buffer now</span><br>            <span class="hljs-keyword">if</span> (count == <span class="hljs-number">1</span>) notify(); <span class="hljs-comment">// if consumer was sleeping, wake it up</span><br>        &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-type">int</span> <span class="hljs-title function_">remove</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-type">int</span> val;<br>            <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) go_to_sleep(); <span class="hljs-comment">// if the buffer is empty, go to sleep</span><br>            val = buffer[lo]; <span class="hljs-comment">// fetch an item from the buffer</span><br>            lo = (lo + <span class="hljs-number">1</span>) % N; <span class="hljs-comment">// slot to fetch next item from</span><br>            count = count - <span class="hljs-number">1</span>; <span class="hljs-comment">// one few items in the buffer</span><br>            <span class="hljs-keyword">if</span> (count == N - <span class="hljs-number">1</span>) notify(); <span class="hljs-comment">// if producer was sleeping, wake it up</span><br>            <span class="hljs-keyword">return</span> val;<br>        &#125;<br><br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">go_to_sleep</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                wait();<br>            &#125; <span class="hljs-keyword">catch</span> (InterruptedException exc) &#123;&#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="管程优缺点"><a href="#管程优缺点" class="headerlink" title="管程优缺点"></a>管程优缺点</h3><p>依赖于编译器支持，和特定语言相关<br>不适用于分布式系统，仅仅适用于单核或者多核的<strong>共享内存</strong>系统</p>
+<blockquote>
+<p>原因：管程把共享数据 + 互斥访问 + 条件同步封装，依赖<strong>共享内存、原子操作、即时调度</strong>（同步阻塞&#x2F;唤醒）<br>而分布式系统没有共享内存</p>
+</blockquote>
+<p><img src="/2026/08/15/os-notes-process/image-19.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h2 id="进程通信的主要方法（IPC）"><a href="#进程通信的主要方法（IPC）" class="headerlink" title="进程通信的主要方法（IPC）"></a>进程通信的主要方法（IPC）</h2><p>低级通信：只能传递状态和整数值（控制信息），包括进程互斥和同步所采用的<strong>信号量</strong>和<strong>管程</strong>机制。缺点：</p>
+<ul>
+<li>传送信息量小：效率低，每次通信传递的信息量固定，若传递较多信息则需要进行多次通信。</li>
+<li>编程复杂：用户直接实现通信的细节，编程复杂，容易出错。</li>
+</ul>
+<p>高级通信：能够传送任意数量的数据，包括三类：<strong>管道、共享内存、消息系统</strong>等。</p>
+<p><img src="/2026/08/15/os-notes-process/image-20.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="管道通信-Pipe"><a href="#管道通信-Pipe" class="headerlink" title="管道通信(Pipe)"></a>管道通信(Pipe)</h3><p>管道是用于连接读进程和写进程以实现两个进程通信的<strong>共享文件</strong>，又称管道文件。<br>Unix系统中，管道分为有名管道和无名管道。</p>
+<ul>
+<li>无名管道：<code>sort &lt; file1 |grep sth_to_search</code></li>
+<li>有名管道：<code>mkfifo()</code>函数创建</li>
+</ul>
+<h4 id="无名管道-Pipe"><a href="#无名管道-Pipe" class="headerlink" title="无名管道 (Pipe)"></a>无名管道 (Pipe)</h4><p>实例：杀死一个叫conky的进程</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs perl">ps aux | <span class="hljs-keyword">grep</span> conky| <span class="hljs-keyword">grep</span> -v <span class="hljs-keyword">grep</span> | awk <span class="hljs-string">&#x27;&#123;print $2&#125;&#x27;</span> | xargs <span class="hljs-keyword">kill</span><br></code></pre></td></tr></table></figure>
+
+<p>管道是半双工的，<strong>数据只能向一个方向流动</strong>；需要双方通信时，需要建立起两个管道；</p>
+<p>无名管道<strong>只能用于父子进程或者兄弟进程之间</strong>（具有亲缘关系的进程）；</p>
+<p>单独构成一种独立的文件系统：管道对于管道两端的进程而言，就是一个文件，但它不是普通的文件，它不属于某种文件系统，而是自立门户，单独构成一种文件系统，并且<strong>只存在在内存中</strong>。</p>
+<p>数据的读出和写入：一个进程向管道中写的内容被管道另一端的进程读出。写入的内容每次都添加在管道缓冲区的末尾，并且每次都是从缓冲区的头部读出数据。</p>
+<h4 id="有名管道（Named-Pipe或FIFO）"><a href="#有名管道（Named-Pipe或FIFO）" class="headerlink" title="有名管道（Named Pipe或FIFO）"></a>有名管道（Named Pipe或FIFO）</h4><p>无名管道应用的一个重大限制是它没有名字，因此，只能用于具有亲缘关系的进程间通信，在有名管道提出后，该限制得到了克服。</p>
+<p>FIFO不同于管道之处在于它提供一个路径名与之关联，以FIFO的文件形式存在于文件系统中。这样，即使与FIFO的创建进程不存在亲缘关系的进程，<strong>只要可以访问该路径</strong>，就能够彼此通过FIFO相互通信。</p>
+<p>需注意的是，FIFO严格遵循<strong>先进先出</strong>（first in first out），对管道及FIFO的读总是从开始处返回数据，对它们的写则把数据添加到末尾。</p>
+<p><img src="/2026/08/15/os-notes-process/image-21.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="消息传递（message-passing）"><a href="#消息传递（message-passing）" class="headerlink" title="消息传递（message passing）"></a>消息传递（message passing）</h3><p>略</p>
+<h2 id="经典的进程同步与互斥问题"><a href="#经典的进程同步与互斥问题" class="headerlink" title="经典的进程同步与互斥问题"></a>经典的进程同步与互斥问题</h2><h3 id="读者-写者"><a href="#读者-写者" class="headerlink" title="读者-写者"></a>读者-写者</h3><h4 id="基于信号量机制"><a href="#基于信号量机制" class="headerlink" title="基于信号量机制"></a>基于信号量机制</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> readers = <span class="hljs-number">0</span><br>Semaphore mutex = <span class="hljs-number">1</span><br>Semaphore roomEmpty = <span class="hljs-number">1</span> <br><br>Writer<br>P(roomEmpty);<br>    write  <br><span class="hljs-comment">//critical region</span><br>V(roomEmpty);<br><br>Reader<br><span class="hljs-title function_">P</span><span class="hljs-params">(mutex)</span>;<br>   readers=readers+<span class="hljs-number">1</span>;<br>   <span class="hljs-keyword">if</span> readers == <span class="hljs-number">1</span> : <span class="hljs-comment">//第一个读者</span><br>      P(roomEmpty)<br>V(mutex);<br>read <span class="hljs-comment">//critical region</span><br>P(mutex);<br>   readers = readers<span class="hljs-number">-1</span>;<br>   <span class="hljs-keyword">if</span> readers == <span class="hljs-number">0</span>:<br>      V(roomEmpty);<br>V(mutex);<br></code></pre></td></tr></table></figure>
+
+<h4 id="灯开关模式"><a href="#灯开关模式" class="headerlink" title="灯开关模式"></a>灯开关模式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Lightswitch</span>: <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>): <br>        <span class="hljs-variable language_">self</span>.counter = <span class="hljs-number">0</span> <br>        <span class="hljs-variable language_">self</span>.mutex = Semaphore(<span class="hljs-number">1</span>) <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lock</span>(<span class="hljs-params">self, semaphore</span>): <br>        <span class="hljs-variable language_">self</span>.mutex.wait() <br>        <span class="hljs-variable language_">self</span>.counter += <span class="hljs-number">1</span> <br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.counter == <span class="hljs-number">1</span>: <br>            semaphore.wait() <br>        <span class="hljs-variable language_">self</span>.mutex.signal() <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">unlock</span>(<span class="hljs-params">self, semaphore</span>): <br>        <span class="hljs-variable language_">self</span>.mutex.wait() <br>        <span class="hljs-variable language_">self</span>.counter -= <span class="hljs-number">1</span> <br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.counter == <span class="hljs-number">0</span>: <br>            semaphore.signal() <br>        <span class="hljs-variable language_">self</span>.mutex.signal() <br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c">信号量初始化<br>readLightswitch = Lightswitch() <br>roomEmpty = Semaphore(<span class="hljs-number">1</span>) <br><br>Reader<br>readLightswitch.lock(roomEmpty)<br>    read <span class="hljs-meta"># critical section </span><br>readLightswitch.unlock(roomEmpty) <br><br>Writer 代码不变<br>roomEmpty.wait();<br>    write  <span class="hljs-comment">//critical region</span><br>roomEmpty.signal();<br></code></pre></td></tr></table></figure>
+
+<h4 id="一般信号量集机制"><a href="#一般信号量集机制" class="headerlink" title="一般信号量集机制"></a>一般信号量集机制</h4><p>增加一个限制条件：同时读的“读者”最多RN个<br>mx表示“允许写”，初值是1<br>L表示“允许读者数目”，初值为RN</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c">Writer<br><span class="hljs-title function_">SP</span><span class="hljs-params">(mx, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>; L, RN, <span class="hljs-number">0</span>)</span>;<br>    write<br><span class="hljs-title function_">SV</span><span class="hljs-params">(mx, <span class="hljs-number">1</span>)</span>;<br><br>Reader<br><span class="hljs-title function_">SP</span><span class="hljs-params">(mx, <span class="hljs-number">1</span>, <span class="hljs-number">0</span> ; L, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)</span>;<br>    read<br><span class="hljs-title function_">SV</span><span class="hljs-params">(L, <span class="hljs-number">1</span>)</span>;<br></code></pre></td></tr></table></figure>
+
+<h4 id="公平读写算法"><a href="#公平读写算法" class="headerlink" title="公平读写算法"></a>公平读写算法</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> readers = <span class="hljs-number">0</span><br>Semaphore mutex = <span class="hljs-number">1</span><br>Semaphore roomEmpty =<span class="hljs-number">1</span><br>Semaphore turnstile = <span class="hljs-number">1</span><br><br>Writer<br>P(turnstile);<br>P(roomEmpty);<br>    write  <span class="hljs-comment">//critical region</span><br>V(turnstile);<br>V(roomEmpty);<br><br>Reader<br><span class="hljs-title function_">P</span><span class="hljs-params">(turnstile)</span><br><span class="hljs-title function_">V</span><span class="hljs-params">(turnstile)</span><br><span class="hljs-title function_">P</span><span class="hljs-params">(mutex)</span>;<br>    readers=readers+<span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">if</span> readers == <span class="hljs-number">1</span> : <span class="hljs-comment">//第一个读者</span><br>        P(roomEmpty)<br>V(mutex);<br>read <span class="hljs-comment">//critical region</span><br>P(mutex);<br>    readers = readers<span class="hljs-number">-1</span>;<br>    <span class="hljs-keyword">if</span> readers == <span class="hljs-number">0</span>:<br>        V(roomEmpty);<br>V(mutex);<br></code></pre></td></tr></table></figure>
+
+<h3 id="理发师问题"><a href="#理发师问题" class="headerlink" title="理发师问题"></a>理发师问题</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> CHAIRS 5   <span class="hljs-comment">//chairs for waiting customers </span></span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> semaphore; <br>semaphore customers = <span class="hljs-number">0</span>; <span class="hljs-comment">//# of customers waiting service semaphore barbers = 0;  //# of barbers waiting customers semaphore mutex = 1;  //for mutual exclusion of waiting</span><br><span class="hljs-type">int</span> waiting = <span class="hljs-number">0</span>;  <span class="hljs-comment">//customer are waiting (not being cut)</span><br><br><span class="hljs-type">void</span> <span class="hljs-title function_">barber</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123; <br>    <span class="hljs-keyword">while</span> (TRUE) &#123; <br>        down(&amp;customers); <span class="hljs-comment">/* go to sleep if # of customers is 0 */</span>              <br>        down(&amp;mutex); <span class="hljs-comment">/* acquire access to &quot;waiting&#x27; */</span> <br>        waiting = waiting - <span class="hljs-number">1</span>; <span class="hljs-comment">/* decrement count of waiting customers */</span>                    	<br>        up(&amp;mutex); <span class="hljs-comment">/* release &#x27;waiting&#x27; */</span> <br>        up(&amp;barbers); <span class="hljs-comment">/* one barber is now ready to cut hair */</span>   		<br>        cut_hair(); <span class="hljs-comment">/* cut hair (outside critical region */</span> <br>   	&#125;<br> &#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">customer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123; <br>    down(&amp;mutex); <span class="hljs-comment">/* enter critical region */</span> <br>    <span class="hljs-keyword">if</span> (waiting &lt; CHAIRS) &#123; <br>    <span class="hljs-comment">/* if there is free chair, wait */</span> <br>        waiting = waiting + <span class="hljs-number">1</span>; <span class="hljs-comment">/* increment count of waiting customers */</span>     <br>	    up(&amp;mutex); <span class="hljs-comment">/* release access to &#x27;waiting&#x27; */</span> <br>	    up(&amp;customers); <span class="hljs-comment">/* wake up barber if necessary */</span> <br>	    down(&amp;barbers); <span class="hljs-comment">/* go to sleep if # of free barbers is 0 */</span> <br>	    get_haircut(); <span class="hljs-comment">/* be seated and be served */</span> <br>    &#125; <br>    <span class="hljs-keyword">else</span> &#123; <br>        up(&amp;mutex); <span class="hljs-comment">/* shop is full; do not wait */</span> <br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="柜员-顾客"><a href="#柜员-顾客" class="headerlink" title="柜员-顾客"></a>柜员-顾客</h3><h4 id="代码1：基于信号量同步"><a href="#代码1：基于信号量同步" class="headerlink" title="代码1：基于信号量同步"></a>代码1：基于信号量同步</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> cstmr_cnt = <span class="hljs-number">0</span>; <span class="hljs-comment">//下一个要服务的客户</span><br>Semaphore s_mutex=<span class="hljs-number">1</span>;<span class="hljs-comment">//服务器进程互斥访问cstmr_cnt</span><br>Semaphore next_cstmr = <span class="hljs-number">0</span>; <span class="hljs-comment">//客户服务器进程同步</span><br><br>process customer i<br>Begin<br>    <span class="hljs-title function_">v</span><span class="hljs-params">(next_cstmr)</span>;<br>end<br><br>process servers <span class="hljs-title function_">i</span><span class="hljs-params">(i=<span class="hljs-number">1</span>,...,n)</span><br>begin<br>    <span class="hljs-title function_">while</span><span class="hljs-params">(<span class="hljs-literal">true</span>)</span>&#123;<br>        p(s_mutex);<br>        p(next_cstmr);<br>        cstmr_cnt ++;<br>        v(s_mutex);<br>        为持有next_cstmr的客户服务;<br>    &#125;<br>end<br></code></pre></td></tr></table></figure>
+
+<p>这里servers进程里有 <code>p(next_cstmr)</code>，是等待customer来唤醒它</p>
+<h4 id="代码2：基于忙等同步"><a href="#代码2：基于忙等同步" class="headerlink" title="代码2：基于忙等同步"></a>代码2：基于忙等同步</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> cstmr_id = <span class="hljs-number">0</span>;  <span class="hljs-comment">//当前客户编号</span><br>semaphore mutex=<span class="hljs-number">1</span>; <span class="hljs-comment">//对cstmr_id互斥访问</span><br><span class="hljs-type">int</span> next_cstmr = <span class="hljs-number">0</span>; <span class="hljs-comment">//下一个要服务客户编号</span><br>semaphore s_mutex=<span class="hljs-number">1</span>; <span class="hljs-comment">//服务器进程互斥访next_cstmr</span><br><br>process customer i<br>Begin<br>    <span class="hljs-title function_">p</span><span class="hljs-params">(mutex)</span>;<br>        cstmr_id ++;<br>    v(mutex);<br>end<br><br>process servers <span class="hljs-title function_">i</span><span class="hljs-params">(i=<span class="hljs-number">1</span>,...,n)</span><br>begin<br>    <span class="hljs-title function_">while</span><span class="hljs-params">(<span class="hljs-literal">true</span>)</span>&#123;<br>        p(s_mutex);<br>        p(mutex);<br>        <span class="hljs-keyword">if</span>(next_cstmr &lt; cstmr_id)<br>            next_cstmr ++;<br>        v(mutex)<br>        v(s_mutex);<br>        为next_cstmr号码持有者服务;<br>    &#125;<br>end<br></code></pre></td></tr></table></figure>
+
+<p>这里servers进程是一直循环检查条件是否成立</p>
+<table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">信号量同步（阻塞等待）</th>
+<th align="left">忙等同步（自旋等待）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">等待方式</td>
+<td align="left">P操作让进程阻塞，主动放弃 CPU</td>
+<td align="left">循环检查条件，一直占用 CPU</td>
+</tr>
+<tr>
+<td align="left">CPU 消耗</td>
+<td align="left">低，等待时不占用 CPU</td>
+<td align="left">高，等待时一直空转消耗 CPU</td>
+</tr>
+<tr>
+<td align="left">适用场景</td>
+<td align="left">等待时间不确定、可能较长的场景</td>
+<td align="left">等待<strong>时间很短</strong>、上下文切换成本高的场景</td>
+</tr>
+<tr>
+<td align="left">同步核心</td>
+<td align="left">依赖信号量的P&#x2F;V原语唤醒</td>
+<td align="left">依赖循环检查状态，无主动唤醒</td>
+</tr>
+</tbody></table>
+<h3 id="构建水分子-H2O-问题"><a href="#构建水分子-H2O-问题" class="headerlink" title="构建水分子(H2O)问题"></a>构建水分子(H2O)问题</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c">oxygen = <span class="hljs-number">0</span>      <span class="hljs-comment">// 氧原子计数器：记录当前有多少个氧线程准备就绪</span><br>hydrogen = <span class="hljs-number">0</span>    <span class="hljs-comment">// 氢原子计数器：记录当前有多少个氢线程准备就绪</span><br>Semaphore mutex = <span class="hljs-number">1</span>  <span class="hljs-comment">// 互斥锁：保护oxygen、hydrogen计数器，避免多线程同时修改</span><br>Barrier barrier(<span class="hljs-number">3</span>)   <span class="hljs-comment">// 屏障：必须等3个线程（1O+2H）都到达这里，才会一起放行</span><br>Semaphore oxyQueue = <span class="hljs-number">0</span>   <span class="hljs-comment">// 氧线程的等待队列：氧原子不够条件时，在这里阻塞等待</span><br>Semaphore hydroQueue = <span class="hljs-number">0</span> <span class="hljs-comment">// 氢线程的等待队列：氢原子不够条件时，在这里阻塞等待</span><br><br><span class="hljs-comment">// 氧气线程</span><br><br>P(mutex)              <span class="hljs-comment">// 加锁，保护计数器</span><br>oxygen += <span class="hljs-number">1</span>           <span class="hljs-comment">// 氧原子就绪数+1</span><br><br><span class="hljs-keyword">if</span> hydrogen &gt;= <span class="hljs-number">2</span>:     <span class="hljs-comment">// 如果当前已经凑齐了≥2个氢原子</span><br>    V(hydroQueue)     <span class="hljs-comment">// 唤醒1个等待的氢线程（发信号：可以来生成水了）</span><br>    V(hydroQueue)     <span class="hljs-comment">// 再唤醒第2个等待的氢线程</span><br>    hydrogen -= <span class="hljs-number">2</span>     <span class="hljs-comment">// 消耗掉2个氢原子名额</span><br>    V(oxyQueue)       <span class="hljs-comment">// 唤醒自己（氧线程），让自己也能继续执行</span><br>    oxygen -= <span class="hljs-number">1</span>       <span class="hljs-comment">// 消耗掉1个氧原子名额</span><br><span class="hljs-keyword">else</span>:                 <span class="hljs-comment">// 氢原子还不够2个</span><br>    V(mutex)          <span class="hljs-comment">// 先释放锁，让其他线程可以修改计数器</span><br><br>P(oxyQueue)           <span class="hljs-comment">// 氧线程在这里阻塞，等待被唤醒</span><br>bond()                <span class="hljs-comment">// 模拟“生成水分子”的动作</span><br>barrier.wait()        <span class="hljs-comment">// 等3个线程（1O+2H）都到齐，再一起放行</span><br>V(mutex)              <span class="hljs-comment">// 最后释放锁</span><br><br><span class="hljs-comment">// 氢气线程</span><br><br>P(mutex)              <span class="hljs-comment">// 加锁，保护计数器</span><br>hydrogen += <span class="hljs-number">1</span>         <span class="hljs-comment">// 氢原子就绪数+1</span><br><br><span class="hljs-keyword">if</span> hydrogen &gt;= <span class="hljs-number">2</span> and oxygen &gt;= <span class="hljs-number">1</span>:  <span class="hljs-comment">// 同时满足：氢≥2 且 氧≥1</span><br>    V(hydroQueue)     <span class="hljs-comment">// 唤醒1个等待的氢线程</span><br>    V(hydroQueue)     <span class="hljs-comment">// 再唤醒第2个等待的氢线程（包括自己）</span><br>    hydrogen -= <span class="hljs-number">2</span>     <span class="hljs-comment">// 消耗2个氢名额</span><br>    V(oxyQueue)       <span class="hljs-comment">// 唤醒1个等待的氧线程</span><br>    oxygen -= <span class="hljs-number">1</span>       <span class="hljs-comment">// 消耗1个氧名额</span><br><span class="hljs-keyword">else</span>:                 <span class="hljs-comment">// 条件不满足，凑不齐1O+2H</span><br>    V(mutex)          <span class="hljs-comment">// 先释放锁，让其他线程可以修改计数器</span><br><br>P(hydroQueue)         <span class="hljs-comment">// 氢线程在这里阻塞，等待被唤醒</span><br>bond()                <span class="hljs-comment">// 模拟“生成水分子”的动作</span><br>barrier.wait()        <span class="hljs-comment">// 等3个线程（1O+2H）都到齐，再一起放行</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><h2 id="死锁的概念"><a href="#死锁的概念" class="headerlink" title="死锁的概念"></a>死锁的概念</h2><h3 id="死锁定义"><a href="#死锁定义" class="headerlink" title="死锁定义"></a>死锁定义</h3><p>死锁（Deadlock）：<br>如果一个进程集合中的每个进程都在等待只能由该进程集合中其他进程才能引发的事件，那么这个进程集合就是死锁的。</p>
+<p>死锁的根本特征：</p>
+<ul>
+<li>每个进程都在等待；</li>
+<li>每个进程等待的条件，都依赖于同一组进程中的其他进程；</li>
+<li>没有外力介入时，这种等待会一直持续下去。</li>
+</ul>
+<h4 id="资源死锁："><a href="#资源死锁：" class="headerlink" title="资源死锁："></a>资源死锁：</h4><p>如果每个进程等待的事件，都是<strong>释放</strong>该进程集合中其他进程所占有的<strong>资源</strong>，则称为资源死锁。</p>
+<h4 id="通信死锁"><a href="#通信死锁" class="headerlink" title="通信死锁"></a>通信死锁</h4><p>例子：</p>
+<ul>
+<li>进程 <code>A</code> 向进程 <code>B</code> 发送请求消息；</li>
+<li><code>A</code> 发送后阻塞，等待 <code>B</code> 回复；</li>
+<li>若该请求消息丢失，则 <code>A</code> 一直等回复；</li>
+<li>而 <code>B</code> 根本没收到消息，也可能一直等新的请求；</li>
+<li>于是形成通信死锁。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>不一定涉及“占有资源不放”；</li>
+<li>更难单纯靠调度避免；</li>
+<li>常通过<strong>超时与重传机制</strong>避免。</li>
+</ul>
+<h3 id="死锁、饥饿、活锁"><a href="#死锁、饥饿、活锁" class="headerlink" title="死锁、饥饿、活锁"></a>死锁、饥饿、活锁</h3><p>死锁不等于饥饿，也不等于活锁。</p>
+<p>饥饿（Starvation）：</p>
+<ul>
+<li>某个进程长期得不到所需资源或调度机会，因此一直无法推进。</li>
+<li>例如读者优先的读者-写者问题中，写者可能长期得不到执行机会，这叫饥饿，不叫死锁。</li>
+</ul>
+<p>活锁（Livelock）：</p>
+<ul>
+<li>两个或多个线程不断改变状态、互相谦让，但谁都无法真正向前推进。</li>
+<li>例如两个线程同时释放锁、同时重试、再次同时冲突，反复循环。</li>
+<li>避免活锁的常见方法：引入随机退避时间（解锁之前，等待一个随机时间）。</li>
+</ul>
+<h3 id="死锁发生的原因"><a href="#死锁发生的原因" class="headerlink" title="死锁发生的原因"></a>死锁发生的原因</h3><p>死锁通常由两类原因引起：</p>
+<ul>
+<li>竞争资源；</li>
+<li>并发执行顺序不当。</li>
+</ul>
+<p>典型例子：</p>
+<p>进程 <code>P1</code></p>
+<ul>
+<li>先申请文件 <code>F</code></li>
+<li>再申请打印机 <code>T</code></li>
+</ul>
+<p>进程 <code>P2</code></p>
+<ul>
+<li>先申请打印机 <code>T</code></li>
+<li>再申请文件 <code>F</code></li>
+</ul>
+<p>若 <code>P1</code> 已拿到 <code>F</code> 等待 <code>T</code>，同时 <code>P2</code> 已拿到 <code>T</code> 等待 <code>F</code>，就会形成死锁。</p>
+<h3 id="竞争资源引发死锁"><a href="#竞争资源引发死锁" class="headerlink" title="竞争资源引发死锁"></a>竞争资源引发死锁</h3><h4 id="可剥夺资源与不可剥夺资源"><a href="#可剥夺资源与不可剥夺资源" class="headerlink" title="可剥夺资源与不可剥夺资源"></a>可剥夺资源与不可剥夺资源</h4><p>可剥夺资源：</p>
+<ul>
+<li>进程获得后，系统或其他进程可以强行夺走。</li>
+<li>如 CPU、部分内存资源。</li>
+</ul>
+<p>不可剥夺资源：</p>
+<ul>
+<li>一旦分配给某进程，就不能强行收回，只能由进程用完后主动释放。</li>
+<li>如打印机、刻录机。</li>
+</ul>
+<h4 id="临时性资源"><a href="#临时性资源" class="headerlink" title="临时性资源"></a>临时性资源</h4><p>临时性资源也叫消耗性资源：</p>
+<ul>
+<li>由一个进程产生，被另一个进程使用；</li>
+<li>使用后很快失去意义。</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>消息；</li>
+<li>中断；</li>
+<li>通信数据包。</li>
+</ul>
+<p>这类资源同样可能导致死锁。</p>
+<p>例如三个进程：</p>
+<ul>
+<li><code>P1</code> 等待 <code>P3</code> 的消息 <code>S3</code>，自己掌握 <code>S1</code></li>
+<li><code>P2</code> 等待 <code>P1</code> 的消息 <code>S1</code>，自己掌握 <code>S2</code></li>
+<li><code>P3</code> 等待 <code>P2</code> 的消息 <code>S2</code>，自己掌握 <code>S3</code></li>
+</ul>
+<p>若大家都先请求、后释放，就可能形成环路等待并发生死锁。</p>
+<h4 id="资源死锁的必要条件"><a href="#资源死锁的必要条件" class="headerlink" title="资源死锁的必要条件"></a>资源死锁的必要条件</h4><ol>
+<li>互斥条件：指进程对所分配到的资源进行排它性使用，即在<strong>一段时间内某资源只能有一个进程占用</strong>。</li>
+<li>保持和请求条件：已经获得资源的线程可以请求新的资源</li>
+<li>不剥夺条件：指进程已获得的资源，在未使用完之前不能被强制剥夺，只能在使用完时由自己释放。</li>
+<li>环路等待条件：指在发生死锁时，必然存在两个或多个进程组成的环形链，每个进程都在等待环形链中下一个节点占用的资源。</li>
+</ol>
+<h2 id="处理死锁的基本方法"><a href="#处理死锁的基本方法" class="headerlink" title="处理死锁的基本方法"></a>处理死锁的基本方法</h2><p>处理死锁的思路主要有四类：</p>
+<ul>
+<li>鸵鸟算法：忽略死锁；</li>
+<li>死锁检测与恢复：允许发生，再检测并解除；</li>
+<li>死锁预防：破坏死锁的四个必要条件之一；</li>
+<li>死锁避免：动态判断分配后是否仍安全，只在安全时分配。</li>
+</ul>
+<blockquote>
+<p>越早对死锁下手，通常对系统性能影响越大。<br>像 Unix 这类重视性能的系统，通常不采用代价较高的预防&#x2F;避免，而更倾向于检测与恢复。</p>
+</blockquote>
+<h3 id="鸵鸟算法"><a href="#鸵鸟算法" class="headerlink" title="鸵鸟算法"></a>鸵鸟算法</h3><p>鸵鸟算法：</p>
+<ul>
+<li>无视死锁的存在，假设它很少发生；</li>
+<li>一旦发生，由人工重启、杀进程等方式处理。</li>
+</ul>
+<p>适用场景：</p>
+<ul>
+<li>死锁发生概率低；</li>
+<li>死锁影响范围小；</li>
+<li>系统更看重性能和实现简单性。</li>
+</ul>
+<h2 id="死锁检测与恢复"><a href="#死锁检测与恢复" class="headerlink" title="死锁检测与恢复"></a>死锁检测与恢复</h2><h3 id="死锁检测"><a href="#死锁检测" class="headerlink" title="死锁检测"></a>死锁检测</h3><p>死锁检测的核心思想：</p>
+<ul>
+<li>根据资源请求和资源分配信息，判断系统中是否存在循环等待。</li>
+</ul>
+<p>常见方法：</p>
+<ul>
+<li>资源分配图法；</li>
+<li>资源向量&#x2F;矩阵法。</li>
+</ul>
+<h4 id="资源分配图"><a href="#资源分配图" class="headerlink" title="资源分配图"></a>资源分配图</h4><p>资源分配图（Resource Allocation Graph, RAG）中：</p>
+<ul>
+<li>圆形结点表示进程；</li>
+<li>方形结点表示资源；</li>
+<li>资源 <code>-&gt;</code> 进程：资源已分配给该进程；</li>
+<li>进程 <code>-&gt;</code> 资源：该进程正在请求该资源。</li>
+</ul>
+<p><img src="/2026/08/15/os-notes-process/image-29.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h5 id="每个资源只有一个实例"><a href="#每个资源只有一个实例" class="headerlink" title="每个资源只有一个实例"></a>每个资源只有一个实例</h5><p>若每类资源都只有一个实例，则：</p>
+<ul>
+<li>图中<strong>有环</strong>，当且仅当系统中<strong>发生死锁</strong>。</li>
+</ul>
+<p>因此可以：</p>
+<ul>
+<li>按请求&#x2F;释放资源的过程更新图；</li>
+<li>每次更新后检查图中是否存在环。</li>
+</ul>
+<h5 id="多实例资源的资源分配图化简"><a href="#多实例资源的资源分配图化简" class="headerlink" title="多实例资源的资源分配图化简"></a>多实例资源的资源分配图化简</h5><p>当每类资源有多个实例时，仅仅“有环”不再是死锁的充要条件，需要看图能否化简。</p>
+<p>封锁进程：请求量超过当前可用资源数，暂时无法满足的进程。</p>
+<p>非封锁进程：其请求量不超过当前可用资源数的进程。</p>
+<p>化简思想：</p>
+<ul>
+<li>寻找一个非封锁进程 <code>Pi</code>；</li>
+<li>先假设系统将其请求满足（请求边变成分配边）；</li>
+<li><code>Pi</code> 在有限时间内执行结束并释放全部资源；</li>
+<li>删除 <code>Pi</code> 的请求边和分配边；</li>
+<li>重复以上过程。</li>
+</ul>
+<p>死锁定理：</p>
+<ul>
+<li>某时刻系统处于死锁状态，当且仅当此时资源分配图<strong>不可完全化简</strong>。</li>
+</ul>
+<h4 id="资源向量（矩阵）算法"><a href="#资源向量（矩阵）算法" class="headerlink" title="资源向量（矩阵）算法"></a>资源向量（矩阵）算法</h4><p>适用于每类资源有多个实例的情况。</p>
+<p>定义：</p>
+<ul>
+<li><code>E</code>：存在资源向量（Existing），表示各类资源总量；</li>
+<li><code>A</code>：可用资源向量（Available），表示当前未分配资源数；</li>
+<li><code>C</code>：当前分配矩阵（Current Allocation），第 <code>i</code> 行表示进程 <code>Pi</code> 已占有的各类资源数；</li>
+<li><code>R</code>：请求矩阵（Request），第 <code>i</code> 行表示进程 <code>Pi</code> 仍请求的各类资源数。</li>
+</ul>
+<p>检测算法思想：</p>
+<ol>
+<li>寻找某个进程 <code>Pi</code>，满足 <code>R_i &lt;= A</code></li>
+<li>若找到，则认为 <code>Pi</code> 可完成，把 <code>C_i</code> 归还给系统：<br><code>A = A + C_i</code></li>
+<li>标记 <code>Pi</code> 完成，继续寻找下一进程</li>
+<li>若再也找不到满足条件的进程，则算法结束</li>
+<li>若仍有未标记进程，则这些进程就是死锁进程</li>
+</ol>
+<p>本质：</p>
+<ul>
+<li>反复寻找“还能完成”的进程；</li>
+<li>若最终有人永远无法被满足，则系统存在死锁。</li>
+</ul>
+<h3 id="死锁恢复"><a href="#死锁恢复" class="headerlink" title="死锁恢复"></a>死锁恢复</h3><p>检测到死锁后，可以采用以下方法恢复：</p>
+<h4 id="资源抢占法"><a href="#资源抢占法" class="headerlink" title="资源抢占法"></a>资源抢占法</h4><ul>
+<li>挂起一些占有资源的进程；</li>
+<li>强行剥夺其资源；</li>
+<li>把资源分配给其他死锁进程，使其先完成；</li>
+<li>再恢复被挂起的进程。</li>
+</ul>
+<p>问题：</p>
+<ul>
+<li>资源未必适合抢占；</li>
+<li>实现复杂；</li>
+<li>可能带来一致性问题。</li>
+</ul>
+<h4 id="杀死进程法"><a href="#杀死进程法" class="headerlink" title="杀死进程法"></a>杀死进程法</h4><ul>
+<li>杀死一个或多个进程，释放其资源；</li>
+<li>打破死锁环。</li>
+</ul>
+<p>选择策略可以考虑：</p>
+<ul>
+<li>优先杀死代价小的进程；</li>
+<li>优先杀死可重启、无副作用的进程。</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>编译进程：通常可以杀死重来；</li>
+<li>数据库事务进程：可能有副作用，要谨慎；</li>
+<li>打印进程：可能造成输出混乱。</li>
+</ul>
+<h4 id="回滚法"><a href="#回滚法" class="headerlink" title="回滚法"></a>回滚法</h4><p>思想：</p>
+<ul>
+<li>系统定期设置检查点（checkpoint）；</li>
+<li>检测到死锁后，把某个进程回滚到“尚未占用关键资源”的状态；</li>
+<li>释放其资源，让其他进程推进。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>常见于事务系统和容错系统；</li>
+<li>需要额外的检查点<strong>存储开销</strong>；</li>
+<li>本质上也常用于故障恢复。</li>
+</ul>
+<h2 id="死锁预防"><a href="#死锁预防" class="headerlink" title="死锁预防"></a>死锁预防</h2><p>死锁预防：</p>
+<ul>
+<li>通过破坏四个必要条件之一，使死锁不可能发生。</li>
+</ul>
+<h3 id="1-打破互斥条件"><a href="#1-打破互斥条件" class="headerlink" title="1. 打破互斥条件"></a>1. 打破互斥条件</h3><p>思路：<br>让某些资源变成可共享资源。</p>
+<p>局限：<br>很多资源天然是互斥的，如打印机、独占设备。</p>
+<p>典型做法：<br>使用<strong>假脱机技术（Spooling）</strong>，把独占设备改造成逻辑上的共享设备。</p>
+<h3 id="2-打破保持和请求条件"><a href="#2-打破保持和请求条件" class="headerlink" title="2. 打破保持和请求条件"></a>2. 打破保持和请求条件</h3><p>常见策略：</p>
+<ul>
+<li>进程开始执行前，一次性申请所需全部资源；</li>
+<li>若申请不到全部资源，则一个也不分配。</li>
+</ul>
+<p>或：</p>
+<ul>
+<li>进程申请新资源前，先释放当前已占有资源，再重新申请全部需要的资源。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>不会出现“拿着一部分资源再等另一部分资源”的情况。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>很多程序事先并不知道完整资源需求（因为在许多情况下，进程在执行时是动态的，不可预测的）；</li>
+<li>资源利用率低；</li>
+<li>降低并发度。</li>
+</ul>
+<h3 id="3-打破不可抢占条件"><a href="#3-打破不可抢占条件" class="headerlink" title="3. 打破不可抢占条件"></a>3. 打破不可抢占条件</h3><p>思路：<br>允许系统在必要时强行剥夺资源。</p>
+<p>问题：</p>
+<ul>
+<li>对很多独占设备不现实；</li>
+<li>可能导致执行结果异常。</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>正在打印时抢占打印机，输出可能直接损坏。</li>
+</ul>
+<h3 id="4-打破循环等待条件"><a href="#4-打破循环等待条件" class="headerlink" title="4. 打破循环等待条件"></a>4. 打破循环等待条件</h3><p>最经典的方法：<strong>资源有序分配法</strong></p>
+<p>做法：</p>
+<ul>
+<li>对系统中的所有资源统一编号；</li>
+<li>规定所有进程必须按编号递增顺序申请资源。</li>
+</ul>
+<p>这样做的效果：</p>
+<ul>
+<li>不可能形成环形等待链；</li>
+<li>因而可以预防死锁。</li>
+</ul>
+<p>例子：</p>
+<ul>
+<li><code>PA</code> 需要按顺序使用 <code>R1 -&gt; R2</code></li>
+<li><code>PB</code> 原本想按 <code>R2 -&gt; R1</code> 使用</li>
+<li>若强制资源编号顺序申请，则 <code>PB</code> 也必须按 <code>R1 -&gt; R2</code> 申请</li>
+<li>环路等待被破坏</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>资源编号本身不容易设计；</li>
+<li>限制进程申请资源的灵活性；</li>
+<li>可能导致某些暂时不用的资源也要提前申请，增加占用时间。</li>
+</ul>
+<h3 id="哲学家进餐问题"><a href="#哲学家进餐问题" class="headerlink" title="哲学家进餐问题"></a>哲学家进餐问题</h3><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>5 个哲学家围坐在圆桌旁，桌上有 5 支筷子。</p>
+<p>规则：</p>
+<ul>
+<li>每个哲学家需要同时拿到左、右两支筷子才能吃饭；</li>
+<li>吃完后放下筷子，继续思考。</li>
+</ul>
+<p>抽象代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    think()<br>    get_forks()<br>    eat()<br>    put_forks()<br></code></pre></td></tr></table></figure>
+
+<p>它是死锁问题的经典模型。</p>
+<h4 id="直接做法为何会死锁"><a href="#直接做法为何会死锁" class="headerlink" title="直接做法为何会死锁"></a>直接做法为何会死锁</h4><p>若每个哲学家都先拿右边筷子，再拿左边筷子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_forks</span>(<span class="hljs-params">i</span>):<br>    fork[right(i)].wait()<br>    fork[left(i)].wait()<br></code></pre></td></tr></table></figure>
+
+<p>那么可能出现：</p>
+<ul>
+<li>5 个哲学家同时各拿起一支右边的筷子；</li>
+<li>然后都等待左边那支；</li>
+<li>形成循环等待，发生死锁。</li>
+</ul>
+<h4 id="常见解法"><a href="#常见解法" class="headerlink" title="常见解法"></a>常见解法</h4><h5 id="方法1：最多只允许-4-个哲学家同时尝试拿筷子"><a href="#方法1：最多只允许-4-个哲学家同时尝试拿筷子" class="headerlink" title="方法1：最多只允许 4 个哲学家同时尝试拿筷子"></a>方法1：最多只允许 4 个哲学家同时尝试拿筷子</h5><p>增加信号量 <code>diners = 4</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">diners = Semaphore(<span class="hljs-number">4</span>)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_forks</span>(<span class="hljs-params">i</span>):<br>    diners.wait()<br>    fork[right(i)].wait()<br>    fork[left(i)].wait()<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">put_forks</span>(<span class="hljs-params">i</span>):<br>    fork[right(i)].signal()<br>    fork[left(i)].signal()<br>    diners.signal()<br></code></pre></td></tr></table></figure>
+
+<p>作用：</p>
+<ul>
+<li>保证至少有一个哲学家最终能拿到两支筷子；</li>
+<li>破坏了<strong>循环等待</strong>条件。</li>
+</ul>
+<h5 id="方法2：改变拿筷子顺序"><a href="#方法2：改变拿筷子顺序" class="headerlink" title="方法2：改变拿筷子顺序"></a>方法2：改变拿筷子顺序</h5><p>例如：</p>
+<ul>
+<li>奇数号哲学家先拿左边，再拿右边；</li>
+<li>偶数号哲学家先拿右边，再拿左边。</li>
+</ul>
+<p>效果：破坏<strong>循环等待</strong>条件。</p>
+<h5 id="方法3：按资源编号有序申请"><a href="#方法3：按资源编号有序申请" class="headerlink" title="方法3：按资源编号有序申请"></a>方法3：按资源编号有序申请</h5><p>给筷子编号，哲学家总是先拿编号小的，再拿编号大的。</p>
+<p>本质：</p>
+<ul>
+<li>资源有序分配法；</li>
+<li>破坏<strong>循环等待</strong>条件。</li>
+</ul>
+<h5 id="方法4：要么同时拿两支，要么一支也不拿"><a href="#方法4：要么同时拿两支，要么一支也不拿" class="headerlink" title="方法4：要么同时拿两支，要么一支也不拿"></a>方法4：要么同时拿两支，要么一支也不拿</h5><p>效果：破坏<strong>保持和请求</strong>条件。</p>
+<p>Tanenbaum 算法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python">state = [<span class="hljs-string">&#x27; thinking &#x27;</span>] * <span class="hljs-number">5</span><br>sem = [Semaphore(<span class="hljs-number">0</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>)]<br>mutex = Semaphore (<span class="hljs-number">1</span>)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_fork</span>(<span class="hljs-params">i</span>):<br>    mutex.wait()<br>    state[i] = <span class="hljs-string">&#x27;hungry&#x27;</span><br>    test(i)<br>    mutex.signal()<br>    sem[i].wait()<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">put_fork</span>(<span class="hljs-params">i</span>):<br>    mutex.wait()<br>    state[i] = <span class="hljs-string">&#x27;thinking&#x27;</span><br>    test(right(i))<br>    test(left(i))<br>    mutex.signal()<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">test</span>(<span class="hljs-params">i</span>):<br>    <span class="hljs-keyword">if</span> state[i] == <span class="hljs-string">&#x27;hungry&#x27;</span> <span class="hljs-keyword">and</span> \<br>       state[left(i)] != <span class="hljs-string">&#x27;eating&#x27;</span> <span class="hljs-keyword">and</span> \<br>       state[right(i)] != <span class="hljs-string">&#x27;eating&#x27;</span>:<br>        state[i] = <span class="hljs-string">&#x27;eating&#x27;</span><br>        sem[i].signal()<br></code></pre></td></tr></table></figure>
+
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>某些算法可以避免死锁，但仍可能产生饥饿。</p>
+<p>也就是说：</p>
+<ul>
+<li>“不会卡死”不等于“每个人都公平地最终吃到饭”。</li>
+</ul>
+<h2 id="死锁避免"><a href="#死锁避免" class="headerlink" title="死锁避免"></a>死锁避免</h2><p>死锁避免：</p>
+<ul>
+<li>不直接破坏死锁必要条件；</li>
+<li>允许系统处于可能产生死锁的结构中；</li>
+<li>但在每次资源分配前动态判断：分配后系统是否仍然安全；</li>
+<li>只有在安全时才真正分配资源。</li>
+</ul>
+<p>它比死锁预防更灵活，但实现代价更高。<br>假设(限制)：需要事先知道进程请求的所有资源</p>
+<h3 id="安全序列"><a href="#安全序列" class="headerlink" title="安全序列"></a>安全序列</h3><p>安全序列：</p>
+<ul>
+<li>系统中的所有进程能够按照某种顺序，依次获得所需资源、执行完毕并释放资源；</li>
+<li>这样的进程序列称为安全序列。</li>
+</ul>
+<p>若存在安全序列，则系统处于安全状态。</p>
+<h3 id="安全状态与不安全状态"><a href="#安全状态与不安全状态" class="headerlink" title="安全状态与不安全状态"></a>安全状态与不安全状态</h3><p>安全状态：</p>
+<ul>
+<li>当前没有死锁；</li>
+<li>并且即使各进程都按其最大需求申请资源，系统仍然<strong>存在某种调度顺序</strong>，使所有进程都能完成。</li>
+</ul>
+<p>不安全状态：</p>
+<ul>
+<li>不存在这样的安全序列。</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>不安全状态<strong>不一定</strong>产生死锁（因为不一定按最大需求申请资源）；</li>
+<li>但一旦死锁，系统一定处于不安全状态。</li>
+</ul>
+<h3 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h3><p>银行家算法（Banker’s Algorithm）是最经典的死锁避免算法。</p>
+<p>核心思想：</p>
+<ul>
+<li>像银行发放贷款一样，系统在每次分配资源前都先判断：</li>
+<li>若这次分配后还能保证“最终所有进程都能完成”，则批准；</li>
+<li>否则拒绝本次分配，让进程等待。</li>
+</ul>
+<h4 id="基本前提"><a href="#基本前提" class="headerlink" title="基本前提"></a>基本前提</h4><p>银行家算法要求：</p>
+<ul>
+<li>每个进程在<strong>开始时就声明最大资源需求</strong>；</li>
+<li>已分配资源最终会释放；</li>
+<li>系统能够跟踪各类资源的总量、已分配量和剩余量。</li>
+</ul>
+<h4 id="关键数据结构"><a href="#关键数据结构" class="headerlink" title="关键数据结构"></a>关键数据结构</h4><ul>
+<li><code>Available</code>：当前系统可用资源向量；</li>
+<li><code>Max</code>：最大需求矩阵；</li>
+<li><code>Allocation</code>：当前分配矩阵；</li>
+<li><code>Need</code>：尚需资源矩阵。</li>
+</ul>
+<p>其中：</p>
+<p><code>Need = Max - Allocation</code></p>
+<h4 id="资源请求算法"><a href="#资源请求算法" class="headerlink" title="资源请求算法"></a>资源请求算法</h4><p>设 <code>Request_i</code> 为进程 <code>Pi</code> 的请求向量，系统按如下步骤处理：</p>
+<ol>
+<li>若 <code>Request_i &lt;= Need_i</code>，继续；否则说明请求超过最大声明，出错。</li>
+<li>若 <code>Request_i &lt;= Available</code>，继续；否则当前资源不足，<code>Pi</code> 等待。</li>
+<li>试探性分配：</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs text">Available  = Available  - Request_i<br>Allocation = Allocation + Request_i<br>Need       = Need       - Request_i<br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>执行安全性算法：</li>
+</ol>
+<ul>
+<li>若分配后系统仍安全，则正式分配；</li>
+<li>否则撤销本次试探分配，让 <code>Pi</code> 等待。</li>
+</ul>
+<h4 id="安全性算法"><a href="#安全性算法" class="headerlink" title="安全性算法"></a>安全性算法</h4><p>设置：</p>
+<ul>
+<li><code>Work = Available</code></li>
+<li><code>Finish[i] = false</code></li>
+</ul>
+<p>循环执行：</p>
+<ol>
+<li>找到某个 <code>Pi</code>，满足：<ul>
+<li><code>Finish[i] == false</code></li>
+<li><code>Need_i &lt;= Work</code></li>
+</ul>
+</li>
+<li>若找到，则假设 <code>Pi</code> 执行结束并释放资源：</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">Work = Work + Allocation_i<br>Finish[i] = true<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>重复寻找下一进程</li>
+<li>若最终所有 <code>Finish[i]</code> 都为 <code>true</code>，则系统安全；否则系统不安全</li>
+</ol>
+<h4 id="银行家算法的特点"><a href="#银行家算法的特点" class="headerlink" title="银行家算法的特点"></a>银行家算法的特点</h4><p>优点：</p>
+<ul>
+<li>允许互斥、部分分配和不可剥夺存在；</li>
+<li>比“死锁预防”更灵活，资源利用率更高。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>必须预先知道最大资源需求；</li>
+<li>现实系统中很多程序很难准确给出最大需求；</li>
+<li>算法本身有额外运行开销。</li>
+</ul>
+<h2 id="典型错误回顾"><a href="#典型错误回顾" class="headerlink" title="典型错误回顾"></a>典型错误回顾</h2><h3 id="Rendezvous-中的死锁写法"><a href="#Rendezvous-中的死锁写法" class="headerlink" title="Rendezvous 中的死锁写法"></a>Rendezvous 中的死锁写法</h3><p>若两个线程都把 <code>signal</code> 放在 <code>wait</code> 之后，就可能彼此等待，导致死锁。</p>
+<p>说明：</p>
+<ul>
+<li>同步原语的顺序写错，也可能导致死锁；</li>
+<li>这类问题本质上仍然是“等待环”。</li>
+</ul>
+<h3 id="生产者-消费者中的死锁写法"><a href="#生产者-消费者中的死锁写法" class="headerlink" title="生产者-消费者中的死锁写法"></a>生产者-消费者中的死锁写法</h3><p>如果把生产者写成：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">P(mutex);<br>P(empty);<br></code></pre></td></tr></table></figure>
+
+<p>而不是先 <code>P(empty)</code> 再 <code>P(mutex)</code>，就可能导致死锁：</p>
+<ul>
+<li>生产者先拿到 <code>mutex</code>；</li>
+<li>再因缓冲区满而阻塞在 <code>empty</code>；</li>
+<li>消费者想进入缓冲区又必须申请 <code>mutex</code>；</li>
+<li>于是双方互相等待。</li>
+</ul>
+<p>这说明：</p>
+<ul>
+<li>对多个信号量&#x2F;锁的申请顺序不当，是死锁的常见来源。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/BUAA-OS/" class="print-no-link">#BUAA_OS</a>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OS 理论笔记：进程管理与死锁</div>
+      <div>https://wv-ce.github.io/2026/08/15/os-notes-process/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wv-ce</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/16/os-notes-io/" title="OS 理论笔记：I/O 设备管理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OS 理论笔记：I/O 设备管理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/14/os-notes-memory/" title="OS 理论笔记：内存管理">
+                        <span class="hidden-mobile">OS 理论笔记：内存管理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>© 2024 wv-ce</span> <i class="iconfont icon-love"></i> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

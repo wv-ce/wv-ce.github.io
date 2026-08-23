@@ -1,0 +1,1311 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wv-ce">
+  <meta name="keywords" content="wv-ce,博客,技术,随笔">
+  
+    <meta name="description" content="OS 理论笔记：磁盘管理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS 理论笔记：磁盘管理">
+<meta property="og:url" content="https://wv-ce.github.io/2026/08/17/os-notes-disk/index.html">
+<meta property="og:site_name" content="wv-ce">
+<meta property="og:description" content="OS 理论笔记：磁盘管理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/17/os-notes-disk/image.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/17/os-notes-disk/image-1.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/17/os-notes-disk/image-2.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/17/os-notes-disk/image-3.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/17/os-notes-disk/image-4.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/17/os-notes-disk/image-5.png">
+<meta property="article:published_time" content="2026-08-17T10:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-23T07:27:41.697Z">
+<meta property="article:author" content="wv-ce">
+<meta property="article:tag" content="BUAA_OS">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://wv-ce.github.io/2026/08/17/os-notes-disk/image.png">
+  
+  
+  
+  <title>OS 理论笔记：磁盘管理 - wv-ce</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wv-ce.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OS 理论笔记：磁盘管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-17 10:00" pubdate>
+          2026年8月17日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          45 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OS 理论笔记：磁盘管理</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="磁盘管理"><a href="#磁盘管理" class="headerlink" title="磁盘管理"></a>磁盘管理</h1><h2 id="磁盘的工作原理"><a href="#磁盘的工作原理" class="headerlink" title="磁盘的工作原理"></a>磁盘的工作原理</h2><h3 id="磁盘的基本结构"><a href="#磁盘的基本结构" class="headerlink" title="磁盘的基本结构"></a>磁盘的基本结构</h3><p>磁盘是一种典型的随机存取外存设备，数据记录在旋转盘片表面的磁性介质上，由磁头完成读写。</p>
+<p>常见概念：</p>
+<ul>
+<li>磁道（track）：盘片表面上的同心圆。</li>
+<li>扇区（sector）：磁道被划分出的若干扇形区域，是磁盘读写的基本单位。</li>
+<li>柱面（cylinder）：多个盘面上半径相同的磁道组成的集合。</li>
+<li>磁头（head）：每个盘面通常对应一个磁头。</li>
+</ul>
+<p>传统地址方式是 <code>CHS</code>（柱面 Cylinder、磁头 Head、扇区 Sector），现代系统更多采用 <code>LBA</code>（逻辑块地址）进行统一编号。</p>
+<h3 id="温彻斯特磁盘"><a href="#温彻斯特磁盘" class="headerlink" title="温彻斯特磁盘"></a><del>温彻斯特磁盘</del></h3><p>温彻斯特磁盘的主要特点：</p>
+<ul>
+<li>磁头和盘片组件密封；</li>
+<li>内部充惰性气体，减小阻力；</li>
+<li>磁头更轻更小，可以更靠近盘面；</li>
+<li>采用接触起停技术，降低结构复杂度。</li>
+</ul>
+<p>这些改进带来了更大的容量、更高的读写速度和更低的成本。</p>
+<h3 id="位密度与-ZBR"><a href="#位密度与-ZBR" class="headerlink" title="位密度与 ZBR"></a>位密度与 ZBR</h3><p>位密度：沿磁道方向单位长度内可记录的二进制位数，也称线密度。</p>
+<p>老式磁盘：</p>
+<ul>
+<li>每个磁道的扇区数相同；</li>
+<li>外圈磁道更长，因此空间利用率不高。</li>
+</ul>
+<p>新式磁盘通常采用 <code>ZBR</code>（Zone Bit Recording，分区记录）：</p>
+<ul>
+<li>不同磁道的扇区数不同；</li>
+<li>外圈磁道拥有更多扇区；</li>
+<li>能提高盘面利用率和总体容量。</li>
+</ul>
+<blockquote>
+<p>从 OS 视角看，磁盘控制器常常会把复杂的物理布局抽象成线性的逻辑块地址。</p>
+</blockquote>
+<h3 id="磁盘缺陷与坏块替换"><a href="#磁盘缺陷与坏块替换" class="headerlink" title="磁盘缺陷与坏块替换"></a>磁盘缺陷与坏块替换</h3><p>硬盘实际扇区数比硬盘标签上标定的大，其中一部份用于存储硬盘的<strong>固件</strong>（硬盘控制器使用）；一部分是用户存储数据的区域，即<strong>工作区</strong>，也就是硬盘标定容量的扇区；剩下的就是<strong>保留区</strong>，超过在固件里定义的硬盘容量的那些扇区就称为保留扇区。<br>实际磁盘不可避免存在缺陷扇区，因此需要缺陷管理机制。</p>
+<p>两类缺陷表：</p>
+<ul>
+<li><code>P</code> 表（Permanent defect list）：出厂时记录的永久缺陷。</li>
+<li><code>G</code> 表（Growth defect list）：使用过程中新增的缺陷。</li>
+</ul>
+<p>处理方式：</p>
+<ul>
+<li>使用保留扇区替换坏扇区；</li>
+<li>对 OS 暴露连续的逻辑块编号。</li>
+</ul>
+<p><img src="/2026/08/17/os-notes-disk/image.png" srcset="/img/loading.gif" lazyload alt="缺陷加入P表后的扇区结构" title="缺陷加入P表后的扇区结构"><br><em>缺陷加入P表后的扇区结构</em></p>
+<p><img src="/2026/08/17/os-notes-disk/image-1.png" srcset="/img/loading.gif" lazyload alt="缺陷加入G表后的扇区结构" title="缺陷加入G表后的扇区结构"><br><em>缺陷加入G表后的扇区结构</em></p>
+<p>影响：</p>
+<ul>
+<li>加入 <code>P</code> 表的坏块通常在低级格式化时就被重映射；</li>
+<li>加入 <code>G</code> 表的坏块会导致逻辑连续但物理上不连续，从而拉长寻道距离，<strong>降低</strong>局部访问<strong>性能</strong>。</li>
+</ul>
+<h3 id="Flash-Disk-简述"><a href="#Flash-Disk-简述" class="headerlink" title="Flash Disk 简述"></a>Flash Disk 简述</h3><p>Flash Disk 是电子式非易失性存储器，相比机械磁盘：</p>
+<ul>
+<li>无机械部件，抗震性更好；</li>
+<li>访问延迟更小；</li>
+<li>功耗更低；</li>
+<li>写入通常慢于读取；</li>
+<li>容量和价格长期是主要约束。</li>
+</ul>
+<h3 id="磁盘的类型"><a href="#磁盘的类型" class="headerlink" title="磁盘的类型"></a>磁盘的类型</h3><ul>
+<li>固定头磁盘<ul>
+<li>每条磁道都有一个磁头</li>
+<li>磁头不能移动，速度快，容量小</li>
+</ul>
+</li>
+<li>移动头磁盘<ul>
+<li>磁头可以活动</li>
+</ul>
+</li>
+</ul>
+<h3 id="磁盘访问时间"><a href="#磁盘访问时间" class="headerlink" title="磁盘访问时间"></a>磁盘访问时间</h3><h4 id="访问时间组成"><a href="#访问时间组成" class="headerlink" title="访问时间组成"></a>访问时间组成</h4><p>一次磁盘访问时间主要由三部分组成：</p>
+<ul>
+<li>寻道时间 <code>Ts</code>：磁头移动到目标磁道所需时间；</li>
+<li>旋转延迟时间 <code>Tr</code>：目标扇区转到磁头下方所需时间；</li>
+<li>传输时间 <code>Tt</code>：数据真正读出或写入所需时间。</li>
+</ul>
+<p>总访问时间：</p>
+<p>$$<br>T &#x3D; T_s + T_r + T_t<br>$$</p>
+<h4 id="寻道时间"><a href="#寻道时间" class="headerlink" title="寻道时间"></a>寻道时间</h4><p>寻道时间是磁臂从当前位置移动到目标磁道的时间。</p>
+<p>常用近似公式：</p>
+<p>$$<br>T_s &#x3D; m \times n + s<br>$$</p>
+<p>其中：</p>
+<ul>
+<li><code>m</code>：跨越一个磁道的平均移动时间；</li>
+<li><code>n</code>：跨越的磁道数；</li>
+<li><code>s</code>：启动磁臂的固定开销。</li>
+</ul>
+<h4 id="旋转延迟时间"><a href="#旋转延迟时间" class="headerlink" title="旋转延迟时间"></a>旋转延迟时间</h4><p>旋转延迟是等待目标扇区转到磁头下的时间。</p>
+<p>若磁盘转速为 <code>r</code>（转&#x2F;秒），则平均旋转延迟近似为：</p>
+<p>$$<br>T_r &#x3D; \frac{1}{2r}<br>$$</p>
+<p>例如：</p>
+<ul>
+<li>若转速为 3600 r&#x2F;min，则每转约 16.7 ms；</li>
+<li>平均旋转延迟约为 8.3 ms。</li>
+</ul>
+<h4 id="传输时间"><a href="#传输时间" class="headerlink" title="传输时间"></a>传输时间</h4><p>传输时间与<strong>传输字节数、转速和每磁道容量</strong>有关：</p>
+<p>$$<br>T_t &#x3D; \frac{b}{rN}<br>$$</p>
+<p>其中：</p>
+<ul>
+<li><code>b</code>：读写的字节数；</li>
+<li><code>r</code>：磁盘转速；</li>
+<li><code>N</code>：每条磁道的字节数。</li>
+</ul>
+<h4 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h4><p>磁盘总访问时间常常不是由数据传输时间主导，而是由机械运动开销主导：</p>
+<ul>
+<li>小块 I&#x2F;O 中，寻道和旋转延迟远大于传输时间；</li>
+<li>连续大块 I&#x2F;O 更容易摊薄固定开销。</li>
+</ul>
+<blockquote>
+<p>这也是为什么顺序访问通常远快于随机访问。</p>
+</blockquote>
+<h3 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h3><p>磁盘调度的目标是减少磁头移动距离，降低平均寻道时间，并兼顾公平性。</p>
+<h4 id="先来先服务-FCFS"><a href="#先来先服务-FCFS" class="headerlink" title="先来先服务 FCFS"></a>先来先服务 FCFS</h4><p>按请求到达顺序处理。</p>
+<p><img src="/2026/08/17/os-notes-disk/image-2.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>优点：</p>
+<ul>
+<li>公平；</li>
+<li>实现简单。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>不考虑磁头当前位置；</li>
+<li>可能导致磁头大范围来回移动，平均寻道时间较大。</li>
+</ul>
+<h4 id="最短寻道时间优先-SSTF"><a href="#最短寻道时间优先-SSTF" class="headerlink" title="最短寻道时间优先 SSTF"></a>最短寻道时间优先 SSTF</h4><p>每次选择距离当前磁头位置最近的请求。</p>
+<p>优点：</p>
+<ul>
+<li>通常能显著减少总寻道长度；</li>
+<li>平均性能优于 FCFS。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>远离当前磁头的请求可能长期得不到服务；</li>
+<li>存在<strong>饥饿</strong>风险。</li>
+</ul>
+<h4 id="扫描算法-SCAN"><a href="#扫描算法-SCAN" class="headerlink" title="扫描算法 SCAN"></a>扫描算法 SCAN</h4><p>也称<strong>电梯算法</strong>。</p>
+<p>思想：</p>
+<ul>
+<li>磁头沿一个方向持续移动；</li>
+<li>依次处理沿途请求；</li>
+<li>到该方向没有请求后再反向。</li>
+</ul>
+<p><img src="/2026/08/17/os-notes-disk/image-3.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>特点：</p>
+<ul>
+<li>比 SSTF 更公平；</li>
+<li>能减少来回抖动；</li>
+<li>适合请求较多的场景。</li>
+</ul>
+<h4 id="循环扫描-CSCAN"><a href="#循环扫描-CSCAN" class="headerlink" title="循环扫描 CSCAN"></a>循环扫描 CSCAN</h4><p>思想：</p>
+<ul>
+<li>磁头只按一个方向扫描；</li>
+<li>到达一端后立即回到另一端重新开始扫描。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>各柱面等待时间更均匀；</li>
+<li>公平性比 SCAN 更好；</li>
+<li>代价是回卷过程本身不服务请求。</li>
+</ul>
+<p>问题: 适合于访问磁盘上的顺序存储文件，不适合随机访问。</p>
+<h4 id="N-Step-SCAN-与-FSCAN"><a href="#N-Step-SCAN-与-FSCAN" class="headerlink" title="N-Step-SCAN 与 FSCAN"></a>N-Step-SCAN 与 FSCAN</h4><blockquote>
+<p>传统的 SCAN 算法像电梯一样，磁头在盘面上往复移动。在移动过程中，它会顺路处理所有遇到的 I&#x2F;O 请求。</p>
+<ul>
+<li>问题所在：如果在磁盘读写的过程中，源源不断地有新的 I&#x2F;O 请求发送到磁头当前所在的磁道（或相邻磁道）。</li>
+<li>后果：磁头就会像被“粘住”了一样，停留在原地不断地处理这些新来的请求，而无法继续向外移动。</li>
+<li>严重性：这会导致那些距离磁头较远的其他磁道上的 I&#x2F;O 请求陷入无限期的等待（饥饿状态）。这在多用户、多任务的高并发系统中是非常致命的。</li>
+</ul>
+</blockquote>
+<p>这两种算法用于避免“磁头粘黏”或长期偏向局部请求（饥饿）。</p>
+<p><code>N-Step-SCAN</code>：</p>
+<ul>
+<li>将请求分成长度为 <code>N</code> 的子序列；</li>
+<li>当前序列扫描期间，新请求进入后续序列；</li>
+<li><code>N=1</code> 时近似 <code>FCFS</code>，<code>N</code> 很大时接近 <code>SCAN</code>。</li>
+</ul>
+<p><code>FSCAN</code>：</p>
+<ul>
+<li>使用两个请求队列；</li>
+<li>一个队列供当前扫描使用；</li>
+<li>新到达请求进入另一个队列；</li>
+<li>扫描过程中当前队列不再增长。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>能限制单批请求规模；</li>
+<li>兼顾效率与公平性；</li>
+<li>避免新请求不断插入导致旧请求饿死。</li>
+</ul>
+<h2 id="磁盘组织与操作系统启动"><a href="#磁盘组织与操作系统启动" class="headerlink" title="磁盘组织与操作系统启动"></a>磁盘组织与操作系统启动</h2><h3 id="分区与逻辑组织"><a href="#分区与逻辑组织" class="headerlink" title="分区与逻辑组织"></a>分区与逻辑组织</h3><p>磁盘通常会被划分为若干连续区域，每个区域称为分区（partition）。</p>
+<p>分区表记录：</p>
+<ul>
+<li>起始扇区；</li>
+<li>大小；</li>
+<li>类型等元数据。</li>
+</ul>
+<p>在分区基础上，文件系统进一步组织出卷（volume）：</p>
+<ul>
+<li>简单卷：来自单个分区；</li>
+<li>多分区卷：来自多个分区，可获得更大容量、更高性能或更强可靠性。</li>
+</ul>
+<h3 id="系统卷与引导卷"><a href="#系统卷与引导卷" class="headerlink" title="系统卷与引导卷"></a>系统卷与引导卷</h3><p>系统卷：</p>
+<ul>
+<li>保存引导程序等启动相关文件。</li>
+</ul>
+<p>引导卷：</p>
+<ul>
+<li>保存 OS 核心文件，如内核映像等。</li>
+</ul>
+<p>两者在某些系统中可以相同，也可以不同。</p>
+<h3 id="启动过程简述"><a href="#启动过程简述" class="headerlink" title="启动过程简述"></a>启动过程简述</h3><p>操作系统启动通常经历如下过程：</p>
+<ul>
+<li>固件完成基本硬件初始化；</li>
+<li>从启动设备读取主引导记录或等价引导结构；</li>
+<li>装入引导程序；</li>
+<li>引导程序读取系统配置并装入内核；</li>
+<li>内核接管控制，继续初始化驱动、内存和进程管理。</li>
+</ul>
+<h2 id="磁盘存储空间管理"><a href="#磁盘存储空间管理" class="headerlink" title="磁盘存储空间管理"></a>磁盘存储空间管理</h2><p>磁盘空间管理的核心任务是：</p>
+<ul>
+<li>记录哪些盘块空闲；</li>
+<li>在分配文件空间时快速找到可用块；</li>
+<li>在文件删除后正确回收。</li>
+</ul>
+<h3 id="空闲表法"><a href="#空闲表法" class="headerlink" title="空闲表法"></a>空闲表法</h3><p>基本思想：</p>
+<ul>
+<li>将每一段连续的空闲区记为一个表项；</li>
+<li>表项内容通常包括“起始盘块号 + 连续空闲块数”。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>适合<strong>连续</strong>文件分配；</li>
+<li>易于找到大块连续空间。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>回收时可能需要合并相邻空闲区；</li>
+<li>当外存碎片严重时，表项会增多。</li>
+</ul>
+<h3 id="空闲链表法"><a href="#空闲链表法" class="headerlink" title="空闲链表法"></a>空闲链表法</h3><p>把所有空闲块或空闲区串成链表。</p>
+<p>两种方式：</p>
+<ul>
+<li>空闲盘块链：每个空闲块都链起来；</li>
+<li>空闲盘区链：每个结点表示一段连续空闲区。</li>
+</ul>
+<p>优缺点：</p>
+<ul>
+<li>若按块组织，分配和回收过程简单，但链会很长；</li>
+<li>若按区组织，分配和回收过程较复杂，但链较短。</li>
+</ul>
+<h3 id="位示图法"><a href="#位示图法" class="headerlink" title="位示图法"></a>位示图法</h3><p>为每个物理块设置一位：</p>
+<ul>
+<li><code>0</code> 表示空闲；</li>
+<li><code>1</code> 表示已分配。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>表示紧凑；</li>
+<li>适合成批扫描和快速统计；</li>
+<li>很容易和内存中的位运算结合。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>对超大磁盘，位图本身也可能较大；</li>
+<li>找连续空闲区时仍需扫描。</li>
+</ul>
+<h3 id="成组链接法"><a href="#成组链接法" class="headerlink" title="成组链接法"></a>成组链接法</h3><p>UNIX&#x2F;Linux 常见思想：</p>
+<ul>
+<li>将空闲块分成若干组；</li>
+<li>每组的第一个空闲块登记了下一组空闲块的物理盘块号和空闲块总数；</li>
+<li>如果一组的第一个空闲块号等于0，意味着该组是最后一组。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>减少空闲块管理元数据访问频率；</li>
+<li>兼顾链式组织和批量分配效率。</li>
+</ul>
+<h2 id="保证磁盘可靠性"><a href="#保证磁盘可靠性" class="headerlink" title="保证磁盘可靠性"></a>保证磁盘可靠性</h2><h3 id="RAID-的基本思想"><a href="#RAID-的基本思想" class="headerlink" title="RAID 的基本思想"></a>RAID 的基本思想</h3><p>廉价磁盘冗余阵列 <code>RAID</code>（Redundant Array of Inexpensive&#x2F;Independent Disks）通过把多个磁盘组织成一个逻辑整体，以获得：</p>
+<ul>
+<li>更大的容量；</li>
+<li>更高的吞吐量；</li>
+<li>更强的容错能力。</li>
+</ul>
+<p>对 OS 而言，RAID 往往像一块“更大、更快、更可靠”的磁盘。</p>
+<p>三种基本手段：</p>
+<ul>
+<li>条带化（striping）：把连续数据切分后分散到多个磁盘，并行访问；</li>
+<li>镜像（mirroring）：保存数据副本；</li>
+<li>校验（parity）：保存冗余校验信息以便恢复。</li>
+</ul>
+<h3 id="RAID-0"><a href="#RAID-0" class="headerlink" title="RAID 0"></a>RAID 0</h3><p>只有条带化，没有冗余。</p>
+<p>优点：</p>
+<ul>
+<li><strong>并行</strong>读写性能好；</li>
+<li>容量利用率高。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>任一磁盘损坏都可能导致整个阵列数据丢失；</li>
+<li>可靠性最低。</li>
+</ul>
+<h3 id="RAID-1"><a href="#RAID-1" class="headerlink" title="RAID 1"></a>RAID 1</h3><p>镜像阵列，数据写入两个副本。</p>
+<p>优点：</p>
+<ul>
+<li>可靠性高；</li>
+<li><strong>读性能</strong>可以提升。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>有效容量减半；</li>
+<li>一个写操作，每个strip写两次；</li>
+<li>成本较高。</li>
+</ul>
+<h3 id="RAID-2"><a href="#RAID-2" class="headerlink" title="RAID 2"></a>RAID 2</h3><p>以字为单位（按位条带化），采用汉明码纠错冗余的磁盘阵列，将数据位交叉写入几个磁盘中。</p>
+<ul>
+<li>1，2，4位作为<strong>奇偶校验位</strong>，其他4位做<strong>数据位</strong></li>
+<li>7个磁盘同步旋转，7位汉明码同时写入7个驱动器按位或按字节交叉存储，并使用汉明码进行纠错。</li>
+</ul>
+<p><img src="/2026/08/17/os-notes-disk/image-4.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>特点：</p>
+<ul>
+<li>并行存取，各个驱动器同步工作；</li>
+<li>纠错能力强；</li>
+<li>需要多个磁盘来存放汉明校验码信息，<strong>冗余磁盘</strong>数量与数据磁盘数量的对数成正比；</li>
+<li>现实中较少使用。</li>
+</ul>
+<h3 id="RAID-3"><a href="#RAID-3" class="headerlink" title="RAID 3"></a>RAID 3</h3><p>采用<strong>奇偶校验</strong>冗余的磁盘阵列，也采用数据位交叉，阵列中只有一个校验盘。</p>
+<blockquote>
+<p>例如<br>盘1：A<br>盘2：B<br>盘3：C<br>校验盘：$P &#x3D; A ⊕ B ⊕ C$<br>如果某一块数据盘坏了，比如盘2损坏，那么可以通过： $B &#x3D; A ⊕ C ⊕ P$ 恢复出原来的数据。</p>
+</blockquote>
+<p>特点：</p>
+<ul>
+<li>适合大块顺序传输；</li>
+<li>将磁盘分组，读写要访问组中所有盘，每组中有一个盘作为校验盘；</li>
+<li>缺点：恢复时间较长，只能处理固定位置的磁盘纠错。</li>
+</ul>
+<h3 id="RAID-4"><a href="#RAID-4" class="headerlink" title="RAID 4"></a>RAID 4</h3><p>采用数据块级条带化和单独校验盘。</p>
+<p>优点：可以并行进行多个数据的磁盘操作。</p>
+<p>缺点：写入需要更新校验盘，负担较重，成为<strong>瓶颈</strong>（不管阵列里有多少块数据盘，只要有多个写操作同时发生，校验盘就会成为严重的交通堵塞点）。</p>
+<h3 id="RAID-5"><a href="#RAID-5" class="headerlink" title="RAID 5"></a>RAID 5</h3><p>数据块和校验信息都分布在各个磁盘上，没有专门的校验盘。</p>
+<p><img src="/2026/08/17/os-notes-disk/image-5.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>优点：</p>
+<ul>
+<li>既有较好的容量利用率，又有容错能力；</li>
+<li>避免单一校验盘瓶颈。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>写入逻辑较复杂；</li>
+<li>磁盘故障后的<strong>重建开销大</strong>。</li>
+</ul>
+<h3 id="RAID-6"><a href="#RAID-6" class="headerlink" title="RAID 6"></a>RAID 6</h3><p>在 RAID 5 基础上增加一组独立冗余信息（双维校验）。</p>
+<p>优点：</p>
+<ul>
+<li>可容忍两块磁盘同时损坏；</li>
+<li>可靠性更高。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>冗余开销更大；</li>
+<li>写入代价更高。</li>
+</ul>
+<h3 id="RAID-小结"><a href="#RAID-小结" class="headerlink" title="RAID 小结"></a>RAID 小结</h3><p>条带化：</p>
+<ul>
+<li>优点是并行、吞吐高、负载均衡；</li>
+<li>缺点是可靠性降低。</li>
+</ul>
+<p>镜像：</p>
+<ul>
+<li>优点是恢复简单、可靠性强；</li>
+<li>缺点是容量开销大。</li>
+</ul>
+<p>校验：</p>
+<ul>
+<li>优点是能用较少冗余换取容错；</li>
+<li>缺点是写入和恢复逻辑更复杂。</li>
+</ul>
+<h2 id="提高-I-O-速度"><a href="#提高-I-O-速度" class="headerlink" title="提高 I&#x2F;O 速度"></a>提高 I&#x2F;O 速度</h2><h3 id="总体思路"><a href="#总体思路" class="headerlink" title="总体思路"></a>总体思路</h3><p>提高磁盘 I&#x2F;O 速度的主要方法：</p>
+<ul>
+<li>选择性能更好的硬件；</li>
+<li>采用并行化；</li>
+<li>选用合适的磁盘调度算法；</li>
+<li>使用高速缓存；</li>
+<li>优化物理布局；</li>
+<li>进行提前读和延迟写。</li>
+</ul>
+<h3 id="磁盘高速缓存"><a href="#磁盘高速缓存" class="headerlink" title="磁盘高速缓存"></a>磁盘高速缓存</h3><p>磁盘缓存的作用：</p>
+<ul>
+<li>将最近访问的数据保存在更快的存储介质中；</li>
+<li>减少真实磁盘访问次数。</li>
+</ul>
+<p>常见形式：</p>
+<ul>
+<li>独立缓存（固定大小）；</li>
+<li>使用主存的一部分作为页缓存或缓冲区（虚拟内存）缓存。</li>
+</ul>
+<p>数据交付</p>
+<ul>
+<li>直接交付（copy开销）</li>
+<li>指针交付（内存管理复杂）</li>
+</ul>
+<p>常见策略：</p>
+<ul>
+<li>置换算法，如 <code>LRU</code>；</li>
+<li>周期性写回；</li>
+<li>脏块延迟落盘。</li>
+</ul>
+<h3 id="优化数据布局"><a href="#优化数据布局" class="headerlink" title="优化数据布局"></a>优化数据布局</h3><p>通过优化数据物理摆放，也能显著改善性能：<br>优化物理块的分布</p>
+<ul>
+<li>连续摆放 -&gt; 顺序访问速度大于随机访问</li>
+</ul>
+<p>优化索引节点的分布</p>
+<ul>
+<li>减少与数据块的距离</li>
+<li>与数据块结合 一次读取</li>
+</ul>
+<h3 id="提前读"><a href="#提前读" class="headerlink" title="提前读"></a>提前读</h3><p>对于顺序访问，OS 常在读取当前块时顺便把后续块提前读入缓存。</p>
+<p>优点：</p>
+<ul>
+<li>减少下一次等待时间；</li>
+<li>提升顺序访问吞吐量。</li>
+</ul>
+<h3 id="延迟写"><a href="#延迟写" class="headerlink" title="延迟写"></a>延迟写</h3><p>修改后的数据先写入缓存，不立即落盘，而是在适当时机批量写回。</p>
+<p>优点：</p>
+<ul>
+<li>合并写操作；</li>
+<li>减少磁盘访问次数；</li>
+<li>提升整体吞吐。</li>
+</ul>
+<p>风险：</p>
+<ul>
+<li>断电或系统崩溃时可能丢失尚未落盘的数据。</li>
+</ul>
+<h3 id="虚拟盘"><a href="#虚拟盘" class="headerlink" title="虚拟盘"></a>虚拟盘</h3><p>虚拟盘（RAM Disk）是利用内存模拟磁盘。</p>
+<p>特点：</p>
+<ul>
+<li>速度极快；</li>
+<li>内容通常由用户或系统显式控制；</li>
+<li>掉电易失。</li>
+</ul>
+<p>与磁盘缓存的区别：</p>
+<ul>
+<li>虚拟盘中的内容是“逻辑上当作磁盘使用”的；</li>
+<li>缓存中的内容由 OS 自动决定和替换。</li>
+</ul>
+<h2 id="磁盘管理实例"><a href="#磁盘管理实例" class="headerlink" title="磁盘管理实例"></a>磁盘管理实例</h2><h3 id="基本盘与动态盘"><a href="#基本盘与动态盘" class="headerlink" title="基本盘与动态盘"></a>基本盘与动态盘</h3><p>在一些系统中，磁盘可分为：</p>
+<ul>
+<li>基本盘：传统分区方式；</li>
+<li>动态盘：支持更灵活的卷管理。</li>
+</ul>
+<p>动态盘通常支持：</p>
+<ul>
+<li>跨磁盘卷；</li>
+<li>条带卷；</li>
+<li>镜像卷；</li>
+<li>RAID-5 卷。</li>
+</ul>
+<h3 id="多分区卷"><a href="#多分区卷" class="headerlink" title="多分区卷"></a>多分区卷</h3><p>常见形式：</p>
+<ul>
+<li>跨分区卷（spanned volume）：把多个空闲分区拼接成一个逻辑卷；</li>
+<li>条带卷（striped volume）：跨多个磁盘按条带分布数据，对应 RAID-0 思想；</li>
+<li>镜像卷（mirrored volume）：数据写双份，对应 RAID-1；</li>
+<li>RAID-5 卷：条带化加分布式校验。</li>
+</ul>
+<h3 id="安装管理与卷名字空间"><a href="#安装管理与卷名字空间" class="headerlink" title="安装管理与卷名字空间"></a>安装管理与卷名字空间</h3><p>系统通常需要维护：</p>
+<ul>
+<li>物理磁盘对象；</li>
+<li>卷对象；</li>
+<li>驱动器号或挂载点；</li>
+<li>逻辑名字到设备对象的映射关系。</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>通过卷 GUID 唯一标识卷；</li>
+<li>通过驱动器号或挂载点向用户程序暴露访问入口；</li>
+<li>通过 I&#x2F;O 管理器把逻辑请求映射到具体分区和磁盘。</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本章核心内容：</p>
+<ul>
+<li>磁盘是典型的机械式随机存取设备，访问时间由寻道、旋转延迟、传输三部分构成；</li>
+<li>磁盘调度算法的核心是减少磁头移动并兼顾公平性；</li>
+<li>空闲空间管理常见方法有空闲表、空闲链、位示图和成组链接；</li>
+<li>RAID 通过条带化、镜像和校验提升性能与可靠性；</li>
+<li>提高 I&#x2F;O 性能不仅靠硬件，更靠缓存、调度和布局优化；</li>
+<li>现代 OS 还需要在分区、卷、挂载和启动流程上完成完整的磁盘抽象。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/BUAA-OS/" class="print-no-link">#BUAA_OS</a>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OS 理论笔记：磁盘管理</div>
+      <div>https://wv-ce.github.io/2026/08/17/os-notes-disk/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wv-ce</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/18/os-notes-fs/" title="OS 理论笔记：文件系统">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OS 理论笔记：文件系统</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/16/os-notes-io/" title="OS 理论笔记：I/O 设备管理">
+                        <span class="hidden-mobile">OS 理论笔记：I/O 设备管理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>© 2024 wv-ce</span> <i class="iconfont icon-love"></i> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

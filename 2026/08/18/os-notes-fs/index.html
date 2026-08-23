@@ -1,0 +1,1773 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wv-ce">
+  <meta name="keywords" content="wv-ce,博客,技术,随笔">
+  
+    <meta name="description" content="OS 理论笔记：文件系统。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS 理论笔记：文件系统">
+<meta property="og:url" content="https://wv-ce.github.io/2026/08/18/os-notes-fs/index.html">
+<meta property="og:site_name" content="wv-ce">
+<meta property="og:description" content="OS 理论笔记：文件系统。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/18/os-notes-fs/image-3.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/18/os-notes-fs/image-4.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/18/os-notes-fs/image.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/18/os-notes-fs/image-1.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/18/os-notes-fs/image-2.png">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/18/os-notes-fs/image-5.png">
+<meta property="article:published_time" content="2026-08-18T10:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-23T07:27:41.702Z">
+<meta property="article:author" content="wv-ce">
+<meta property="article:tag" content="BUAA_OS">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://wv-ce.github.io/2026/08/18/os-notes-fs/image-3.png">
+  
+  
+  
+  <title>OS 理论笔记：文件系统 - wv-ce</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wv-ce.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OS 理论笔记：文件系统"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-18 10:00" pubdate>
+          2026年8月18日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          10k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          85 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OS 理论笔记：文件系统</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h1><h2 id="文件系统基本概念"><a href="#文件系统基本概念" class="headerlink" title="文件系统基本概念"></a>文件系统基本概念</h2><h3 id="数据的持久化存储"><a href="#数据的持久化存储" class="headerlink" title="数据的持久化存储"></a>数据的持久化存储</h3><p>进程运行时可以把数据暂时保存在自己的地址空间中，但这种方式有明显局限：</p>
+<ul>
+<li>地址空间大小有限；</li>
+<li>进程结束后，数据会丢失；</li>
+<li>不便于多个进程长期共享。</li>
+</ul>
+<p>因此，计算机必须把部分数据保存在磁盘、SSD、光盘等外部存储设备上，以满足：</p>
+<ul>
+<li>大量存储；</li>
+<li>长期保存；</li>
+<li>多进程共享。</li>
+</ul>
+<h3 id="文件的概念"><a href="#文件的概念" class="headerlink" title="文件的概念"></a>文件的概念</h3><p>文件（File）是带有标识（文件名）的、在逻辑上具有完整意义的信息项序列。</p>
+<p>可以从两个角度理解文件：</p>
+<ul>
+<li>从用户角度：文件是一个有名字的字节序列；</li>
+<li>从文件系统角度：文件是磁盘块的有组织集合。</li>
+</ul>
+<p>文件通常包括两部分：</p>
+<ul>
+<li>文件体：文件的实际内容；</li>
+<li>文件说明：管理该文件所需的信息，如文件名、物理地址、大小、权限、时间戳等。</li>
+</ul>
+<h4 id="文件的本质"><a href="#文件的本质" class="headerlink" title="文件的本质"></a>文件的本质</h4><p>文件本质上是一种抽象机制。</p>
+<p>操作系统中的典型抽象：</p>
+<ul>
+<li>进程是对 CPU 的抽象；</li>
+<li>虚拟地址空间是对内存的抽象；</li>
+<li>文件是对磁盘等持久化存储的抽象。</li>
+</ul>
+<p>文件把底层复杂的存储细节隐藏起来，使用户看到的是一个独立的、连续的逻辑地址空间，其大小就是文件大小，与进程地址空间无关。</p>
+<h4 id="一切皆文件"><a href="#一切皆文件" class="headerlink" title="一切皆文件"></a>一切皆文件</h4><p>文件的本质是一组字节序列，因此很多 I&#x2F;O 设备也可以被视为字节流的载体：</p>
+<ul>
+<li>字符设备；</li>
+<li>块设备；</li>
+<li>网络设备。</li>
+</ul>
+<p>这就是现代操作系统中“一切皆文件”的基本思想。</p>
+<h3 id="文件管理与文件系统"><a href="#文件管理与文件系统" class="headerlink" title="文件管理与文件系统"></a>文件管理与文件系统</h3><h4 id="文件管理的需求"><a href="#文件管理的需求" class="headerlink" title="文件管理的需求"></a>文件管理的需求</h4><p>从用户视角看：</p>
+<ul>
+<li>关心文件怎么命名；</li>
+<li>关心如何创建、打开、关闭、读、写；</li>
+<li>关心共享和保护；</li>
+<li>不关心数据具体存放在磁盘哪里。</li>
+</ul>
+<p>从操作系统视角看：</p>
+<ul>
+<li>需要<strong>组织和管理物理文件</strong>；</li>
+<li>需要维护目录、存储空间和元数据；</li>
+<li>需要完成逻辑地址到物理地址的转换；</li>
+<li>需要与设备管理和 I&#x2F;O 系统对接。</li>
+</ul>
+<h4 id="文件系统的定义"><a href="#文件系统的定义" class="headerlink" title="文件系统的定义"></a>文件系统的定义</h4><p>文件系统（File System）是操作系统中统一管理信息资源的软件，负责：</p>
+<ul>
+<li>文件的存储；</li>
+<li>文件的检索；</li>
+<li>文件的更新；</li>
+<li>文件共享；</li>
+<li>文件保护；</li>
+<li>用户接口提供。</li>
+</ul>
+<h4 id="文件系统的任务"><a href="#文件系统的任务" class="headerlink" title="文件系统的任务"></a>文件系统的任务</h4><p>文件系统通常需要完成以下任务：</p>
+<ol>
+<li>统一管理磁盘空间，实现分配和回收；</li>
+<li>实现文件的按名存取；</li>
+<li>提供共享、保护和保密机制；</li>
+<li>向用户提供方便的操作接口；</li>
+<li>提高文件系统性能；</li>
+<li>提供与 I&#x2F;O 系统的统一接口。</li>
+</ol>
+<h4 id="文件系统模型"><a href="#文件系统模型" class="headerlink" title="文件系统模型"></a>文件系统模型</h4><p>文件系统可以理解为多个层次模块的组合：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs text">     命令 ↓                     ↑ 应答<br>┌───────────────────────────────────────┐<br>│             文件命令解释模块             │<br>└───────────────────────────────────────┘<br>     ↓                          ↑<br>┌───────────────────────────────────────┐<br>│               目录检索模块              │<br>└───────────────────────────────────────┘<br>     ↓                          ↑<br>┌───────────────────────────────────────┐<br>│             存取控制验证模块             │<br>└───────────────────────────────────────┘<br>     ↓                          ↑<br>┌───────────────────────────────────────┐<br>│             逻辑文件系统模块             │<br>└───────────────────────────────────────┘<br>     ↓                          ↑<br>┌───────────────────────────────────────┐<br>│             物理文件系统模块             │<br>└───────────────────────────────────────┘<br>     ↓                          ↑<br>┌───────────────────────────────────────┐<br>│               设备策略模块              │<br>└───────────────────────────────────────┘<br>     ↓                          ↑<br>┌───────────────────────────────────────┐<br>│             I/O控制系统模块             │<br>└───────────────────────────────────────┘<br>I/O启动命令 ↓                   ↑ 中断信号<br>┌────────────────────────────────────────┐<br>│                 磁盘                    │<br>└────────────────────────────────────────┘<br></code></pre></td></tr></table></figure>
+
+<h4 id="文件系统的三个层次"><a href="#文件系统的三个层次" class="headerlink" title="文件系统的三个层次"></a>文件系统的三个层次</h4><p>第一层：文件系统接口</p>
+<ul>
+<li>命令行接口：用户通过命令与文件系统交互；</li>
+<li>程序接口：用户程序通过<strong>系统调用</strong>访问文件系统。</li>
+</ul>
+<p>第二层：文件管理的软件集合</p>
+<ul>
+<li>存储空间管理；</li>
+<li>目录管理；</li>
+<li>逻辑块到物理块映射；</li>
+<li>文件读写管理；</li>
+<li>共享与保护。</li>
+</ul>
+<p>第三层：文件系统管理对象</p>
+<ul>
+<li>文件；</li>
+<li>目录；</li>
+<li>磁盘存储空间。</li>
+</ul>
+<h3 id="文件名、文件类型与文件属性"><a href="#文件名、文件类型与文件属性" class="headerlink" title="文件名、文件类型与文件属性"></a>文件名、文件类型与文件属性</h3><h4 id="文件名"><a href="#文件名" class="headerlink" title="文件名"></a>文件名</h4><p>创建文件时必须指定文件名，<strong>用户依靠文件名访问文件</strong>。</p>
+<p>常见规则：</p>
+<ul>
+<li>文件名是一个有限长度字符串；</li>
+<li>常常由“文件名 + 扩展名”组成；</li>
+<li>不同系统对最大长度、大小写是否敏感的规定不同。</li>
+</ul>
+<h4 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h4><p>可以从多个角度分类文件。</p>
+<p>按性质和用途：</p>
+<ul>
+<li>系统文件；</li>
+<li>库文件；</li>
+<li>用户文件。</li>
+</ul>
+<p>按数据形式：</p>
+<ul>
+<li>源文件；</li>
+<li>目标文件；</li>
+<li>可执行文件。</li>
+</ul>
+<p>按保护级别：</p>
+<ul>
+<li>只读文件；</li>
+<li>读写文件；</li>
+<li>执行文件；</li>
+<li>不保护文件。</li>
+</ul>
+<p>按逻辑结构：</p>
+<ul>
+<li>有结构文件；</li>
+<li>无结构文件。</li>
+</ul>
+<p>按物理结构：</p>
+<ul>
+<li>顺序文件；</li>
+<li>链接文件；</li>
+<li>索引文件。</li>
+</ul>
+<h4 id="UNIX-中的典型文件类型"><a href="#UNIX-中的典型文件类型" class="headerlink" title="UNIX 中的典型文件类型"></a>UNIX 中的典型文件类型</h4><p>UNIX 常见文件类型：</p>
+<ul>
+<li>普通文件：用户自己创建的文件，一般为ASCII或二进制文件；</li>
+<li>目录文件：<strong>管理文件系统的系统文件</strong>；</li>
+<li>特殊文件（设备文件）；</li>
+<li>管道文件；</li>
+<li>套接字文件。</li>
+</ul>
+<p>其中：</p>
+<ul>
+<li>字符设备文件对应串行 I&#x2F;O 设备；</li>
+<li>块设备文件对应磁盘、磁带等；</li>
+<li>管道和套接字体现了“把通信对象也抽象成文件”的思想。</li>
+</ul>
+<h3 id="文件的逻辑结构"><a href="#文件的逻辑结构" class="headerlink" title="文件的逻辑结构"></a>文件的逻辑结构</h3><h4 id="逻辑结构的含义"><a href="#逻辑结构的含义" class="headerlink" title="逻辑结构的含义"></a>逻辑结构的含义</h4><p>文件逻辑结构是从用户角度看到的文件组织方式，主要由访问需求决定。</p>
+<p>典型形式：</p>
+<ul>
+<li>字节流；</li>
+<li>记录序列；</li>
+<li>树形结构。</li>
+</ul>
+<p><img src="/2026/08/18/os-notes-fs/image-3.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="流式文件与记录式文件"><a href="#流式文件与记录式文件" class="headerlink" title="流式文件与记录式文件"></a>流式文件与记录式文件</h4><p>流式文件：</p>
+<ul>
+<li>以字符或字节为基本单位；</li>
+<li>文件内容是一串无结构的字节序列；</li>
+<li>典型于文本文件、二进制文件。</li>
+</ul>
+<p>记录式文件：</p>
+<ul>
+<li>由若干记录组成；</li>
+<li>每条记录有内部结构；</li>
+<li>可以按记录读写、查找和修改。</li>
+</ul>
+<h4 id="文件存取方式"><a href="#文件存取方式" class="headerlink" title="文件存取方式"></a>文件存取方式</h4><p>常见存取方式：</p>
+<ul>
+<li>顺序存取；</li>
+<li>随机存取。</li>
+</ul>
+<p>随机存取通常需要显式指定读写位置或偏移量。</p>
+<h4 id="文件存储介质"><a href="#文件存储介质" class="headerlink" title="文件存储介质"></a>文件存储介质</h4><p>文件最终存放在外部存储设备上。磁盘、SSD 等设备通常被划分为大小相等的物理块（block）或簇（cluster）：</p>
+<ul>
+<li>它们是存储、传输和分配的基本单位；</li>
+<li>系统统一为这些块编号。</li>
+</ul>
+<h3 id="文件控制块与文件基本操作"><a href="#文件控制块与文件基本操作" class="headerlink" title="文件控制块与文件基本操作"></a>文件控制块与文件基本操作</h3><h4 id="文件控制块-FCB"><a href="#文件控制块-FCB" class="headerlink" title="文件控制块 FCB"></a>文件控制块 FCB</h4><p>文件控制块（FCB, File Control Block）是操作系统为了管理文件而设置的数据结构。</p>
+<p>它保存管理文件所需的各种元数据。在很多系统中，<strong>目录项</strong>本质上就是文件控制块的一种表现形式。</p>
+<p>FCB 常见内容：</p>
+<ul>
+<li>文件名；</li>
+<li>文件号；</li>
+<li>文件大小；</li>
+<li>文件物理地址；</li>
+<li><del>文件逻辑结构和物理结构；</del></li>
+<li>创建时间、修改时间、访问时间；</li>
+<li>所有者、创建者；</li>
+<li>访问权限；</li>
+<li>文件类型；</li>
+<li>共享计数；</li>
+<li>各种状态标志。</li>
+</ul>
+<h4 id="文件基本操作"><a href="#文件基本操作" class="headerlink" title="文件基本操作"></a>文件基本操作</h4><p>文件的常见操作包括：</p>
+<ul>
+<li>创建 <code>create</code>；</li>
+<li>删除 <code>delete</code>；</li>
+<li>打开 <code>open</code>；</li>
+<li>关闭 <code>close</code>；</li>
+<li>读 <code>read</code>；</li>
+<li>写 <code>write</code>；</li>
+<li>追加 <code>append</code>；</li>
+<li>定位 <code>seek</code>；</li>
+<li>获取属性 <code>get attributes</code>；</li>
+<li>设置属性 <code>set attributes</code>；</li>
+<li>重命名 <code>rename</code>。</li>
+</ul>
+<h3 id="目录管理"><a href="#目录管理" class="headerlink" title="目录管理"></a>目录管理</h3><h4 id="为什么需要目录"><a href="#为什么需要目录" class="headerlink" title="为什么需要目录"></a>为什么需要目录</h4><p>如果系统中文件很多，必须解决几个问题：</p>
+<ul>
+<li>如何快速定位一个文件（<strong>效率</strong>）；</li>
+<li>如何避免不同用户之间的<strong>命名</strong>冲突；</li>
+<li>如何按用途、类型、课程、用户等进行<strong>分组</strong>。</li>
+</ul>
+<p>目录就是为了解决这些问题而提出的。</p>
+<h4 id="目录的定义"><a href="#目录的定义" class="headerlink" title="目录的定义"></a>目录的定义</h4><p>目录是由<strong>文件说明索引组成</strong>的、用于文件检索的特殊<strong>文件</strong>。</p>
+<p>目录中保存的主要是文件访问和控制信息，而不是文件内容本身。</p>
+<h4 id="目录项内容"><a href="#目录项内容" class="headerlink" title="目录项内容"></a>目录项内容</h4><p>目录项通常包含：</p>
+<ul>
+<li>基本信息；<ul>
+<li>文件名；</li>
+<li>别名的数目；</li>
+</ul>
+</li>
+<li>文件类型；</li>
+<li>地址信息；<ul>
+<li>存放位置；</li>
+<li>文件长度；</li>
+</ul>
+</li>
+<li>访问控制信息；<ul>
+<li>所有者；</li>
+<li>访问权限；</li>
+</ul>
+</li>
+<li>创建、读写时间等使用信息。</li>
+</ul>
+<p>从这个意义上说：</p>
+<ul>
+<li><strong>目录项就是文件控制块</strong>；</li>
+<li>目录文件是 FCB 的集合。</li>
+</ul>
+<h4 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h4><p>常见目录操作：</p>
+<ul>
+<li>创建目录；</li>
+<li>删除目录；</li>
+<li>打开目录；</li>
+<li>关闭目录；</li>
+<li>读取目录项；</li>
+<li>重命名目录；</li>
+<li>建立链接；</li>
+<li>删除链接。</li>
+</ul>
+<h3 id="文件目录的组织方式"><a href="#文件目录的组织方式" class="headerlink" title="文件目录的组织方式"></a>文件目录的组织方式</h3><h4 id="单级目录"><a href="#单级目录" class="headerlink" title="单级目录"></a>单级目录</h4><p>单级目录是最简单的目录结构，所有文件都放在同一个目录下。</p>
+<p>优点：</p>
+<ul>
+<li>结构简单；</li>
+<li>易于实现。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>文件多时查找慢；</li>
+<li>文件名容易冲突；</li>
+<li>不便于共享和分类管理。</li>
+</ul>
+<h4 id="两级目录"><a href="#两级目录" class="headerlink" title="两级目录"></a>两级目录</h4><p>两级目录的结构是：</p>
+<ul>
+<li>根目录下按<strong>用户</strong>划分目录；</li>
+<li>每个用户目录中存放该用户文件；</li>
+<li>用户目录下不再继续细分。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>适合多用户系统；</li>
+<li>可避免不同用户间的重名问题。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>用户自己的文件仍然缺乏更细粒度分组。</li>
+</ul>
+<h4 id="多级目录"><a href="#多级目录" class="headerlink" title="多级目录"></a>多级目录</h4><p>多级目录（层次目录）是现代操作系统最常见的方式。</p>
+<p>特点：</p>
+<ul>
+<li>高层目录项指向下一级目录；</li>
+<li>最后一层目录项指向实际文件；</li>
+<li>形成一棵目录树。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>层次清晰；</li>
+<li>便于分类管理；</li>
+<li>能解决文件重名问题；</li>
+<li>便于不同用户和不同类别文件分别设置权限；</li>
+<li>分级查找通常比单级目录更高效。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>当目录层次过深时，路径检索时间会增加。</li>
+</ul>
+<h4 id="路径名"><a href="#路径名" class="headerlink" title="路径名"></a>路径名</h4><p>在多级目录中，访问文件需要路径名。</p>
+<p>绝对路径名：</p>
+<ul>
+<li>从根目录开始，逐级写出到目标文件的完整路径；</li>
+<li>对同一文件是唯一的。</li>
+</ul>
+<p>相对路径名：</p>
+<ul>
+<li>相对于当前工作目录指定路径；</li>
+<li>依赖于当前目录位置。</li>
+</ul>
+<p>特殊目录：</p>
+<ul>
+<li><code>.</code> 表示当前目录；</li>
+<li><code>..</code> 表示上一级目录。</li>
+</ul>
+<h2 id="文件系统的实现方法"><a href="#文件系统的实现方法" class="headerlink" title="文件系统的实现方法"></a>文件系统的实现方法</h2><p>文件实现本质上要解决两个问题：</p>
+<ol>
+<li>如何描述一个文件，如何记录其管理信息；</li>
+<li>如何存放文件，如何记录逻辑块与物理块之间的映射关系。</li>
+</ol>
+<p>第一个问题主要由 FCB&#x2F;inode 等元数据结构解决。<br>第二个问题主要由文件物理结构和块映射方式解决。</p>
+<h3 id="磁盘上文件系统的布局"><a href="#磁盘上文件系统的布局" class="headerlink" title="磁盘上文件系统的布局"></a>磁盘上文件系统的布局</h3><p>典型的磁盘文件系统布局中，通常会包含：</p>
+<ul>
+<li>引导块；</li>
+<li>超级块；</li>
+<li>空闲空间信息；</li>
+<li>inode&#x2F;FCB 区；</li>
+<li>数据区。</li>
+</ul>
+<p><img src="/2026/08/18/os-notes-fs/image-4.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h4 id="超级块"><a href="#超级块" class="headerlink" title="超级块"></a>超级块</h4><p>超级块（superblock）记录文件系统整体特征，例如：</p>
+<ul>
+<li>文件系统大小；</li>
+<li>块大小；</li>
+<li>空闲块数量；</li>
+<li>已使用块数量；</li>
+<li>inode 信息等。</li>
+</ul>
+<p>系统在挂载文件系统时通常需要读取超级块。</p>
+<blockquote>
+<p>如果超级块损坏，文件系统往往无法被正常加载。</p>
+</blockquote>
+<h3 id="文件逻辑结构与物理结构"><a href="#文件逻辑结构与物理结构" class="headerlink" title="文件逻辑结构与物理结构"></a>文件逻辑结构与物理结构</h3><p>文件逻辑结构：</p>
+<ul>
+<li>从用户角度看文件如何组织；</li>
+<li>目的是提高检索<strong>效率</strong>、<strong>便于修改</strong>、<strong>降低文件存储开销</strong>、<del>降低使用复杂度</del>。</li>
+</ul>
+<p>文件物理结构：</p>
+<ul>
+<li>表示文件在外存中的存放方式（位置、链接和编目的方法）；</li>
+<li>解决物理块组织和逻辑块映射问题。</li>
+</ul>
+<p>常见物理结构：</p>
+<ul>
+<li>连续文件；</li>
+<li>链接文件；</li>
+<li>索引文件。</li>
+</ul>
+<h3 id="连续文件"><a href="#连续文件" class="headerlink" title="连续文件"></a>连续文件</h3><h4 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h4><p>连续文件要求一个文件占用一组连续的物理块。</p>
+<p>目录项中通常只需要记录：</p>
+<ul>
+<li>起始块号；</li>
+<li>占用块数。</li>
+</ul>
+<p><img src="/2026/08/18/os-notes-fs/image.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>因此，逻辑块号到物理块号的转换非常直接：物理块号 &#x3D; 起始块号 + 逻辑块号</p>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>结构简单，实现容易；</li>
+<li>不需要额外链接或索引空间；</li>
+<li>支持顺序访问；</li>
+<li>也支持随机访问；</li>
+<li>顺序和随机访问<strong>速度</strong>都<strong>较快</strong>。</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>文件长度不易动态增长；</li>
+<li>创建时常需要预估大小；</li>
+<li>预留空间可能浪费；</li>
+<li>删除后容易产生外部碎片；</li>
+<li>若需要扩展文件，可能必须整体搬移。</li>
+</ul>
+<p><img src="/2026/08/18/os-notes-fs/image-1.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>删除文件导致碎片化</p>
+<blockquote>
+<p>连续文件适合长度变化不大、顺序访问为主的文件，如部分多媒体文件。</p>
+</blockquote>
+<h3 id="串联-链接文件"><a href="#串联-链接文件" class="headerlink" title="串联&#x2F;链接文件"></a>串联&#x2F;链接文件</h3><h4 id="基本思想-1"><a href="#基本思想-1" class="headerlink" title="基本思想"></a>基本思想</h4><p>链接文件（串联文件）由若干<strong>离散物理块</strong>组成，每个物理块的最末一个字（或第一个字）作为指针，指出后继块的物理地址。</p>
+<p>目录项中保存链首指针，最后一个块用空指针（“∧”）表示结束。</p>
+<h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><ul>
+<li><strong>空间利用率高</strong>；能较好的利用辅存空间。</li>
+<li>文件<strong>动态</strong>扩充和修改容易。</li>
+<li>顺序存取效率高</li>
+</ul>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>数据地址一起保存，<strong>随机存取效率太低</strong>，如果访问文件的最后的内容，实际上要访问整个文件。</li>
+<li>可靠性问题，如指针出错</li>
+<li>链接指针占用一定的空间</li>
+</ul>
+<h4 id="使用内存表的串联文件结构"><a href="#使用内存表的串联文件结构" class="headerlink" title="使用内存表的串联文件结构"></a>使用内存表的串联文件结构</h4><p>将所有链表的指针放入一个内存表：<strong>文件分配表</strong>（FAT）</p>
+<p><img src="/2026/08/18/os-notes-fs/image-2.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p>优点</p>
+<ul>
+<li>不用将数据和地址一起保存</li>
+<li>随机访问相对串联系统快速<ul>
+<li>不必访问磁盘读出每块数据</li>
+</ul>
+</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>整个FAT必须在内存中</li>
+<li>非常占用空间<ul>
+<li>1TB磁盘，1KB 块大小，1 billion表项，3byte每项，2.4GB</li>
+</ul>
+</li>
+<li>随机访问仍然很慢 $O(n)$</li>
+</ul>
+<h3 id="索引文件"><a href="#索引文件" class="headerlink" title="索引文件"></a>索引文件</h3><h4 id="基本思想-2"><a href="#基本思想-2" class="headerlink" title="基本思想"></a>基本思想</h4><p>索引文件为每个文件建立索引块，索引块中记录该文件各逻辑块对应的物理块号。</p>
+<p>目录项中只需记录索引块位置。</p>
+<p>访问文件时：</p>
+<ul>
+<li>先找到索引块；</li>
+<li>再由索引块找到目标数据块。</li>
+</ul>
+<h4 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>支持高效随机访问；</li>
+<li>文件块可以离散分布；</li>
+<li>不必要求连续空间；</li>
+<li>较适合大文件和频繁随机访问场景。</li>
+</ul>
+<h4 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>需要额外索引块空间；</li>
+<li>小文件可能显得开销偏大；</li>
+<li>当文件很大时，可能需要多级索引。</li>
+</ul>
+<h3 id="文件物理结构的比较"><a href="#文件物理结构的比较" class="headerlink" title="文件物理结构的比较"></a>文件物理结构的比较</h3><h4 id="三类物理结构的对比"><a href="#三类物理结构的对比" class="headerlink" title="三类物理结构的对比"></a>三类物理结构的对比</h4><p>连续文件：</p>
+<ul>
+<li>目录项中只需记录首块号和文件长度；</li>
+<li>不需要额外索引空间；</li>
+<li>随机访问效率最高。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>文件动态增长和缩小时开销很大；</li>
+<li>创建文件时常要预估大小；</li>
+<li>易产生外部碎片，空间浪费较大。</li>
+</ul>
+<p>串联文件：</p>
+<ul>
+<li>动态增长和缩小都比较方便；</li>
+<li>更适合顺序访问。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>随机访问效率低；</li>
+<li>需要维护指针，可靠性受链指针影响；</li>
+<li>FAT 改进了随机访问，但引入了额外内存开销。</li>
+</ul>
+<p>索引文件：</p>
+<ul>
+<li>同时适合顺序访问和随机访问；</li>
+<li>文件块可离散分布；</li>
+<li>是综合性能较好的物理结构。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>需要索引块空间；</li>
+<li>小文件的索引开销相对明显；</li>
+<li>查找时也要付出索引访问代价。</li>
+</ul>
+<blockquote>
+<p>一个常见结论：<br>连续文件追求访问速度，串联文件追求动态扩展，索引文件在两者之间取得较好的折中。</p>
+</blockquote>
+<h3 id="目录的实现"><a href="#目录的实现" class="headerlink" title="目录的实现"></a>目录的实现</h3><h4 id="目录的主要功能"><a href="#目录的主要功能" class="headerlink" title="目录的主要功能"></a>目录的主要功能</h4><p>目录的核心任务是：根据用户给出的文件名或路径名，迅速定位到相应的 FCB &#x2F; inode；</p>
+<p>从实现上看，目录系统通常要解决三个问题：</p>
+<ul>
+<li>目录项里放什么；</li>
+<li>长文件名如何存；</li>
+<li>目录如何查找。</li>
+</ul>
+<h4 id="目录的两种基本实现方法"><a href="#目录的两种基本实现方法" class="headerlink" title="目录的两种基本实现方法"></a>目录的两种基本实现方法</h4><h5 id="直接法"><a href="#直接法" class="headerlink" title="直接法"></a>直接法</h5><p>直接法中，目录项直接包含：</p>
+<ul>
+<li>文件名；</li>
+<li>FCB 本体，也就是文件属性信息和外存位置。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>查到目录项就等于查到了文件元数据；</li>
+<li>实现简单。</li>
+</ul>
+<p>典型代表：</p>
+<ul>
+<li>MS-DOS &#x2F; 早期 Windows 风格目录项。</li>
+</ul>
+<h5 id="间接法"><a href="#间接法" class="headerlink" title="间接法"></a>间接法</h5><p>间接法中，目录项只保存：</p>
+<ul>
+<li>文件名；</li>
+<li>FCB 的地址或索引号。</li>
+</ul>
+<p>在 UNIX 类系统中，这个“索引号”通常就是 inode 号。</p>
+<p>特点：</p>
+<ul>
+<li>文件名与文件元数据分离；</li>
+<li>支持多个文件名指向同一个 inode；</li>
+<li>共享和硬链接实现更灵活。</li>
+</ul>
+<h4 id="长文件名的实现"><a href="#长文件名的实现" class="headerlink" title="长文件名的实现"></a>长文件名的实现</h4><p>早期系统的文件名长度限制较小：</p>
+<ul>
+<li>MS-DOS 经典格式是 <code>8.3</code>；</li>
+<li>Unix V7 的文件名长度上限是 14。</li>
+</ul>
+<p>现代系统普遍支持更长、可变长度的文件名，典型实现有三种：</p>
+<ol>
+<li><p>目录项中预留固定大字段<br>例如每个目录项都固定预留 255 字符文件名空间。</p>
+<ul>
+<li>大量浪费空间，因为绝大多数文件名都不会这么长。</li>
+</ul>
+</li>
+<li><p>可变长目录项<br>目录项分成三部分：</p>
+<ul>
+<li>目录项总长度；</li>
+<li>固定长度属性信息；</li>
+<li>可变长文件名。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>删除文件后，原目录项空间不容易高效复用；</li>
+<li>目录内部更容易产生碎片。</li>
+</ul>
+</li>
+<li><p>目录项固定，文件名单独存放<br>目录项本身保持固定长度，把变长文件名统一放到目录文件的尾部<del>或其他区域；目录项中仅保存文件名位置和长度</del>。<br>特点：</p>
+<ul>
+<li>兼顾了目录项组织规则和长文件名支持；</li>
+<li>比完全可变长目录项更容易管理。</li>
+</ul>
+</li>
+</ol>
+<h4 id="目录查询方法"><a href="#目录查询方法" class="headerlink" title="目录查询方法"></a>目录查询方法</h4><p>顺序查找</p>
+<ul>
+<li>从头到尾依次扫描目录项；</li>
+<li>将目录项中的文件名与目标名字逐一比较。</li>
+<li>只适合目录项数量较少的场景。</li>
+</ul>
+<p>Hash 查找</p>
+<ul>
+<li>使用 Hash 函数把文件名映射到某个表项或桶中；</li>
+<li>在对应桶内继续查找。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>平均查找速度快；</li>
+<li>适合目录项较多的场景。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>需要解决冲突；</li>
+<li>目录项动态变化时实现稍复杂。</li>
+</ul>
+<h4 id="便于共享的目录组织"><a href="#便于共享的目录组织" class="headerlink" title="便于共享的目录组织"></a>便于共享的目录组织</h4><p>如果多个用户要共享同一个文件，理想目标是：</p>
+<ul>
+<li>外存中只保存一份文件副本；</li>
+<li>不同用户可以用相同或不同名字访问它。</li>
+</ul>
+<p>一种典型组织方式是<strong>有向无环图（DAG）目录结构</strong>：</p>
+<ul>
+<li>一个文件可以被多个目录项引用；</li>
+<li>这样共享不会复制文件内容。</li>
+</ul>
+<p>这也是硬链接思想的基础。</p>
+<p><img src="/2026/08/18/os-notes-fs/image-5.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<h3 id="文件保护"><a href="#文件保护" class="headerlink" title="文件保护"></a>文件保护</h3><p>文件保护常见有三种思路：</p>
+<ul>
+<li>建立副本；</li>
+<li>定时转储；</li>
+<li>设置访问权限。</li>
+</ul>
+<h4 id="建立副本"><a href="#建立副本" class="headerlink" title="建立副本"></a>建立副本</h4><p>把同一个文件保存到多个存储介质上；某份损坏时，可以用其他副本恢复。</p>
+<p>优点：简单直接。<br>缺点：设备成本和系统开销都较大。<br>适用场景：短小但极其重要的文件。</p>
+<h4 id="定时转储"><a href="#定时转储" class="headerlink" title="定时转储"></a>定时转储</h4><p>系统每隔一段时间把文件备份到其他介质；一旦文件损坏，就恢复到最近一次转储时的状态。</p>
+<p>特点：</p>
+<ul>
+<li><del>比多副本更节省常驻空间；</del></li>
+<li>是 UNIX 等系统常用的可靠性保障方式之一。</li>
+</ul>
+<p><del>局限：</del></p>
+<ul>
+<li><del>只能恢复到某个过去时刻；</del></li>
+<li><del>最近修改的数据可能丢失。</del></li>
+</ul>
+<h3 id="文件的存取控制"><a href="#文件的存取控制" class="headerlink" title="文件的存取控制"></a>文件的存取控制</h3><p>文件保护机制的目标包括：</p>
+<ul>
+<li>防止未授权用户访问文件；</li>
+<li>防止用户冒充别人访问文件；</li>
+<li>防止合法用户误操作关键文件。</li>
+</ul>
+<p>一个典型的权限验证过程包括：</p>
+<ol>
+<li>确定当前用户身份和所属权限；</li>
+<li>判断其申请的访问方式是否被允许；</li>
+<li>检查访问请求与文件保密级别是否冲突。</li>
+</ol>
+<h4 id="存取控制的实现方案"><a href="#存取控制的实现方案" class="headerlink" title="存取控制的实现方案"></a>存取控制的实现方案</h4><p>常见实现方法：</p>
+<ul>
+<li>存取控制矩阵；</li>
+<li>存取控制表（ACL）；</li>
+<li>用户权限表；</li>
+<li>口令保护。</li>
+</ul>
+<p>在 UNIX 风格系统中，最经典的是基于三类用户的权限模型：</p>
+<ul>
+<li>owner：文件拥有者；</li>
+<li>group：同组用户；</li>
+<li>public &#x2F; others：其他用户。</li>
+</ul>
+<p>每类用户通常有三种基本权限：</p>
+<ul>
+<li><code>r</code>：读；</li>
+<li><code>w</code>：写；</li>
+<li><code>x</code>：执行。</li>
+</ul>
+<p>因此像 <code>rwxr-xr--</code> 或数值 <code>754</code> 这类表示法，本质上就是三组 <code>rwx</code> 权限位的编码。</p>
+<h4 id="文件的并发访问"><a href="#文件的并发访问" class="headerlink" title="文件的并发访问"></a>文件的并发访问</h4><p>多个进程可能同时访问同一个文件，因此需要并发访问控制。</p>
+<p>基本思路：</p>
+<ul>
+<li>访问文件前必须先 <code>open</code>；</li>
+<li>若文件目录项 &#x2F; inode 尚未在内存中，则先从外存读入；</li>
+<li>若已在内存中，则多个进程共享同一份内存元数据；</li>
+<li>这样可以保持文件系统状态的一致性。</li>
+</ul>
+<p>文件锁（file lock）用于协调多个进程对文件或文件某一段区域的互斥访问。</p>
+<p>典型锁操作包括：</p>
+<ul>
+<li>加锁并阻塞等待；</li>
+<li>加锁但若失败则立即返回；</li>
+<li>解锁；</li>
+<li>测试是否可锁。</li>
+</ul>
+<p>文件锁的作用：</p>
+<ul>
+<li>防止并发写破坏数据；</li>
+<li>避免读写交叉导致内容不一致。</li>
+</ul>
+<p>除了文件锁，也可以通过进程间通信来协调文件访问次序。</p>
+<h3 id="文件系统性能优化"><a href="#文件系统性能优化" class="headerlink" title="文件系统性能优化"></a>文件系统性能优化</h3><h4 id="性能问题的根源"><a href="#性能问题的根源" class="headerlink" title="性能问题的根源"></a>性能问题的根源</h4><p>文件系统的主要瓶颈之一是磁盘访问速度。</p>
+<p>因此，设计文件系统时的一个重要目标就是：</p>
+<ul>
+<li>尽量减少磁盘访问次数；</li>
+<li>尽量减少磁头移动和随机访问；</li>
+<li>提高热点数据的缓存命中率。</li>
+</ul>
+<h4 id="常见优化手段"><a href="#常见优化手段" class="headerlink" title="常见优化手段"></a>常见优化手段</h4><p>常见性能优化方法包括：</p>
+<ul>
+<li>目录项 &#x2F; FCB 分解；</li>
+<li>保存当前目录等常用状态；</li>
+<li>磁盘碎片整理；</li>
+<li>块高速缓存；</li>
+<li>磁盘调度；</li>
+<li>预读（read-ahead）；</li>
+<li>合理分配磁盘空间；</li>
+<li>信息优化布局；</li>
+<li>RAID。</li>
+</ul>
+<p>其中最重要、最常见的是块高速缓存。</p>
+<h4 id="块高速缓存"><a href="#块高速缓存" class="headerlink" title="块高速缓存"></a>块高速缓存</h4><p>块高速缓存（block cache）也叫：</p>
+<ul>
+<li>文件缓存；</li>
+<li>磁盘高速缓存；</li>
+<li>缓冲区高速缓存。</li>
+</ul>
+<p>它的本质是在内存中为磁盘块建立一个缓存区，保存部分磁盘块的副本。</p>
+<p>工作方式：</p>
+<ul>
+<li>收到读请求时，先检查目标块是否已在缓存中；</li>
+<li>如果命中，则直接从内存返回；</li>
+<li>如果未命中，则先把块从磁盘读入缓存，再交给请求者。</li>
+</ul>
+<h4 id="块高速缓存的组织方式"><a href="#块高速缓存的组织方式" class="headerlink" title="块高速缓存的组织方式"></a>块高速缓存的组织方式</h4><p>常见组织方式：</p>
+<ul>
+<li>用<strong>双向链表</strong>把缓存块串起来；</li>
+<li>使用计数或状态位区分“正在使用”和“空闲”块；</li>
+<li>空闲块可挂在链尾等待复用；</li>
+<li>同时按块号建立散列表，加速缓存查找。</li>
+</ul>
+<p>这样可以同时兼顾：</p>
+<ul>
+<li>快速查找块是否在缓存中；</li>
+<li>高效维护最近使用状态。</li>
+</ul>
+<h4 id="置换与写入策略"><a href="#置换与写入策略" class="headerlink" title="置换与写入策略"></a>置换与写入策略</h4><p>当缓存满时，需要考虑：</p>
+<ul>
+<li>置换哪个块；</li>
+<li>修改过的块何时写回磁盘。</li>
+</ul>
+<p>设计要点：</p>
+<ul>
+<li>保留未来可能再次使用的热点块；</li>
+<li>尽量淘汰使用概率低的块；</li>
+<li>处理好缓存与磁盘的一致性问题。</li>
+</ul>
+<p>典型策略包括：</p>
+<ul>
+<li>写回（write-back）；</li>
+<li>直写（write-through）。</li>
+</ul>
+<p>文件系统在这里必须权衡：</p>
+<ul>
+<li>性能；</li>
+<li>数据安全；</li>
+<li>崩溃后一致性。</li>
+</ul>
+<h3 id="现代文件系统机制"><a href="#现代文件系统机制" class="headerlink" title="现代文件系统机制"></a>现代文件系统机制</h3><h4 id="虚拟文件系统-VFS"><a href="#虚拟文件系统-VFS" class="headerlink" title="虚拟文件系统 VFS"></a>虚拟文件系统 VFS</h4><p>现代操作系统往往需要同时支持多种异构文件系统，例如：</p>
+<ul>
+<li>Linux 分区使用 Ext4；</li>
+<li>U 盘使用 FAT&#x2F;exFAT；</li>
+<li>移动硬盘可能是 NTFS；</li>
+<li>macOS 常见 APFS。</li>
+</ul>
+<p>为屏蔽底层差异，操作系统通常引入<strong>虚拟文件系统（VFS）</strong>。</p>
+<p>VFS 的作用：</p>
+<ul>
+<li>对上提供统一接口，如 POSIX 风格 <code>open/read/write/close</code>；</li>
+<li>对下对接不同具体文件系统驱动；</li>
+<li>把不同文件系统的元数据统一抽象成内存对象。</li>
+</ul>
+<p>在 Linux 中：</p>
+<ul>
+<li>VFS 定义了一组标准接口；</li>
+<li>各个具体文件系统实现这些接口；</li>
+<li>当系统访问某个 inode 时，VFS 会先确定它属于哪个文件系统，再调用对应实现。</li>
+</ul>
+<h4 id="写时复制-CoW-与快速复制"><a href="#写时复制-CoW-与快速复制" class="headerlink" title="写时复制 CoW 与快速复制"></a>写时复制 CoW 与快速复制</h4><p>大文件复制往往很慢，因为传统做法需要真的把所有数据块复制一遍。</p>
+<p>更快的方法是写时复制（Copy-on-Write, CoW）：</p>
+<ul>
+<li>新文件先与原文件共享同一批数据块；</li>
+<li>只有某一方后续修改数据时，才真正复制对应块。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>“复制”操作本身几乎只改元数据；</li>
+<li>大文件也能做到近似瞬时复制。</li>
+</ul>
+<h4 id="快照-Snapshot"><a href="#快照-Snapshot" class="headerlink" title="快照 Snapshot"></a>快照 Snapshot</h4><p>快照本质上也常依赖 CoW：</p>
+<ul>
+<li>对于基于 inode 表的文件系统，可以复制 inode 表或其关键入口；</li>
+<li>对于树状文件系统，可以复制树根；</li>
+<li>原有数据块或节点在后续修改前继续共享；</li>
+<li>只有写入时才复制。</li>
+</ul>
+<p>快照的意义：</p>
+<ul>
+<li>以很低代价保存某一时刻的文件系统状态；</li>
+<li>便于备份、回滚和容灾恢复。</li>
+</ul>
+<h4 id="稀疏文件-Sparse-File"><a href="#稀疏文件-Sparse-File" class="headerlink" title="稀疏文件 Sparse File"></a>稀疏文件 Sparse File</h4><p>如果一个文件中大部分内容都是 <code>0</code>，就称为稀疏文件。</p>
+<p>典型例子：</p>
+<ul>
+<li>虚拟机镜像文件；</li>
+<li>某些数据库或预分配大文件。</li>
+</ul>
+<p>优化思想：</p>
+<ul>
+<li>没必要真的为全 0 区域分配物理块；</li>
+<li>只记录“这些逻辑区间内容为 0”；</li>
+<li>实际读到这些区域时，再由系统返回 0。</li>
+</ul>
+<p>好处：</p>
+<ul>
+<li>节省大量磁盘空间；</li>
+<li>对超大、稀疏分布数据尤其有效。</li>
+</ul>
+<h4 id="FUSE-用户态文件系统"><a href="#FUSE-用户态文件系统" class="headerlink" title="FUSE 用户态文件系统"></a>FUSE 用户态文件系统</h4><p>FUSE（Filesystem in Userspace）是用户态文件系统框架。</p>
+<p>意义：</p>
+<ul>
+<li>允许开发者在用户态实现文件系统逻辑；</li>
+<li>内核负责转发请求和基础安全边界；</li>
+<li>降低了开发和调试文件系统的门槛。</li>
+</ul>
+<p>FUSE 常见接口分为两层：</p>
+<p>底层 API：</p>
+<ul>
+<li>直接与内核交互；</li>
+<li>需要自己处理 inode、lookup 等细节；</li>
+<li>更灵活，但复杂度更高。</li>
+</ul>
+<p>高层 API：</p>
+<ul>
+<li>以路径名为中心；</li>
+<li>不必直接处理底层 inode 细节；</li>
+<li>更适合快速实现功能。</li>
+</ul>
+<h2 id="文件系统实例分析"><a href="#文件系统实例分析" class="headerlink" title="文件系统实例分析"></a>文件系统实例分析</h2><h3 id="FAT-MS-DOS-文件系统"><a href="#FAT-MS-DOS-文件系统" class="headerlink" title="FAT &#x2F; MS-DOS 文件系统"></a>FAT &#x2F; MS-DOS 文件系统</h3><h4 id="基本特点"><a href="#基本特点" class="headerlink" title="基本特点"></a>基本特点</h4><p>MS-DOS 文件系统的典型特点：</p>
+<ul>
+<li>支持多级目录；</li>
+<li>没有真正的文件别名机制；</li>
+<li>没有完善的用户访问权限控制。</li>
+</ul>
+<p>按发展阶段常分为：</p>
+<ul>
+<li>FAT12：最大支持约 32MB；</li>
+<li>FAT16：最大支持约 2GB；</li>
+<li>FAT32：最大支持约 2TB。</li>
+</ul>
+<h4 id="FAT-的核心思想"><a href="#FAT-的核心思想" class="headerlink" title="FAT 的核心思想"></a>FAT 的核心思想</h4><p>FAT 文件系统以簇（cluster）为分配单位。</p>
+<p>特点：</p>
+<ul>
+<li>文件系统元数据保存在引导扇区等结构中；</li>
+<li>FAT 表记录每个簇的状态及下一簇位置；</li>
+<li>目录项通常固定大小；</li>
+<li>早期 FAT12&#x2F;FAT16 中根目录大小固定。</li>
+</ul>
+<p>FAT 表项可表示：</p>
+<ul>
+<li>空闲簇；</li>
+<li>坏簇；</li>
+<li>保留簇；</li>
+<li>已分配簇及其下一簇编号；</li>
+<li>文件结束标记。</li>
+</ul>
+<p>因此 FAT 本质上是：</p>
+<ul>
+<li>“链接文件”思想的内存表改进版；</li>
+<li>把链指针从数据块中抽出来，集中放到 FAT 中。</li>
+</ul>
+<h3 id="UNIX-文件系统"><a href="#UNIX-文件系统" class="headerlink" title="UNIX 文件系统"></a>UNIX 文件系统</h3><h4 id="基本特点-1"><a href="#基本特点-1" class="headerlink" title="基本特点"></a>基本特点</h4><p>UNIX 文件系统通常具有：</p>
+<ul>
+<li>多级目录；</li>
+<li>文件别名机制；</li>
+<li>用户访问权限控制；</li>
+<li>基于 inode 的索引式文件组织。</li>
+</ul>
+<p>UNIX 中既支持：</p>
+<ul>
+<li>基于 inode 的硬链接；</li>
+<li>基于路径名的符号链接。</li>
+</ul>
+<h4 id="磁盘布局"><a href="#磁盘布局" class="headerlink" title="磁盘布局"></a>磁盘布局</h4><p>经典 UNIX 文件系统布局通常包括：</p>
+<ul>
+<li>Boot Record；</li>
+<li>Super Block；</li>
+<li>inode Table；</li>
+<li>Data 区。</li>
+</ul>
+<p>也就是：</p>
+<ul>
+<li>引导信息；</li>
+<li>全局元数据；</li>
+<li>inode 表；</li>
+<li>文件和目录的数据块。</li>
+</ul>
+<h4 id="inode-思想"><a href="#inode-思想" class="headerlink" title="inode 思想"></a>inode 思想</h4><p>UNIX 类文件系统把“文件名”和“文件实体”分离：</p>
+<ul>
+<li>目录项保存“文件名 -&gt; inode 编号”的映射；</li>
+<li>inode 保存文件属性和块地址。</li>
+</ul>
+<p>这样做的好处：</p>
+<ul>
+<li>目录查找和文件元数据管理分离；</li>
+<li>支持硬链接；</li>
+<li>支持多个文件名引用同一文件对象；</li>
+<li>文件重命名不需要移动文件数据。</li>
+</ul>
+<h4 id="目录查找过程"><a href="#目录查找过程" class="headerlink" title="目录查找过程"></a>目录查找过程</h4><p>路径查找时，系统会把路径拆成各级目录名，逐级查找：</p>
+<p>例如访问 <code>/usr/include/sys/types.h</code> 时：</p>
+<ul>
+<li>先进入 <code>/usr</code>；</li>
+<li>再进入 <code>/usr/include</code>；</li>
+<li>再进入 <code>/usr/include/sys</code>；</li>
+<li>最后在该目录中找到 <code>types.h</code> 对应的目录项和 inode。</li>
+</ul>
+<p>在朴素实现下：</p>
+<ul>
+<li>每一级目录通常至少涉及读取目录 inode 和目录数据块；</li>
+<li>因此路径很深时，磁盘访问次数会明显上升。</li>
+</ul>
+<p>课件给出的结论是：</p>
+<ul>
+<li>最坏情况下，若路径有 <code>n</code> 级目录，则访问文件前可能需要约 <code>2n + 1</code> 次磁盘访问。</li>
+</ul>
+<h3 id="Ext2-文件系统"><a href="#Ext2-文件系统" class="headerlink" title="Ext2 文件系统"></a>Ext2 文件系统</h3><h4 id="超级块-1"><a href="#超级块-1" class="headerlink" title="超级块"></a>超级块</h4><p>Ext2 的超级块记录文件系统的整体信息，例如：</p>
+<ul>
+<li>文件系统基本大小；</li>
+<li>数据块大小；</li>
+<li>每组块数；</li>
+<li>修订级别；</li>
+<li>魔数（magic number）；</li>
+<li>空闲块、空闲 inode 等统计。</li>
+</ul>
+<p>Ext2 经典魔数是：</p>
+<p><code>0xEF53</code></p>
+<p>它用于标识这是一个合法的 Ext2 文件系统。</p>
+<h4 id="块组结构"><a href="#块组结构" class="headerlink" title="块组结构"></a>块组结构</h4><p>Ext2 把磁盘划分为多个<strong>块组（block group）</strong>。</p>
+<p>每个块组通常包含：</p>
+<ul>
+<li>超级块副本或相关信息；</li>
+<li>块组描述符；</li>
+<li>数据块位图；</li>
+<li>inode 位图；</li>
+<li>inode 表；</li>
+<li>数据区。</li>
+</ul>
+<p>这样做的好处：</p>
+<ul>
+<li>降低大磁盘上的集中管理开销；</li>
+<li>改善局部性；</li>
+<li>便于同时管理数据块和 inode。</li>
+</ul>
+<h4 id="块组描述符"><a href="#块组描述符" class="headerlink" title="块组描述符"></a>块组描述符</h4><p>块组描述符通常记录：</p>
+<ul>
+<li>数据块位图位置；</li>
+<li>inode 位图位置；</li>
+<li>inode 表起始位置；</li>
+<li>空闲块计数；</li>
+<li>空闲 inode 计数；</li>
+<li>已使用目录数。</li>
+</ul>
+<h4 id="Ext2-中的目录"><a href="#Ext2-中的目录" class="headerlink" title="Ext2 中的目录"></a>Ext2 中的目录</h4><p>在 Ext2 中，目录本身也是一种特殊文件：</p>
+<ul>
+<li>它也有自己的 inode；</li>
+<li>它的数据块中存放若干目录项；</li>
+<li>每个目录项记录“文件名 -&gt; inode”的映射。</li>
+</ul>
+<p>因此目录遍历本质上就是：</p>
+<ul>
+<li>读目录 inode；</li>
+<li>读目录数据块；</li>
+<li>找到目标文件名；</li>
+<li>再定位目标 inode。</li>
+</ul>
+<h3 id="inode-的多级索引"><a href="#inode-的多级索引" class="headerlink" title="inode 的多级索引"></a>inode 的多级索引</h3><p>为了兼顾小文件和大文件，UNIX &#x2F; Ext2 常采用多级间接索引结构：</p>
+<ul>
+<li>小文件用直接索引；</li>
+<li>更大的文件用一级间接索引；</li>
+<li>再大的文件用二级、三级间接索引。</li>
+</ul>
+<p>这样设计的优点：</p>
+<ul>
+<li>小文件访问快；</li>
+<li>大文件也能被支持；</li>
+<li>索引空间与访问效率取得较好的平衡。</li>
+</ul>
+<p>这个思想和分页系统中的多级页表很像：</p>
+<ul>
+<li>页表完成 <code>virtual page -&gt; physical page</code>；</li>
+<li>inode 完成 <code>logical block -&gt; disk block</code>。</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>从 531 行之后这部分内容看，文件系统后半章主要在讲五件事：</p>
+<ul>
+<li>三类物理结构的比较：连续、链接、索引各自适合什么场景；</li>
+<li>目录实现：直接法、间接法、长文件名、Hash 查找、共享目录；</li>
+<li>文件保护与并发：权限控制、备份转储、文件锁；</li>
+<li>性能优化：块高速缓存、减少磁盘访问、VFS、CoW、快照、稀疏文件、FUSE；</li>
+<li>实例分析：FAT 体现“内存表式链接”，UNIX&#x2F;Ext2 体现“目录项 + inode + 多级索引”。</li>
+</ul>
+<p>把整章串起来可以记成一句话：</p>
+<ul>
+<li>文件系统就是把“路径名 + 偏移量”一步步转换成“某个文件对象 + 某个磁盘块”，同时尽量做到安全、共享、高效、可扩展。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/BUAA-OS/" class="print-no-link">#BUAA_OS</a>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OS 理论笔记：文件系统</div>
+      <div>https://wv-ce.github.io/2026/08/18/os-notes-fs/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wv-ce</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/17/os-notes-disk/" title="OS 理论笔记：磁盘管理">
+                        <span class="hidden-mobile">OS 理论笔记：磁盘管理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>© 2024 wv-ce</span> <i class="iconfont icon-love"></i> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

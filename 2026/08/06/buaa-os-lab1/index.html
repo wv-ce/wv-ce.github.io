@@ -1,0 +1,883 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wv-ce">
+  <meta name="keywords" content="wv-ce,博客,技术,随笔">
+  
+    <meta name="description" content="BUAA OS Lab1 实验报告。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUAA OS Lab1 实验报告">
+<meta property="og:url" content="https://wv-ce.github.io/2026/08/06/buaa-os-lab1/index.html">
+<meta property="og:site_name" content="wv-ce">
+<meta property="og:description" content="BUAA OS Lab1 实验报告。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wv-ce.github.io/2026/08/06/buaa-os-lab1/image.png">
+<meta property="article:published_time" content="2026-08-06T10:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-23T07:27:41.693Z">
+<meta property="article:author" content="wv-ce">
+<meta property="article:tag" content="BUAA_OS">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://wv-ce.github.io/2026/08/06/buaa-os-lab1/image.png">
+  
+  
+  
+  <title>BUAA OS Lab1 实验报告 - wv-ce</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wv-ce.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="BUAA OS Lab1 实验报告"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-06 10:00" pubdate>
+          2026年8月6日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          42 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">BUAA OS Lab1 实验报告</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h2><h3 id="Thinking-1-1"><a href="#Thinking-1-1" class="headerlink" title="Thinking 1.1"></a>Thinking 1.1</h3><p>测试如下.c文件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;Hello, World!&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="1-x86工具链"><a href="#1-x86工具链" class="headerlink" title="1. x86工具链"></a>1. x86工具链</h4><p>执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Shell">gcc -c hello.c -o hello.o<br>objdump --section=.text --disassemble=main --source \<br>hello.o &gt; test1.txt<br></code></pre></td></tr></table></figure>
+
+<p>test1.txt文件内容如下：</p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs llvm"><br>hello.o：     文件格式 elf<span class="hljs-number">64</span>-<span class="hljs-keyword">x</span><span class="hljs-number">86</span><span class="hljs-number">-64</span><br><br><br>Disassembly of <span class="hljs-keyword">section</span> .text:<br><br><span class="hljs-number">0000000000000000</span> &lt;main&gt;:<br>   <span class="hljs-number">0</span>:   f<span class="hljs-number">3</span> <span class="hljs-number">0</span>f <span class="hljs-number">1</span>e fa             endbr<span class="hljs-number">64</span><br>   <span class="hljs-number">4</span>:   <span class="hljs-number">55</span>                      push   <span class="hljs-variable">%rbp</span><br>   <span class="hljs-number">5</span>:   <span class="hljs-number">48</span> <span class="hljs-number">89</span> e<span class="hljs-number">5</span>                mov    <span class="hljs-variable">%rsp</span><span class="hljs-punctuation">,</span><span class="hljs-variable">%rbp</span><br>   <span class="hljs-number">8</span>:   <span class="hljs-number">48</span> <span class="hljs-number">8</span>d <span class="hljs-number">05</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>    lea    <span class="hljs-number">0x0</span>(<span class="hljs-variable">%rip</span>)<span class="hljs-punctuation">,</span><span class="hljs-variable">%rax</span>        # f &lt;main<span class="hljs-number">+0</span>xf&gt;<br><span class="hljs-symbol">   f:</span>   <span class="hljs-number">48</span> <span class="hljs-number">89</span> <span class="hljs-keyword">c</span><span class="hljs-number">7</span>                mov    <span class="hljs-variable">%rax</span><span class="hljs-punctuation">,</span><span class="hljs-variable">%rdi</span><br>  <span class="hljs-number">12</span>:   e<span class="hljs-number">8</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>          <span class="hljs-keyword">call</span>   <span class="hljs-number">17</span> &lt;main<span class="hljs-number">+0</span><span class="hljs-keyword">x</span><span class="hljs-number">17</span>&gt;<br>  <span class="hljs-number">17</span>:   b<span class="hljs-number">8</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>          mov    $<span class="hljs-number">0x0</span><span class="hljs-punctuation">,</span><span class="hljs-variable">%eax</span><br>  <span class="hljs-number">1</span><span class="hljs-keyword">c</span>:   <span class="hljs-number">5</span>d                      pop    <span class="hljs-variable">%rbp</span><br>  <span class="hljs-number">1</span>d:   <span class="hljs-keyword">c</span><span class="hljs-number">3</span>                      <span class="hljs-keyword">ret</span><br>```  <br><br>再执行以下命令：<br><br>```Shell<br>gcc hello.<span class="hljs-keyword">c</span> -o hello<br>objdump --<span class="hljs-keyword">section</span><span class="hljs-operator">=</span>.text --disassemble<span class="hljs-operator">=</span>main --source \<br>hello &gt; test<span class="hljs-number">2</span>.txt<br></code></pre></td></tr></table></figure>
+
+<p>test2.txt文件内容如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs apache"><br><span class="hljs-attribute">hello</span>：     文件格式 elf64-x86-<span class="hljs-number">64</span><br><br><br><span class="hljs-attribute">Disassembly</span> of section .text:<br><br><span class="hljs-attribute">0000000000001149</span> &lt;main&gt;:<br>    <span class="hljs-attribute">1149</span>:       f3 <span class="hljs-number">0</span>f <span class="hljs-number">1</span>e fa             endbr64<br>    <span class="hljs-attribute">114d</span>:       <span class="hljs-number">55</span>                      push   %rbp<br>    <span class="hljs-attribute">114e</span>:       <span class="hljs-number">48</span> <span class="hljs-number">89</span> e5                mov    %rsp,%rbp<br>    <span class="hljs-attribute">1151</span>:       <span class="hljs-number">48</span> <span class="hljs-number">8</span>d <span class="hljs-number">05</span> ac <span class="hljs-number">0</span>e <span class="hljs-number">00</span> <span class="hljs-number">00</span>    lea    <span class="hljs-number">0</span>xeac(%rip),%rax        # <span class="hljs-number">2004</span> &lt;_IO_stdin_used+<span class="hljs-number">0</span>x4&gt;<br>    <span class="hljs-attribute">1158</span>:       <span class="hljs-number">48</span> <span class="hljs-number">89</span> c7                mov    %rax,%rdi<br>    <span class="hljs-attribute">115b</span>:       e8 f0 fe ff ff          call   <span class="hljs-number">1050</span> &lt;puts@plt&gt;<br>    <span class="hljs-attribute">1160</span>:       b8 <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>          mov    $<span class="hljs-number">0</span>x0,%eax<br>    <span class="hljs-attribute">1165</span>:       <span class="hljs-number">5</span>d                      pop    %rbp<br>    <span class="hljs-attribute">1166</span>:       c3                      ret<br></code></pre></td></tr></table></figure>
+
+<p>可以看到，test1.txt中call行，e8后面puts函数的地址是0，而test2.txt中call行，e8后面puts函数的地址是不再是0了。这是因为test1.txt中hello.o文件还没有链接，所以puts函数的地址还没有确定，而test2.txt中hello文件已经链接完成，所以puts函数的地址已经确定了。</p>
+<h4 id="2-MIPS工具链"><a href="#2-MIPS工具链" class="headerlink" title="2. MIPS工具链"></a>2. MIPS工具链</h4><p>执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Shell">mips-linux-gnu-gcc -c hello.c -o hello.o<br>mips-linux-gnu-objdump --section=.text --disassemble=main --source \<br>hello.o &gt; test3.txt<br></code></pre></td></tr></table></figure>
+
+<p>test3.txt文件内容如下：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><br>hello.o：     文件格式 elf32-tradbigmips<br><br><br><span class="hljs-keyword">Disassembly </span>of section <span class="hljs-meta">.text</span>:<br><br><span class="hljs-number">00000000</span> &lt;main&gt;:<br><span class="hljs-symbol">   0:</span>   <span class="hljs-number">27</span>bdffe0        <span class="hljs-keyword">addiu </span>  <span class="hljs-built_in">sp</span>,<span class="hljs-built_in">sp</span>,-<span class="hljs-number">32</span><br><span class="hljs-symbol">   4:</span>   afbf001c        <span class="hljs-keyword">sw </span>     <span class="hljs-built_in">ra</span>,<span class="hljs-number">28</span>(<span class="hljs-built_in">sp</span>)<br><span class="hljs-symbol">   8:</span>   afbe0018        <span class="hljs-keyword">sw </span>     <span class="hljs-built_in">s8</span>,<span class="hljs-number">24</span>(<span class="hljs-built_in">sp</span>)<br>   c:   <span class="hljs-number">03</span>a<span class="hljs-symbol">0f</span>025        <span class="hljs-keyword">move </span>   <span class="hljs-built_in">s8</span>,<span class="hljs-built_in">sp</span><br><span class="hljs-symbol">  10:</span>   <span class="hljs-number">3</span>c1c0000        <span class="hljs-keyword">lui </span>    <span class="hljs-built_in">gp</span>,<span class="hljs-number">0x0</span><br><span class="hljs-symbol">  14:</span>   <span class="hljs-number">279</span>c0000        <span class="hljs-keyword">addiu </span>  <span class="hljs-built_in">gp</span>,<span class="hljs-built_in">gp</span>,<span class="hljs-number">0</span><br><span class="hljs-symbol">  18:</span>   afbc0010        <span class="hljs-keyword">sw </span>     <span class="hljs-built_in">gp</span>,<span class="hljs-number">16</span>(<span class="hljs-built_in">sp</span>)<br>  <span class="hljs-number">1</span>c:   <span class="hljs-number">3</span>c020000        <span class="hljs-keyword">lui </span>    <span class="hljs-built_in">v0</span>,<span class="hljs-number">0x0</span><br><span class="hljs-symbol">  20:</span>   <span class="hljs-number">24440000</span>        <span class="hljs-keyword">addiu </span>  <span class="hljs-built_in">a0</span>,<span class="hljs-built_in">v0</span>,<span class="hljs-number">0</span><br><span class="hljs-symbol">  24:</span>   <span class="hljs-number">8</span>f820000        <span class="hljs-keyword">lw </span>     <span class="hljs-built_in">v0</span>,<span class="hljs-number">0</span>(<span class="hljs-built_in">gp</span>)<br><span class="hljs-symbol">  28:</span>   <span class="hljs-number">0040</span>c825        <span class="hljs-keyword">move </span>   <span class="hljs-built_in">t9</span>,<span class="hljs-built_in">v0</span><br>  <span class="hljs-number">2</span>c:   <span class="hljs-number">0320</span>f809        <span class="hljs-keyword">jalr </span>   <span class="hljs-built_in">t9</span><br><span class="hljs-symbol">  30:</span>   <span class="hljs-number">00000000</span>        <span class="hljs-keyword">nop</span><br><span class="hljs-keyword"></span><span class="hljs-symbol">  34:</span>   <span class="hljs-number">8</span>fdc0010        <span class="hljs-keyword">lw </span>     <span class="hljs-built_in">gp</span>,<span class="hljs-number">16</span>(<span class="hljs-built_in">s8</span>)<br><span class="hljs-symbol">  38:</span>   <span class="hljs-number">00001025</span>        <span class="hljs-keyword">move </span>   <span class="hljs-built_in">v0</span>,<span class="hljs-built_in">zero</span><br>  <span class="hljs-number">3</span>c:   <span class="hljs-number">03</span>c0e825        <span class="hljs-keyword">move </span>   <span class="hljs-built_in">sp</span>,<span class="hljs-built_in">s8</span><br><span class="hljs-symbol">  40:</span>   <span class="hljs-number">8</span>fbf001c        <span class="hljs-keyword">lw </span>     <span class="hljs-built_in">ra</span>,<span class="hljs-number">28</span>(<span class="hljs-built_in">sp</span>)<br><span class="hljs-symbol">  44:</span>   <span class="hljs-number">8</span>fbe0018        <span class="hljs-keyword">lw </span>     <span class="hljs-built_in">s8</span>,<span class="hljs-number">24</span>(<span class="hljs-built_in">sp</span>)<br><span class="hljs-symbol">  48:</span>   <span class="hljs-number">27</span>bd0020        <span class="hljs-keyword">addiu </span>  <span class="hljs-built_in">sp</span>,<span class="hljs-built_in">sp</span>,<span class="hljs-number">32</span><br>  <span class="hljs-number">4</span>c:   <span class="hljs-number">03</span>e00008        <span class="hljs-keyword">jr </span>     <span class="hljs-built_in">ra</span><br><span class="hljs-symbol">  50:</span>   <span class="hljs-number">00000000</span>        <span class="hljs-keyword">nop</span><br></code></pre></td></tr></table></figure>
+
+<p>再执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Shell">mips-linux-gnu-gcc hello.c -o hello<br>mips-linux-gnu-objdump --section=.text --disassemble=main --source \<br>hello &gt; test4.txt<br></code></pre></td></tr></table></figure>
+
+<p>test4.txt文件内容如下：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><br>hello：     文件格式 elf32-tradbigmips<br><br><br><span class="hljs-keyword">Disassembly </span>of section <span class="hljs-meta">.text</span>:<br><br><span class="hljs-number">00400650</span> &lt;main&gt;:<br><span class="hljs-symbol">  400650:</span>       <span class="hljs-number">27</span>bdffe0        <span class="hljs-keyword">addiu </span>  <span class="hljs-built_in">sp</span>,<span class="hljs-built_in">sp</span>,-<span class="hljs-number">32</span><br><span class="hljs-symbol">  400654:</span>       afbf001c        <span class="hljs-keyword">sw </span>     <span class="hljs-built_in">ra</span>,<span class="hljs-number">28</span>(<span class="hljs-built_in">sp</span>)<br><span class="hljs-symbol">  400658:</span>       afbe0018        <span class="hljs-keyword">sw </span>     <span class="hljs-built_in">s8</span>,<span class="hljs-number">24</span>(<span class="hljs-built_in">sp</span>)<br>  <span class="hljs-number">40065</span>c:       <span class="hljs-number">03</span>a<span class="hljs-symbol">0f</span>025        <span class="hljs-keyword">move </span>   <span class="hljs-built_in">s8</span>,<span class="hljs-built_in">sp</span><br><span class="hljs-symbol">  400660:</span>       <span class="hljs-number">3</span>c1c0043        <span class="hljs-keyword">lui </span>    <span class="hljs-built_in">gp</span>,<span class="hljs-number">0x43</span><br><span class="hljs-symbol">  400664:</span>       <span class="hljs-number">279</span>c8010        <span class="hljs-keyword">addiu </span>  <span class="hljs-built_in">gp</span>,<span class="hljs-built_in">gp</span>,-<span class="hljs-number">32752</span><br><span class="hljs-symbol">  400668:</span>       afbc0010        <span class="hljs-keyword">sw </span>     <span class="hljs-built_in">gp</span>,<span class="hljs-number">16</span>(<span class="hljs-built_in">sp</span>)<br>  <span class="hljs-number">40066</span>c:       <span class="hljs-number">3</span>c020040        <span class="hljs-keyword">lui </span>    <span class="hljs-built_in">v0</span>,<span class="hljs-number">0x40</span><br><span class="hljs-symbol">  400670:</span>       <span class="hljs-number">24440720</span>        <span class="hljs-keyword">addiu </span>  <span class="hljs-built_in">a0</span>,<span class="hljs-built_in">v0</span>,<span class="hljs-number">1824</span><br><span class="hljs-symbol">  400674:</span>       <span class="hljs-number">8</span>f828024        <span class="hljs-keyword">lw </span>     <span class="hljs-built_in">v0</span>,-<span class="hljs-number">32732</span>(<span class="hljs-built_in">gp</span>)<br><span class="hljs-symbol">  400678:</span>       <span class="hljs-number">0040</span>c825        <span class="hljs-keyword">move </span>   <span class="hljs-built_in">t9</span>,<span class="hljs-built_in">v0</span><br>  <span class="hljs-number">40067</span>c:       <span class="hljs-number">0320</span>f809        <span class="hljs-keyword">jalr </span>   <span class="hljs-built_in">t9</span><br><span class="hljs-symbol">  400680:</span>       <span class="hljs-number">00000000</span>        <span class="hljs-keyword">nop</span><br><span class="hljs-keyword"></span><span class="hljs-symbol">  400684:</span>       <span class="hljs-number">8</span>fdc0010        <span class="hljs-keyword">lw </span>     <span class="hljs-built_in">gp</span>,<span class="hljs-number">16</span>(<span class="hljs-built_in">s8</span>)<br><span class="hljs-symbol">  400688:</span>       <span class="hljs-number">00001025</span>        <span class="hljs-keyword">move </span>   <span class="hljs-built_in">v0</span>,<span class="hljs-built_in">zero</span><br>  <span class="hljs-number">40068</span>c:       <span class="hljs-number">03</span>c0e825        <span class="hljs-keyword">move </span>   <span class="hljs-built_in">sp</span>,<span class="hljs-built_in">s8</span><br><span class="hljs-symbol">  400690:</span>       <span class="hljs-number">8</span>fbf001c        <span class="hljs-keyword">lw </span>     <span class="hljs-built_in">ra</span>,<span class="hljs-number">28</span>(<span class="hljs-built_in">sp</span>)<br><span class="hljs-symbol">  400694:</span>       <span class="hljs-number">8</span>fbe0018        <span class="hljs-keyword">lw </span>     <span class="hljs-built_in">s8</span>,<span class="hljs-number">24</span>(<span class="hljs-built_in">sp</span>)<br><span class="hljs-symbol">  400698:</span>       <span class="hljs-number">27</span>bd0020        <span class="hljs-keyword">addiu </span>  <span class="hljs-built_in">sp</span>,<span class="hljs-built_in">sp</span>,<span class="hljs-number">32</span><br>  <span class="hljs-number">40069</span>c:       <span class="hljs-number">03</span>e00008        <span class="hljs-keyword">jr </span>     <span class="hljs-built_in">ra</span><br>  <span class="hljs-number">4006</span><span class="hljs-built_in">a0</span>:       <span class="hljs-number">00000000</span>        <span class="hljs-keyword">nop</span><br></code></pre></td></tr></table></figure>
+
+<p>同样可以看到，test3.txt中lui和addiu的立即数是0，而test4.txt中lui和addiu的立即数不是0了。</p>
+<h4 id="objdump-参数含义"><a href="#objdump-参数含义" class="headerlink" title="objdump 参数含义"></a>objdump 参数含义</h4><p><code>--section=.text</code> 表示仅处理.text 节的内容；<code>--disassemble=main</code> 表示仅反汇编 main 符号的代码；<code>--source</code> 表示显示汇编代码与源代码的对应关系</p>
+<h3 id="Thinking-1-2"><a href="#Thinking-1-2" class="headerlink" title="Thinking 1.2"></a>Thinking 1.2</h3><p>make之后，进入tools&#x2F;readelf目录，make生成readelf可执行文件后，执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">./readelf ~/24371286/target/mos<br></code></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">0</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">1</span>:<span class="hljs-number">0</span>x80020000<br><span class="hljs-attribute">2</span>:<span class="hljs-number">0</span>x80021950<br><span class="hljs-attribute">3</span>:<span class="hljs-number">0</span>x80021968<br><span class="hljs-attribute">4</span>:<span class="hljs-number">0</span>x80021980<br><span class="hljs-attribute">5</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">6</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">7</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">8</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">9</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">10</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">11</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">12</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">13</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">14</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">15</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">16</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">17</span>:<span class="hljs-number">0</span>x0<br><span class="hljs-attribute">18</span>:<span class="hljs-number">0</span>x0<br></code></pre></td></tr></table></figure>
+
+<p>执行 <code>./readelf readelf</code> 命令没有任何输出。执行 <code>readelf -h readelf</code> 命令，输出如下：</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">ELF 头：</span><br><span class="hljs-attribute">  Magic：   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 </span><br><span class="hljs-attribute">  类别</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                             ELF64</span><br>  <span class="hljs-attribute">数据</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                             2 补码，小端序 (little endian)</span><br>  <span class="hljs-attribute">Version</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                          1 (current)</span><br>  <span class="hljs-attribute">OS/ABI</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                           UNIX - System V</span><br>  <span class="hljs-attribute">ABI 版本</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                         0</span><br>  <span class="hljs-attribute">类型</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                             DYN (Position-Independent Executable file)</span><br>  <span class="hljs-attribute">系统架构</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                         Advanced Micro Devices X86-64</span><br>  <span class="hljs-attribute">版本</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                             0x1</span><br>  <span class="hljs-attribute">入口点地址：               0x1180</span><br><span class="hljs-attribute">  程序头起点：          64 (bytes into file)</span><br><span class="hljs-attribute">  Start of section headers</span><span class="hljs-punctuation">:</span> <span class="hljs-string">         14488 (bytes into file)</span><br>  <span class="hljs-attribute">标志：             0x0</span><br><span class="hljs-attribute">  Size of this header</span><span class="hljs-punctuation">:</span> <span class="hljs-string">              64 (bytes)</span><br>  <span class="hljs-attribute">Size of program headers</span><span class="hljs-punctuation">:</span> <span class="hljs-string">          56 (bytes)</span><br>  <span class="hljs-attribute">Number of program headers</span><span class="hljs-punctuation">:</span> <span class="hljs-string">        13</span><br>  <span class="hljs-attribute">Size of section headers</span><span class="hljs-punctuation">:</span> <span class="hljs-string">          64 (bytes)</span><br>  <span class="hljs-attribute">Number of section headers</span><span class="hljs-punctuation">:</span> <span class="hljs-string">        31</span><br>  <span class="hljs-attribute">Section header string table index</span><span class="hljs-punctuation">:</span> <span class="hljs-string">30</span><br></code></pre></td></tr></table></figure>
+
+<p>而执行 <code>readelf -h hello</code> 命令，有如下输出：</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">ELF 头：</span><br><span class="hljs-attribute">  Magic：   7f 45 4c 46 01 01 01 03 00 00 00 00 00 00 00 00 </span><br><span class="hljs-attribute">  类别</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                             ELF32</span><br>  <span class="hljs-attribute">数据</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                             2 补码，小端序 (little endian)</span><br>  <span class="hljs-attribute">Version</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                          1 (current)</span><br>  <span class="hljs-attribute">OS/ABI</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                           UNIX - GNU</span><br>  <span class="hljs-attribute">ABI 版本</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                         0</span><br>  <span class="hljs-attribute">类型</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                             EXEC (可执行文件)</span><br>  <span class="hljs-attribute">系统架构</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                         Intel 80386</span><br>  <span class="hljs-attribute">版本</span><span class="hljs-punctuation">:</span> <span class="hljs-string">                             0x1</span><br>  <span class="hljs-attribute">入口点地址：               0x8049750</span><br><span class="hljs-attribute">  程序头起点：          52 (bytes into file)</span><br><span class="hljs-attribute">  Start of section headers</span><span class="hljs-punctuation">:</span> <span class="hljs-string">         707128 (bytes into file)</span><br>  <span class="hljs-attribute">标志：             0x0</span><br><span class="hljs-attribute">  Size of this header</span><span class="hljs-punctuation">:</span> <span class="hljs-string">              52 (bytes)</span><br>  <span class="hljs-attribute">Size of program headers</span><span class="hljs-punctuation">:</span> <span class="hljs-string">          32 (bytes)</span><br>  <span class="hljs-attribute">Number of program headers</span><span class="hljs-punctuation">:</span> <span class="hljs-string">        8</span><br>  <span class="hljs-attribute">Size of section headers</span><span class="hljs-punctuation">:</span> <span class="hljs-string">          40 (bytes)</span><br>  <span class="hljs-attribute">Number of section headers</span><span class="hljs-punctuation">:</span> <span class="hljs-string">        30</span><br>  <span class="hljs-attribute">Section header string table index</span><span class="hljs-punctuation">:</span> <span class="hljs-string">29</span><br></code></pre></td></tr></table></figure>
+
+<p>再结合 Makefile 文件中对 readelf 和 hello 的编译选项分析，可以得出 readelf 是64位的，而hello是一个32位的可执行文件。我们的 readelf 程序只能处理32位的ELF文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Shell">readelf: main.o readelf.o<br>        $(CC) $^ -o $@<br><br>hello: hello.c<br>        $(CC) $^ -o $@ -m32 -static -g<br></code></pre></td></tr></table></figure>
+
+<h3 id="Thinking-1-3"><a href="#Thinking-1-3" class="headerlink" title="Thinking 1.3"></a>Thinking 1.3</h3><p>QEMU 模拟器支持直接加载 ELF 格式的内核，也就是说，QEMU 已经提供了 bootloader 的引导（启动）功能。MOS 操作系统不需要再实现 bootloader的功能。在 MOS 操作系统的运行第一行代码前，我们就已经拥有一个正常的程序运行环境，内存和一些外围设备都可以正常使用。在stage2阶段，QEMU会加载内核到内存，之后跳转到内核的入口，从而完成启动。</p>
+<h2 id="难点分析"><a href="#难点分析" class="headerlink" title="难点分析"></a>难点分析</h2><ol>
+<li><p>ELF 文件格式<br>ELF 是一种用于可执行文件、目标文件和库的文件格式。分为可重定位文件、可执行文件和共享对象文件三种类型。ELF 文件由 ELF 头、程序头表、节区头表和数据区组成。结构如下图<br><img src="/2026/08/06/buaa-os-lab1/image.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+</li>
+<li><p>计算地址时注意指针类型</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> *p = <span class="hljs-number">0x0</span>;<br>p = p + <span class="hljs-number">5</span>; <span class="hljs-comment">// 结果为 0x5</span><br></code></pre></td></tr></table></figure>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> *p = <span class="hljs-number">0x0</span>;<br>p = p + <span class="hljs-number">5</span>; <span class="hljs-comment">// 结果为 0x14，因为int类型占4字节</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>内核运行的正确位置以及如何控制内核加载地址</p>
+</li>
+<li><p>可变参数表</p>
+<ol>
+<li><code>va_list</code>，变长参数表的变量类型；</li>
+<li><code>va_start(va_list ap, lastarg)</code>，用于初始化变长参数表的宏；</li>
+<li><code>va_arg(va_list ap, 类型)</code>，用于取变长参数表下一个参数的宏；</li>
+<li><code>va_end(va_list ap)</code>，结束使用变长参数表的宏。</li>
+</ol>
+</li>
+</ol>
+<h2 id="实验体会"><a href="#实验体会" class="headerlink" title="实验体会"></a>实验体会</h2><p>对于计算机启动的具体过程，之前只完全不了解，这次通过实验，仔细阅读了一个简单的内核，并且成功地启动了它，才真正体会到了计算机启动的全过程。对于ELF文件格式的理解也更加深入了，不过对于它的具体结构和作用还是需要进一步学习。总之，这次实验让我对计算机系统有了更深入的理解，也提高了我的动手能力和解决问题的能力。不过，还是有许多细节需要进一步学习和掌握的，比如内核的具体实现、内存管理等方面的知识。希望在后续的实验中能够继续深入学习这些内容。</p>
+<h2 id="原创声明"><a href="#原创声明" class="headerlink" title="原创声明"></a>原创声明</h2><p>本实验报告基本为本人原创，在一些内容上引用了指导书的内容。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/" class="category-chain-item">实验报告</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/BUAA-OS/" class="print-no-link">#BUAA_OS</a>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>BUAA OS Lab1 实验报告</div>
+      <div>https://wv-ce.github.io/2026/08/06/buaa-os-lab1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wv-ce</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年8月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/08/07/buaa-os-lab2/" title="BUAA OS Lab2 实验报告">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">BUAA OS Lab2 实验报告</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/05/buaa-os-lab0/" title="BUAA OS Lab0 实验报告">
+                        <span class="hidden-mobile">BUAA OS Lab0 实验报告</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>© 2024 wv-ce</span> <i class="iconfont icon-love"></i> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
