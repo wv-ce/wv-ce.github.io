@@ -1,396 +1,208 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
-<head>
-  <meta charset="UTF-8">
-
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
-  
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="wv-ce">
-  <meta name="keywords" content="wv-ce,博客,技术,随笔">
-  
-    <meta name="description" content="OS 理论笔记：I&#x2F;O 设备管理。">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OS 理论笔记：I/O 设备管理 | wv-ce</title><meta name="author" content="wv-ce"><meta name="copyright" content="wv-ce"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="OS 理论笔记：I&#x2F;O 设备管理。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OS 理论笔记：I&#x2F;O 设备管理">
 <meta property="og:url" content="https://wv-ce.github.io/2026/08/16/os-notes-io/index.html">
 <meta property="og:site_name" content="wv-ce">
 <meta property="og:description" content="OS 理论笔记：I&#x2F;O 设备管理。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://wv-ce.github.io/2026/08/16/os-notes-io/image.png">
-<meta property="og:image" content="https://wv-ce.github.io/2026/08/16/os-notes-io/image-1.png">
-<meta property="og:image" content="https://wv-ce.github.io/2026/08/16/os-notes-io/image-2.png">
-<meta property="og:image" content="https://wv-ce.github.io/2026/08/16/os-notes-io/image-3.png">
-<meta property="og:image" content="https://wv-ce.github.io/2026/08/16/os-notes-io/image-4.png">
+<meta property="og:image" content="https://wv-ce.github.io/img/butterfly-icon.png">
 <meta property="article:published_time" content="2026-08-16T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-08-30T13:39:06.150Z">
+<meta property="article:modified_time" content="2026-08-30T16:39:28.699Z">
 <meta property="article:author" content="wv-ce">
 <meta property="article:tag" content="BUAA_OS">
 <meta property="article:tag" content="操作系统">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://wv-ce.github.io/2026/08/16/os-notes-io/image.png">
-  
-  
-  
-  <title>OS 理论笔记：I/O 设备管理 - wv-ce</title>
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"wv-ce.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wv-ce.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "OS 理论笔记：I/O 设备管理",
+  "url": "https://wv-ce.github.io/2026/08/16/os-notes-io/",
+  "image": "https://wv-ce.github.io/img/butterfly-icon.png",
+  "datePublished": "2026-08-16T10:00:00.000Z",
+  "dateModified": "2026-08-30T16:39:28.699Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "wv-ce",
+      "url": "https://wv-ce.github.io"
     }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-
-  
-<meta name="generator" content="Hexo 8.1.2"></head>
-
-
-<body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content (desktop) -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- Mobile grid menu overlay -->
-<div id="mobile-grid-menu" class="d-lg-none">
-  <div class="mobile-grid-menu-inner">
-    <div class="container">
-      <div class="row">
-        
-          
-          
-          
-          
-            <div class="col-4 mobile-grid-cell">
-              <a href="/" target="_self">
-                <div class="mobile-grid-item">
-                  <i class="iconfont icon-home-fill"></i>
-                  <span>首页</span>
-                </div>
-              </a>
-            </div>
-          
-        
-          
-          
-          
-          
-            <div class="col-4 mobile-grid-cell">
-              <a href="/archives/" target="_self">
-                <div class="mobile-grid-item">
-                  <i class="iconfont icon-archive-fill"></i>
-                  <span>归档</span>
-                </div>
-              </a>
-            </div>
-          
-        
-          
-          
-          
-          
-            <div class="col-4 mobile-grid-cell">
-              <a href="/categories/" target="_self">
-                <div class="mobile-grid-item">
-                  <i class="iconfont icon-category-fill"></i>
-                  <span>分类</span>
-                </div>
-              </a>
-            </div>
-          
-        
-          
-          
-          
-          
-            <div class="col-4 mobile-grid-cell">
-              <a href="/tags/" target="_self">
-                <div class="mobile-grid-item">
-                  <i class="iconfont icon-tags-fill"></i>
-                  <span>标签</span>
-                </div>
-              </a>
-            </div>
-          
-        
-          
-          
-          
-          
-            <div class="col-4 mobile-grid-cell">
-              <a href="/about/" target="_self">
-                <div class="mobile-grid-item">
-                  <i class="iconfont icon-user-fill"></i>
-                  <span>关于</span>
-                </div>
-              </a>
-            </div>
-          
-        
-        
-          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
-            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <div class="mobile-grid-item">
-                <i class="iconfont icon-search"></i>
-                <span>搜索</span>
-              </div>
-            </a>
-          </div>
-        
-        
-          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
-               data-label-light="开灯"
-               data-label-dark="关灯">
-            <a href="javascript:;" aria-label="Color Toggle">
-              <div class="mobile-grid-item">
-                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
-                <span id="mobile-color-toggle-label">关灯</span>
-              </div>
-            </a>
-          </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="OS 理论笔记：I/O 设备管理"></span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-08-16 10:00" pubdate>
-          2026年8月16日 上午
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          6.6k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          55 分钟
-        
-      </span>
-    
-
-    
-    
-  </div>
-
-
-        
-      </div>
-
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wv-ce.github.io/2026/08/16/os-notes-io/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
       
-    </div>
-  </div>
-</div>
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
 
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
 
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
 
-</div>
+        try {
+          const data = JSON.parse(itemStr)
 
-  </header>
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
 
-  <main>
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
     
       
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">OS 理论笔记：I/O 设备管理</h1>
-            
-            
-              <div class="markdown-body">
-                
-                <h1 id="设备管理">设备管理</h1>
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OS 理论笔记：I/O 设备管理',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 专栏</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/co/"><i class="fa-fw fas fa-book"></i><span> BUAA CO</span></a></li><li><a class="site-page child" href="/os/"><i class="fa-fw fas fa-book"></i><span> BUAA OS</span></a></li><li><a class="site-page child" href="/notes/"><i class="fa-fw fas fa-edit"></i><span> 随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">wv-ce</span></a><a class="nav-page-title" href="/"><span class="site-name">OS 理论笔记：I/O 设备管理</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 专栏</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/co/"><i class="fa-fw fas fa-book"></i><span> BUAA CO</span></a></li><li><a class="site-page child" href="/os/"><i class="fa-fw fas fa-book"></i><span> BUAA OS</span></a></li><li><a class="site-page child" href="/notes/"><i class="fa-fw fas fa-edit"></i><span> 随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">OS 理论笔记：I/O 设备管理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-16T10:00:00.000Z" title="发表于 2026-08-16 10:00:00">2026-08-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-30T16:39:28.699Z" title="更新于 2026-08-30 16:39:28">2026-08-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>设备管理</h1>
 <h2 id="设备管理概述">设备管理概述</h2>
 <h3 id="I-O-设备的特点">I/O 设备的特点</h3>
 <p>I/O 设备种类多、差异大。</p>
@@ -443,7 +255,7 @@
 <h4 id="设备即文件">设备即文件</h4>
 <p>UNIX 将设备抽象为特殊文件，从而让用户通过统一的文件接口访问多种设备。</p>
 <p>例如：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c">FILE *fd = fopen(<span class="hljs-string">&quot;/dev/something&quot;</span>, <span class="hljs-string">&quot;rw&quot;</span>);<br><span class="hljs-built_in">fprintf</span>(fd, <span class="hljs-string">&quot;Count %d\n&quot;</span>, i);<br>fclose(fd);<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FILE *fd = fopen(<span class="string">&quot;/dev/something&quot;</span>, <span class="string">&quot;rw&quot;</span>);</span><br><span class="line"><span class="built_in">fprintf</span>(fd, <span class="string">&quot;Count %d\n&quot;</span>, i);</span><br><span class="line">fclose(fd);</span><br></pre></td></tr></table></figure>
 <p>常见接口：</p>
 <ul>
 <li>块设备：<code>read()</code>、<code>write()</code>、<code>seek()</code>，支持随机读写；</li>
@@ -512,7 +324,7 @@
 <li>对I/O的操作通过 <code>load</code> 和 <code>store</code> 指令来实现；</li>
 <li>常见于 MIPS 等体系结构，也广泛用于现代系统。</li>
 </ul>
-<p><img src="/2026/08/16/os-notes-io/image.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p><img src="/2026/08/16/os-notes-io/image.png" alt="alt text"></p>
 <h2 id="I-O-软件原理">I/O 软件原理</h2>
 <h3 id="I-O-软件目标">I/O 软件目标</h3>
 <h4 id="设备无关性">设备无关性</h4>
@@ -564,7 +376,7 @@
 <li>请求发出后立即返回；</li>
 <li>数据或设备准备好后，需要通过 <code>select()</code>、事件通知等机制处理。</li>
 </ul>
-<p><img src="/2026/08/16/os-notes-io/image-1.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p><img src="/2026/08/16/os-notes-io/image-1.png" alt="alt text"></p>
 <h4 id="同步与异步">同步与异步</h4>
 <p>同步/异步是从用户进程是否等待结果的角度区分。</p>
 <p>同步：</p>
@@ -611,7 +423,7 @@
 <li>中断处理有上下文保存和恢复开销，浪费 CPU 时间；</li>
 <li>更适合低速或中速设备。</li>
 </ul>
-<p><img src="/2026/08/16/os-notes-io/image-2.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p><img src="/2026/08/16/os-notes-io/image-2.png" alt="alt text"></p>
 <p>中断处理一般包括：</p>
 <ul>
 <li>关中断（CPU屏蔽其他新的中断请求）；</li>
@@ -793,7 +605,7 @@
 <h5 id="双缓冲">双缓冲</h5>
 <p>工作原理：设备先把数据充满 A 缓冲；当用户进程从 A 缓冲读取数据时，设备可以不停下，直接去充满 B 缓冲。当 B 充满、A 读空后，两者角色对调（反转）。</p>
 <p>优势：实现了输入和传送的<strong>并行</strong>。只要进程处理数据的速度和设备输入的速度差不多，设备和 CPU 就能同时全速运转，几乎没有等待时间。</p>
-<p><img src="/2026/08/16/os-notes-io/image-3.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p><img src="/2026/08/16/os-notes-io/image-3.png" alt="alt text"></p>
 <h5 id="环形缓冲">环形缓冲</h5>
 <ul>
 <li>多个缓冲区组成循环队列；</li>
@@ -880,7 +692,7 @@
 <li>SPOOLing 程序再与真实外设进行实际 I/O。</li>
 </ul>
 <p>应用看到的是虚拟 I/O，设备执行的是实际 I/O。</p>
-<p><img src="/2026/08/16/os-notes-io/image-4.png" srcset="/img/loading.gif" lazyload alt="alt text"></p>
+<p><img src="/2026/08/16/os-notes-io/image-4.png" alt="alt text"></p>
 <p>典型例子：</p>
 <ul>
 <li>打印机管理器；</li>
@@ -1057,443 +869,18 @@
 <li>缓冲、设备分配和 SPOOLing 是提高效率和共享能力的重要机制；</li>
 <li>UNIX 和 NT 都通过分层接口把设备相关细节封装在驱动体系中。</li>
 </ul>
-
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/BUAA-OS/" class="print-no-link">#BUAA_OS</a>
-      
-        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>OS 理论笔记：I/O 设备管理</div>
-      <div>https://wv-ce.github.io/2026/08/16/os-notes-io/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>wv-ce</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2026年8月16日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
-            
-              
-              
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-cc-by"></i>
-                  </span>
-                </a>
-              
-            
-          </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
-
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2026/08/17/os-notes-disk/" title="OS 理论笔记：磁盘管理">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">OS 理论笔记：磁盘管理</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2026/08/15/os-notes-process/" title="OS 理论笔记：进程管理与死锁">
-                        <span class="hidden-mobile">OS 理论笔记：进程管理与死锁</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
-    </div>
-
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-  
-  
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <span>© 2024 wv-ce</span> <i class="iconfont icon-love"></i> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
-    </div>
-  
-  
-  
-</div>
-
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://wv-ce.github.io">wv-ce</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://wv-ce.github.io/2026/08/16/os-notes-io/">https://wv-ce.github.io/2026/08/16/os-notes-io/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://wv-ce.github.io" target="_blank">wv-ce</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/BUAA-OS/">BUAA_OS</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/08/17/os-notes-disk/" title="OS 理论笔记：磁盘管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">OS 理论笔记：磁盘管理</div></div><div class="info-2"><div class="info-item-1">磁盘管理 磁盘的工作原理 磁盘的基本结构 磁盘是一种典型的随机存取外存设备，数据记录在旋转盘片表面的磁性介质上，由磁头完成读写。 常见概念：  磁道（track）：盘片表面上的同心圆。 扇区（sector）：磁道被划分出的若干扇形区域，是磁盘读写的基本单位。 柱面（cylinder）：多个盘面上半径相同的磁道组成的集合。 磁头（head）：每个盘面通常对应一个磁头。  传统地址方式是 CHS（柱面 Cylinder、磁头 Head、扇区 Sector），现代系统更多采用 LBA（逻辑块地址）进行统一编号。 温彻斯特磁盘 温彻斯特磁盘的主要特点：  磁头和盘片组件密封； 内部充惰性气体，减小阻力； 磁头更轻更小，可以更靠近盘面； 采用接触起停技术，降低结构复杂度。  这些改进带来了更大的容量、更高的读写速度和更低的成本。 位密度与 ZBR 位密度：沿磁道方向单位长度内可记录的二进制位数，也称线密度。 老式磁盘：  每个磁道的扇区数相同； 外圈磁道更长，因此空间利用率不高。  新式磁盘通常采用 ZBR（Zone Bit Recording，分区记录）：  不同磁道的扇区数不同； 外圈...</div></div></div></a><a class="pagination-related" href="/2026/08/15/os-notes-process/" title="OS 理论笔记：进程管理与死锁"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">OS 理论笔记：进程管理与死锁</div></div><div class="info-2"><div class="info-item-1">进程与线程 进程 并发与并行 并发Concurrent：设有两个活动a1和a2，如果在某一指定的时间t，只要a1和a2都处在各自的起点和终点之间的某一处，则称a1和a2是并发执行的。 程序的并发执行是指若干个程序（或程序段）同时在系统中运行，这些程序（或程序段）的执行在时间上是重叠的。 并行Parallel：如果考虑两个程序,它们在同一时间度量下同时运行在不同的处理机（或核心）上，则称这两个程序是并行执行的。  并行一定并发，反之不然  程序的顺序执行与特征 顺序性：按照程序结构所指定的次序（可能有分支或循环） 封闭性：独占全部资源，计算机的状态只由于该程序的控制逻辑所决定 可再现性：初始条件相同则结果相同。 程序并发执行时的特征 间断性：并发程序具有“执行—暂停—执行”这种间断性的活动规律。 非封闭性：多个程序共享系统中的资源（如共享内存），这些资源的状态将由多个程序来改变，致使程序之间相互影响。 不可再现性：在所有输入相同的情况下，程序的执行结果还依赖于执行的次序。 原因：调度产生了不确定性，发生了数据竞争：  数据竞争：多个进程在没有同步保护的情况下访问同一个共享变量， 而...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/08/13/buaa-os-theory-homework/" title="操作系统理论作业汇总"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">操作系统理论作业汇总</div></div><div class="info-2"><div class="info-item-1">作业 1   什么是多道程序设计？多道程序设计与分时系统的区别是什么？  多道程序设计：指在内存中同时存放多道作业，使它们共享 CPU 和外部设备。当一道程序因等待 I/O 而暂停执行时，CPU 立即转去执行另一道程序，从而提高资源利用率和系统吞吐量。 主要区别：  目标不同： 多道程序设计的主要目标是提高 CPU 利用率；分时系统的目标是提高人机交互性，使用户感觉自己独占计算机。 调度方式： 多道程序设计通常在程序遇到 I/O 阻塞时才切换；分时系统引入了时间片概念，强制程序在规定时间内轮流使用 CPU。      什么原因推动了操作系统从批处理发展到多道程序，进而发展到分时系统？  批处理 →\rightarrow→ 多道程序： 主要是为了解决 CPU 与 I/O 设备速度不匹配的问题。单道批处理中 CPU 经常处于等待 I/O 的闲置状态，多道程序通过“交替执行”大幅提升了硬件利用率。 多道程序 →\rightarrow→ 分时系统： 主要是为了满足用户交互的需求。多道程序系统下，用户无法在程序运行期间进行干预，调试困难；分时系统通过快速切换，提供了实时响应能力。    什...</div></div></div></a><a class="pagination-related" href="/2026/08/06/buaa-os-lab1/" title="BUAA OS Lab1 实验报告"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-06</div><div class="info-item-2">BUAA OS Lab1 实验报告</div></div><div class="info-2"><div class="info-item-1">思考题 Thinking 1.1 测试如下.c文件： 123456#include &lt;stdio.h&gt;int main() &#123;    puts(&quot;Hello, World!&quot;);    return 0;&#125; 1. x86工具链 执行以下命令： 123gcc -c hello.c -o hello.oobjdump --section=.text --disassemble=main --source \hello.o &gt; test1.txt test1.txt文件内容如下： 123456789101112131415161718192021222324hello.o：     文件格式 elf64-x86-64Disassembly of section .text:0000000000000000 &lt;main&gt;:   0:   f3 0f 1e fa             endbr64   4:   55                      push   %rbp   5:   48 89 e5  ...</div></div></div></a><a class="pagination-related" href="/2026/08/08/buaa-os-lab3/" title="BUAA OS Lab3 实验报告"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-08</div><div class="info-item-2">BUAA OS Lab3 实验报告</div></div><div class="info-2"><div class="info-item-1">思考题 Thinking 3.1 把页目录的物理地址写入第 PDX(UVPT) 个页目录项，并设置为有效 PTE_V。用户态程序可以直接访问 UVPT 地址读取自己的页表，用于调试 / 系统调用 Thinking 3.2 load_icode 函数中对 elf_load_seg 的调用如下： 1panic_on(elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e)); data 这一参数的来源即是进程控制块的指针 e，它的作用是要在页表中建立映射。所以没有这个参数不可以，否则无法在页表中建立映射，进程就无法访问到它的代码段和数据段了。 Thinking 3.3 需要处理三种页面的加载情况：1. 从va开始，未页对齐的部分。2. 开头页对齐的数据页面。3. 超出bin_size部分的.bss内容。 Thinking 3.4 虚拟地址。env_tf.cp0_epc 字段指示的是进程恢复运行时PC应恢复到的位置，CPU访问的地址都是虚拟地址。 Thinking 3.5 0号异常处理函数在 kern/genex....</div></div></div></a><a class="pagination-related" href="/2026/08/14/os-notes-memory/" title="OS 理论笔记：内存管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-14</div><div class="info-item-2">OS 理论笔记：内存管理</div></div><div class="info-2"><div class="info-item-1">内存管理的不同空间 重定位 编译时重定位 如果在编译时知道给程序分配的物理地址空间，就可以直接生成包含物理地址的代码。 问题：如果程序要装入其他地址，必须重新编译-不灵活 装载时重定位 装载程序时，将指令和数据的地址转换为物理地址 装载时重定位，降低装载的速度，实现复杂，同时也缺乏保护。 执行时重定位（动态重定位） 问题：寄存器比较和相加产生时间开销 地址空间  物理地址空间  内存中一系列存储信息的物理地址的集合 内存通常以字节（每个字节为8个二进制位）为编址单位，每个字节都有一个地址与其对应。假定存储器的容量为n个字节，其地址编号顺序为0，1，2，…，n－1。这些地址称为“物理地址”。   逻辑地址空间  对物理内存的抽象 程序中使用的地址对应逻辑地址空间的地址 不同进程的逻辑地址空间相互独立    逻辑地址在0∼max0 \sim max0∼max，物理基址RRR  物理地址在R+0∼R+max{R+0} \sim R+maxR+0∼R+max  用户在程序中使用逻辑地址，但用于内存访问前必须映射为物理地址 地址映射  从逻辑地址到物理地址的映射 通过存储管理单元（MMU）...</div></div></div></a><a class="pagination-related" href="/2026/08/10/buaa-os-lab5/" title="BUAA OS Lab5 实验报告"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-10</div><div class="info-item-2">BUAA OS Lab5 实验报告</div></div><div class="info-2"><div class="info-item-1">思考题 Thinking 5.1  会引发的主要问题：数据不一致性与 I/O 失效   写操作无法即时到达设备： 写入数据时，数据可能会被留在 CPU 的 Cache 中，而没有真正写入设备的寄存器或存储介质。这导致设备无法接收到控制命令或数据。 读操作无法反映设备状态变化： 读取设备时，CPU 可能会直接从 Cache 中获取之前的旧数据，而忽略了外部设备状态的实时更新。 副作用缺失： 很多设备寄存器的读写操作具有特定副作用（如清除中断标志、触发发送等），通过缓存访问会导致这些副作用无法按预期发生。   不同设备的操作差异   串口设备（如 UART）：  差异极大且致命。 串口寄存器（如发送保持寄存器、接收缓冲寄存器）是高度时效性的。如果读写被缓存，会导致无法发送字符或读到“影子”数据，且无法通过读取状态寄存器来判断设备是否就绪，整个通信链路会崩溃。   IDE 磁盘（大块数据传输）：  相对复杂。 虽然控制寄存器部分同样严禁缓存，但在进行大块数据读写（如 DMA 传输）时，如果不正确处理缓存，会导致磁盘写回的数据与内存中的 Cache 不一致。 缓存更新策略影响： 如果使用...</div></div></div></a><a class="pagination-related" href="/2026/08/09/buaa-os-lab4/" title="BUAA OS Lab4 实验报告"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-09</div><div class="info-item-2">BUAA OS Lab4 实验报告</div></div><div class="info-2"><div class="info-item-1">思考题 Thinking 4.1   内核保存现场如何避免破坏通用寄存器： 内核在进入异常处理程序时，将当前栈指针或通用寄存器的值保存到内存中的 Trapframe 结构里，从而在不破坏其他通用寄存器的情况下完成上下文的持久化。   能否直接从 $a0-$a3 获取 msyscall 信息： 可以。   如何让 sys 函数获得一致的参数： 内核在调用具体的 sys_* 处理函数前，会根据 MIPS 的调用约定，将从用户态保存下来的参数（位于 Trapframe 中）重新加载到相应的寄存器或压入内核栈，使得 C 语言编写的内核函数能像接收普通函数调用一样，准确获取到用户通过 msyscall 传递的参数。   系统调用对 Trapframe 的更改及其对用户态的影响： 内核主要修改 Trapframe 中的 EPC（将其加 4，指向 syscall 指令的下一条，避免死循环）；反映在用户态表现为：当程序从内核返回后，能够接着执行下一条指令，并从特定的寄存器中获取到系统调用的执行结果（如成功标志或返回的数据）。   Thinking 4.2 为了保证e指向的env的id是envid...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">wv-ce</div><div class="author-info-description">wv-ce 的个人网站：技术笔记与日常思考。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">设备管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">设备管理概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#I-O-%E8%AE%BE%E5%A4%87%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.1.1.</span> <span class="toc-text">I&#x2F;O 设备的特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86%E7%9B%AE%E6%A0%87"><span class="toc-number">1.1.2.</span> <span class="toc-text">设备管理目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.3.</span> <span class="toc-text">设备管理功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80-I-O-%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.4.</span> <span class="toc-text">统一 I&#x2F;O 接口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E5%8D%B3%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">设备即文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E4%B8%8E-VFS"><span class="toc-number">1.1.4.2.</span> <span class="toc-text">驱动程序与 VFS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I-O-%E7%A1%AC%E4%BB%B6%E5%9F%BA%E7%A1%80"><span class="toc-number">1.2.</span> <span class="toc-text">I&#x2F;O 硬件基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BA%BF"><span class="toc-number">1.2.1.</span> <span class="toc-text">总线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">设备控制器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU-%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.3.</span> <span class="toc-text">CPU 访问控制器的方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I-O-%E8%BD%AF%E4%BB%B6%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.</span> <span class="toc-text">I&#x2F;O 软件原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#I-O-%E8%BD%AF%E4%BB%B6%E7%9B%AE%E6%A0%87"><span class="toc-number">1.3.1.</span> <span class="toc-text">I&#x2F;O 软件目标</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E6%97%A0%E5%85%B3%E6%80%A7"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">设备无关性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E5%91%BD%E5%90%8D"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">统一命名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">错误处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E3%80%81%E5%BC%82%E6%AD%A5%E4%B8%8E%E7%BC%93%E5%86%B2"><span class="toc-number">1.3.1.4.</span> <span class="toc-text">同步、异步与缓冲</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E8%AE%BF%E9%97%AE-I-O-%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">1.3.2.</span> <span class="toc-text">用户访问 I&#x2F;O 的方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%BB%E5%A1%9E%E4%B8%8E%E9%9D%9E%E9%98%BB%E5%A1%9E"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">阻塞与非阻塞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">同步与异步</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#I-O-%E6%8E%A7%E5%88%B6%E6%8A%80%E6%9C%AF"><span class="toc-number">1.3.3.</span> <span class="toc-text">I&#x2F;O 控制技术</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E6%8E%A7%E5%88%B6-I-O"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">程序控制 I&#x2F;O</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD%E9%A9%B1%E5%8A%A8-I-O"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">中断驱动 I&#x2F;O</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DMA"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">DMA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E9%81%93%E6%8A%80%E6%9C%AF"><span class="toc-number">1.3.3.4.</span> <span class="toc-text">通道技术</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I-O-%E8%BD%AF%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="toc-number">1.4.</span> <span class="toc-text">I&#x2F;O 软件概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E4%BD%93%E5%B1%82%E6%AC%A1"><span class="toc-number">1.4.1.</span> <span class="toc-text">总体层次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.4.2.</span> <span class="toc-text">中断处理程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.4.3.</span> <span class="toc-text">设备驱动程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E5%8A%9F%E8%83%BD"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">驱动程序功能</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E7%89%B9%E7%82%B9"><span class="toc-number">1.4.3.2.</span> <span class="toc-text">驱动程序特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">1.4.3.3.</span> <span class="toc-text">设备驱动程序的组成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.4.3.4.</span> <span class="toc-text">驱动程序接口</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E8%AE%BE%E5%A4%87%E6%97%A0%E5%85%B3%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.4.4.</span> <span class="toc-text">与设备无关的软件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-number">1.4.4.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E9%A9%B1%E5%8A%A8%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.4.4.2.</span> <span class="toc-text">统一驱动接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%93%E5%86%B2%E6%8A%80%E6%9C%AF"><span class="toc-number">1.4.4.3.</span> <span class="toc-text">缓冲技术</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8D%95%E7%BC%93%E5%86%B2"><span class="toc-number">1.4.4.3.1.</span> <span class="toc-text">单缓冲</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8C%E7%BC%93%E5%86%B2"><span class="toc-number">1.4.4.3.2.</span> <span class="toc-text">双缓冲</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8E%AF%E5%BD%A2%E7%BC%93%E5%86%B2"><span class="toc-number">1.4.4.3.3.</span> <span class="toc-text">环形缓冲</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%93%E5%86%B2%E6%B1%A0"><span class="toc-number">1.4.4.3.4.</span> <span class="toc-text">缓冲池</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E6%8A%A5%E5%91%8A"><span class="toc-number">1.4.4.4.</span> <span class="toc-text">错误报告</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E5%88%86%E9%85%8D"><span class="toc-number">1.4.4.5.</span> <span class="toc-text">设备分配</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4-I-O-%E8%BD%AF%E4%BB%B6"><span class="toc-number">1.4.5.</span> <span class="toc-text">用户空间 I&#x2F;O 软件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BA%93%E5%87%BD%E6%95%B0"><span class="toc-number">1.4.5.1.</span> <span class="toc-text">库函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SPOOLing"><span class="toc-number">1.4.5.2.</span> <span class="toc-text">SPOOLing</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.5.</span> <span class="toc-text">设备管理实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UNIX-%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86"><span class="toc-number">1.5.1.</span> <span class="toc-text">UNIX 设备管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%97%E8%AE%BE%E5%A4%87%E7%BC%93%E5%86%B2%E5%8C%BA%E7%AE%A1%E7%90%86"><span class="toc-number">1.5.2.</span> <span class="toc-text">块设备缓冲区管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E8%AE%BE%E5%A4%87%E7%BC%93%E5%86%B2%E5%8C%BA%E7%AE%A1%E7%90%86"><span class="toc-number">1.5.3.</span> <span class="toc-text">字符设备缓冲区管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UNIX-%E8%AE%BE%E5%A4%87%E5%BC%80%E5%85%B3%E8%A1%A8"><span class="toc-number">1.5.4.</span> <span class="toc-text">UNIX 设备开关表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Streams"><span class="toc-number">1.5.5.</span> <span class="toc-text">Streams</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NT-%E7%9A%84-I-O-%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.5.6.</span> <span class="toc-text">NT 的 I&#x2F;O 系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E6%BA%90%E7%AE%A1%E7%90%86"><span class="toc-number">1.6.</span> <span class="toc-text">电源管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="toc-number">1.6.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E8%AE%BE%E5%A4%87%E7%AD%96%E7%95%A5"><span class="toc-number">1.6.2.</span> <span class="toc-text">常见设备策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E4%B8%8B%E8%BD%BD%E8%83%BD%E8%80%97"><span class="toc-number">1.6.3.</span> <span class="toc-text">移动下载能耗</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">1.7.</span> <span class="toc-text">小结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/24/buaa-co-bus-io/" title="BUAA CO 总线与 IO 理论笔记">BUAA CO 总线与 IO 理论笔记</a><time datetime="2026-08-24T10:00:00.000Z" title="发表于 2026-08-24 10:00:00">2026-08-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/23/buaa-co-cache-vm/" title="BUAA CO Cache 与虚存 理论笔记">BUAA CO Cache 与虚存 理论笔记</a><time datetime="2026-08-23T10:00:00.000Z" title="发表于 2026-08-23 10:00:00">2026-08-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/22/buaa-co-assembly/" title="BUAA CO 汇编 理论笔记">BUAA CO 汇编 理论笔记</a><time datetime="2026-08-22T10:00:00.000Z" title="发表于 2026-08-22 10:00:00">2026-08-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/21/buaa-co-main-memory/" title="BUAA CO 主存储器 理论笔记">BUAA CO 主存储器 理论笔记</a><time datetime="2026-08-21T10:00:00.000Z" title="发表于 2026-08-21 10:00:00">2026-08-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/20/buaa-co-seq-logic/" title="BUAA CO 时序逻辑 理论笔记">BUAA CO 时序逻辑 理论笔记</a><time datetime="2026-08-20T10:00:00.000Z" title="发表于 2026-08-20 10:00:00">2026-08-20</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By wv-ce</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css')
+    if (false) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/contrib/copy-tex.min.js')
     }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
+  }
 
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
-
-
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script  src="/js/local-search.js" ></script>
-
-
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
-</body>
-</html>
+  showKatex()
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

@@ -1,392 +1,208 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
-<head>
-  <meta charset="UTF-8">
-
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
-  
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="wv-ce">
-  <meta name="keywords" content="wv-ce,博客,技术,随笔">
-  
-    <meta name="description" content="BUAA OS Lab2 实验报告。">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>BUAA OS Lab2 实验报告 | wv-ce</title><meta name="author" content="wv-ce"><meta name="copyright" content="wv-ce"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="BUAA OS Lab2 实验报告。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BUAA OS Lab2 实验报告">
 <meta property="og:url" content="https://wv-ce.github.io/2026/08/07/buaa-os-lab2/index.html">
 <meta property="og:site_name" content="wv-ce">
 <meta property="og:description" content="BUAA OS Lab2 实验报告。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://wv-ce.github.io/2026/08/07/buaa-os-lab2/image.png">
+<meta property="og:image" content="https://wv-ce.github.io/img/butterfly-icon.png">
 <meta property="article:published_time" content="2026-08-07T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-08-30T13:39:06.137Z">
+<meta property="article:modified_time" content="2026-08-30T16:39:28.686Z">
 <meta property="article:author" content="wv-ce">
 <meta property="article:tag" content="BUAA_OS">
 <meta property="article:tag" content="操作系统">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://wv-ce.github.io/2026/08/07/buaa-os-lab2/image.png">
-  
-  
-  
-  <title>BUAA OS Lab2 实验报告 - wv-ce</title>
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"wv-ce.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wv-ce.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "BUAA OS Lab2 实验报告",
+  "url": "https://wv-ce.github.io/2026/08/07/buaa-os-lab2/",
+  "image": "https://wv-ce.github.io/img/butterfly-icon.png",
+  "datePublished": "2026-08-07T10:00:00.000Z",
+  "dateModified": "2026-08-30T16:39:28.686Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "wv-ce",
+      "url": "https://wv-ce.github.io"
     }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-
-  
-<meta name="generator" content="Hexo 8.1.2"></head>
-
-
-<body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content (desktop) -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- Mobile grid menu overlay -->
-<div id="mobile-grid-menu" class="d-lg-none">
-  <div class="mobile-grid-menu-inner">
-    <div class="container">
-      <div class="row">
-        
-          
-          
-          
-          
-            <div class="col-4 mobile-grid-cell">
-              <a href="/" target="_self">
-                <div class="mobile-grid-item">
-                  <i class="iconfont icon-home-fill"></i>
-                  <span>首页</span>
-                </div>
-              </a>
-            </div>
-          
-        
-          
-          
-          
-          
-            <div class="col-4 mobile-grid-cell">
-              <a href="/archives/" target="_self">
-                <div class="mobile-grid-item">
-                  <i class="iconfont icon-archive-fill"></i>
-                  <span>归档</span>
-                </div>
-              </a>
-            </div>
-          
-        
-          
-          
-          
-          
-            <div class="col-4 mobile-grid-cell">
-              <a href="/categories/" target="_self">
-                <div class="mobile-grid-item">
-                  <i class="iconfont icon-category-fill"></i>
-                  <span>分类</span>
-                </div>
-              </a>
-            </div>
-          
-        
-          
-          
-          
-          
-            <div class="col-4 mobile-grid-cell">
-              <a href="/tags/" target="_self">
-                <div class="mobile-grid-item">
-                  <i class="iconfont icon-tags-fill"></i>
-                  <span>标签</span>
-                </div>
-              </a>
-            </div>
-          
-        
-          
-          
-          
-          
-            <div class="col-4 mobile-grid-cell">
-              <a href="/about/" target="_self">
-                <div class="mobile-grid-item">
-                  <i class="iconfont icon-user-fill"></i>
-                  <span>关于</span>
-                </div>
-              </a>
-            </div>
-          
-        
-        
-          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
-            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <div class="mobile-grid-item">
-                <i class="iconfont icon-search"></i>
-                <span>搜索</span>
-              </div>
-            </a>
-          </div>
-        
-        
-          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
-               data-label-light="开灯"
-               data-label-dark="关灯">
-            <a href="javascript:;" aria-label="Color Toggle">
-              <div class="mobile-grid-item">
-                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
-                <span id="mobile-color-toggle-label">关灯</span>
-              </div>
-            </a>
-          </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="BUAA OS Lab2 实验报告"></span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-08-07 10:00" pubdate>
-          2026年8月7日 上午
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          2.9k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          24 分钟
-        
-      </span>
-    
-
-    
-    
-  </div>
-
-
-        
-      </div>
-
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wv-ce.github.io/2026/08/07/buaa-os-lab2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
       
-    </div>
-  </div>
-</div>
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
 
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
 
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
 
-</div>
+        try {
+          const data = JSON.parse(itemStr)
 
-  </header>
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
 
-  <main>
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
     
       
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">BUAA OS Lab2 实验报告</h1>
-            
-            
-              <div class="markdown-body">
-                
-                <h2 id="思考题">思考题</h2>
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'BUAA OS Lab2 实验报告',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 专栏</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/co/"><i class="fa-fw fas fa-book"></i><span> BUAA CO</span></a></li><li><a class="site-page child" href="/os/"><i class="fa-fw fas fa-book"></i><span> BUAA OS</span></a></li><li><a class="site-page child" href="/notes/"><i class="fa-fw fas fa-edit"></i><span> 随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">wv-ce</span></a><a class="nav-page-title" href="/"><span class="site-name">BUAA OS Lab2 实验报告</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 专栏</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/co/"><i class="fa-fw fas fa-book"></i><span> BUAA CO</span></a></li><li><a class="site-page child" href="/os/"><i class="fa-fw fas fa-book"></i><span> BUAA OS</span></a></li><li><a class="site-page child" href="/notes/"><i class="fa-fw fas fa-edit"></i><span> 随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">BUAA OS Lab2 实验报告</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-07T10:00:00.000Z" title="发表于 2026-08-07 10:00:00">2026-08-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-30T16:39:28.686Z" title="更新于 2026-08-30 16:39:28">2026-08-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/">实验报告</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="思考题">思考题</h2>
 <h3 id="Thinking-2-1">Thinking 2.1</h3>
 <p>两者都是虚拟地址</p>
 <h3 id="Thinking-2-2">Thinking 2.2</h3>
@@ -407,7 +223,7 @@
 <li><code>tlb_invalidate</code> 的作用是：让 CPU 里的虚拟地址缓存失效。</li>
 <li>如下</li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs c"># <span class="hljs-number">1.</span> 定义函数入口：LEAF是MIPS汇编宏，标记函数开始<br>LEAF(tlb_out)<br><br># <span class="hljs-number">2.</span> 汇编器指令：禁止指令重排序（MIPS硬件/汇编器可能重排指令，TLB操作必须严格顺序）<br>.<span class="hljs-built_in">set</span> noreorder<br><br># <span class="hljs-number">3.</span> 保存原CP0_ENTRYHI寄存器的值到t0<br># CP0_ENTRYHI：存放TLB查询的虚拟页号(VPN)，是TLB匹配的关键字段<br>mfc0    t0, CP0_ENTRYHI<br><br># <span class="hljs-number">4.</span> 将函数参数a0（待删除的虚拟地址）写入CP0_ENTRYHI<br># 为后续TLB查询做准备<br>mtc0    a0, CP0_ENTRYHI<br><br># <span class="hljs-number">5.</span> 空指令nop：等待CP0寄存器写入完成（MIPS协处理器访问需要延时槽）<br>nop<br><br><span class="hljs-comment">/* Step 1: 使用tlbp指令查询TLB表项 */</span><br><span class="hljs-meta"># tlbp：TLB Probe（TLB查询指令）</span><br># 功能：用CP0_ENTRYHI中的VPN匹配TLB表项，匹配结果写入CP0_INDEX<br>tlbp<br>nop  # 等待tlbp指令执行完成<br><br><span class="hljs-comment">/* Step 2: 从CP0_INDEX寄存器读取查询结果 */</span><br># CP0_INDEX：存放TLB匹配结果<br>#  - 若匹配成功：存储对应TLB表项的索引（非负数）<br>#  - 若匹配失败：存储<span class="hljs-number">0x80000000</span>（最高位为<span class="hljs-number">1</span>，值为负数）<br>mfc0    t1, CP0_INDEX<br><br># <span class="hljs-number">6.</span> 恢复汇编器指令重排序（默认模式）<br>.<span class="hljs-built_in">set</span> reorder<br><br># <span class="hljs-number">7.</span> 条件跳转：若t1 &lt; <span class="hljs-number">0</span>（即TLB未找到对应表项），跳转到NO_SUCH_ENTRY<br>bltz    t1, NO_SUCH_ENTRY<br><br># <span class="hljs-number">8.</span> 再次禁止指令重排序（TLB写入操作必须严格顺序）<br>.<span class="hljs-built_in">set</span> noreorder<br><br># <span class="hljs-number">9.</span> 清空CP0_ENTRYHI / ENTRYLO0 / ENTRYLO1 寄存器<br><span class="hljs-meta"># zero是MIPS零寄存器，写入0 = 清空寄存器</span><br># 这三个寄存器是TLB表项的核心数据，清空后代表TLB表项无效<br>mtc0    zero, CP0_ENTRYHI<br>mtc0    zero, CP0_ENTRYLO0<br>mtc0    zero, CP0_ENTRYLO1<br>nop  # 等待寄存器写入完成<br><br><span class="hljs-comment">/* Step 3: 使用tlbwi指令将清空的值写入TLB表项 */</span><br><span class="hljs-meta"># tlbwi：TLB Write Indexed（按索引写入TLB）</span><br># 功能：根据CP0_INDEX中的索引，将ENTRYHI/ENTRYLO0/ENTRYLO1的值写入对应TLB表项<br># 此处写入全<span class="hljs-number">0</span>，实现TLB表项**无效化/删除**<br>tlbwi<br><br># <span class="hljs-number">10.</span> 恢复指令重排序<br>.<span class="hljs-built_in">set</span> reorder<br><br>NO_SUCH_ENTRY:<br>	mtc0    t0, CP0_ENTRYHI<br>	j       ra<br><span class="hljs-title function_">END</span><span class="hljs-params">(tlb_out)</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"># <span class="number">1.</span> 定义函数入口：LEAF是MIPS汇编宏，标记函数开始</span><br><span class="line">LEAF(tlb_out)</span><br><span class="line"></span><br><span class="line"># <span class="number">2.</span> 汇编器指令：禁止指令重排序（MIPS硬件/汇编器可能重排指令，TLB操作必须严格顺序）</span><br><span class="line">.<span class="built_in">set</span> noreorder</span><br><span class="line"></span><br><span class="line"># <span class="number">3.</span> 保存原CP0_ENTRYHI寄存器的值到t0</span><br><span class="line"># CP0_ENTRYHI：存放TLB查询的虚拟页号(VPN)，是TLB匹配的关键字段</span><br><span class="line">mfc0    t0, CP0_ENTRYHI</span><br><span class="line"></span><br><span class="line"># <span class="number">4.</span> 将函数参数a0（待删除的虚拟地址）写入CP0_ENTRYHI</span><br><span class="line"># 为后续TLB查询做准备</span><br><span class="line">mtc0    a0, CP0_ENTRYHI</span><br><span class="line"></span><br><span class="line"># <span class="number">5.</span> 空指令nop：等待CP0寄存器写入完成（MIPS协处理器访问需要延时槽）</span><br><span class="line">nop</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Step 1: 使用tlbp指令查询TLB表项 */</span></span><br><span class="line"><span class="meta"># tlbp：TLB Probe（TLB查询指令）</span></span><br><span class="line"># 功能：用CP0_ENTRYHI中的VPN匹配TLB表项，匹配结果写入CP0_INDEX</span><br><span class="line">tlbp</span><br><span class="line">nop  # 等待tlbp指令执行完成</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Step 2: 从CP0_INDEX寄存器读取查询结果 */</span></span><br><span class="line"># CP0_INDEX：存放TLB匹配结果</span><br><span class="line">#  - 若匹配成功：存储对应TLB表项的索引（非负数）</span><br><span class="line">#  - 若匹配失败：存储<span class="number">0x80000000</span>（最高位为<span class="number">1</span>，值为负数）</span><br><span class="line">mfc0    t1, CP0_INDEX</span><br><span class="line"></span><br><span class="line"># <span class="number">6.</span> 恢复汇编器指令重排序（默认模式）</span><br><span class="line">.<span class="built_in">set</span> reorder</span><br><span class="line"></span><br><span class="line"># <span class="number">7.</span> 条件跳转：若t1 &lt; <span class="number">0</span>（即TLB未找到对应表项），跳转到NO_SUCH_ENTRY</span><br><span class="line">bltz    t1, NO_SUCH_ENTRY</span><br><span class="line"></span><br><span class="line"># <span class="number">8.</span> 再次禁止指令重排序（TLB写入操作必须严格顺序）</span><br><span class="line">.<span class="built_in">set</span> noreorder</span><br><span class="line"></span><br><span class="line"># <span class="number">9.</span> 清空CP0_ENTRYHI / ENTRYLO0 / ENTRYLO1 寄存器</span><br><span class="line"><span class="meta"># zero是MIPS零寄存器，写入0 = 清空寄存器</span></span><br><span class="line"># 这三个寄存器是TLB表项的核心数据，清空后代表TLB表项无效</span><br><span class="line">mtc0    zero, CP0_ENTRYHI</span><br><span class="line">mtc0    zero, CP0_ENTRYLO0</span><br><span class="line">mtc0    zero, CP0_ENTRYLO1</span><br><span class="line">nop  # 等待寄存器写入完成</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Step 3: 使用tlbwi指令将清空的值写入TLB表项 */</span></span><br><span class="line"><span class="meta"># tlbwi：TLB Write Indexed（按索引写入TLB）</span></span><br><span class="line"># 功能：根据CP0_INDEX中的索引，将ENTRYHI/ENTRYLO0/ENTRYLO1的值写入对应TLB表项</span><br><span class="line"># 此处写入全<span class="number">0</span>，实现TLB表项**无效化/删除**</span><br><span class="line">tlbwi</span><br><span class="line"></span><br><span class="line"># <span class="number">10.</span> 恢复指令重排序</span><br><span class="line">.<span class="built_in">set</span> reorder</span><br><span class="line"></span><br><span class="line">NO_SUCH_ENTRY:</span><br><span class="line">	mtc0    t0, CP0_ENTRYHI</span><br><span class="line">	j       ra</span><br><span class="line"><span class="title function_">END</span><span class="params">(tlb_out)</span></span><br></pre></td></tr></table></figure>
 <h3 id="Thinking-2-6">Thinking 2.6</h3>
 <table>
 <thead>
@@ -497,7 +313,7 @@
 <h2 id="难点分析">难点分析</h2>
 <ol>
 <li>两级页表结构理解。何时为虚拟地址，何时为物理地址，以及它们在不同阶段的转换关系。
-<img src="/2026/08/07/buaa-os-lab2/image.png" srcset="/img/loading.gif" lazyload alt="alt text"></li>
+<img src="/2026/08/07/buaa-os-lab2/image.png" alt="alt text"></li>
 <li>各种宏定义。各个宏定义的作用和使用方式。</li>
 <li>各个函数的作用。页表分配、页表项查找、页表项插入、TLB 更新等函数的作用和实现细节。</li>
 </ol>
@@ -506,443 +322,18 @@
 页表的具体运作流程也需要熟练掌握，才能更好地理解、实现和扩展相关功能。</p>
 <h2 id="原创声明">原创声明</h2>
 <p>本实验报告大部分原创，少部分参考了<a target="_blank" rel="noopener" href="https://lucky-sheltered-boy.github.io/2025/07/01/%E5%8C%97%E8%88%AA%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-OS-lab2-%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/">lucky-sheltered-boy’s Blog</a>。</p>
-
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/" class="category-chain-item">实验报告</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/BUAA-OS/" class="print-no-link">#BUAA_OS</a>
-      
-        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>BUAA OS Lab2 实验报告</div>
-      <div>https://wv-ce.github.io/2026/08/07/buaa-os-lab2/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>wv-ce</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2026年8月7日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
-            
-              
-              
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-cc-by"></i>
-                  </span>
-                </a>
-              
-            
-          </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
-
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2026/08/08/buaa-os-lab3/" title="BUAA OS Lab3 实验报告">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">BUAA OS Lab3 实验报告</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2026/08/06/buaa-os-lab1/" title="BUAA OS Lab1 实验报告">
-                        <span class="hidden-mobile">BUAA OS Lab1 实验报告</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
-    </div>
-
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-  
-  
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <span>© 2024 wv-ce</span> <i class="iconfont icon-love"></i> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
-    </div>
-  
-  
-  
-</div>
-
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://wv-ce.github.io">wv-ce</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://wv-ce.github.io/2026/08/07/buaa-os-lab2/">https://wv-ce.github.io/2026/08/07/buaa-os-lab2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://wv-ce.github.io" target="_blank">wv-ce</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/BUAA-OS/">BUAA_OS</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/08/08/buaa-os-lab3/" title="BUAA OS Lab3 实验报告"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">BUAA OS Lab3 实验报告</div></div><div class="info-2"><div class="info-item-1">思考题 Thinking 3.1 把页目录的物理地址写入第 PDX(UVPT) 个页目录项，并设置为有效 PTE_V。用户态程序可以直接访问 UVPT 地址读取自己的页表，用于调试 / 系统调用 Thinking 3.2 load_icode 函数中对 elf_load_seg 的调用如下： 1panic_on(elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e)); data 这一参数的来源即是进程控制块的指针 e，它的作用是要在页表中建立映射。所以没有这个参数不可以，否则无法在页表中建立映射，进程就无法访问到它的代码段和数据段了。 Thinking 3.3 需要处理三种页面的加载情况：1. 从va开始，未页对齐的部分。2. 开头页对齐的数据页面。3. 超出bin_size部分的.bss内容。 Thinking 3.4 虚拟地址。env_tf.cp0_epc 字段指示的是进程恢复运行时PC应恢复到的位置，CPU访问的地址都是虚拟地址。 Thinking 3.5 0号异常处理函数在 kern/genex....</div></div></div></a><a class="pagination-related" href="/2026/08/06/buaa-os-lab1/" title="BUAA OS Lab1 实验报告"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">BUAA OS Lab1 实验报告</div></div><div class="info-2"><div class="info-item-1">思考题 Thinking 1.1 测试如下.c文件： 123456#include &lt;stdio.h&gt;int main() &#123;    puts(&quot;Hello, World!&quot;);    return 0;&#125; 1. x86工具链 执行以下命令： 123gcc -c hello.c -o hello.oobjdump --section=.text --disassemble=main --source \hello.o &gt; test1.txt test1.txt文件内容如下： 123456789101112131415161718192021222324hello.o：     文件格式 elf64-x86-64Disassembly of section .text:0000000000000000 &lt;main&gt;:   0:   f3 0f 1e fa             endbr64   4:   55                      push   %rbp   5:   48 89 e5  ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/08/11/buaa-os-lab6/" title="BUAA OS Lab6 实验报告"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-11</div><div class="info-item-2">BUAA OS Lab6 实验报告</div></div><div class="info-2"><div class="info-item-1">思考题 Thinking 6.1 如果不关闭自己不用的管道端，会造成资源浪费；更严重的是读端可能一直等不到 EOF，因为仍有写端未关闭，可能导致阻塞或程序无法正常结束。 Thinking 6.2 把父子进程中的读写逻辑对调即可： 123456789101112case 0:  /* 子进程：写者 */    close(fildes[0]);    write(fildes[1], &quot;Hello world\n&quot;, 12);    close(fildes[1]);    exit(EXIT_SUCCESS);default: /* 父进程：读者 */    close(fildes[1]);    read(fildes[0], buf, 100);    printf(&quot;parent-process read:%s&quot;, buf);    close(fildes[0]);    exit(EXIT_SUCCESS); Thinking 6.3   PIPE_SIZE 过小有什么影响？ PIPE_SIZE 过小会导致管道缓冲区很容易满或空...</div></div></div></a><a class="pagination-related" href="/2026/08/15/os-notes-process/" title="OS 理论笔记：进程管理与死锁"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-15</div><div class="info-item-2">OS 理论笔记：进程管理与死锁</div></div><div class="info-2"><div class="info-item-1">进程与线程 进程 并发与并行 并发Concurrent：设有两个活动a1和a2，如果在某一指定的时间t，只要a1和a2都处在各自的起点和终点之间的某一处，则称a1和a2是并发执行的。 程序的并发执行是指若干个程序（或程序段）同时在系统中运行，这些程序（或程序段）的执行在时间上是重叠的。 并行Parallel：如果考虑两个程序,它们在同一时间度量下同时运行在不同的处理机（或核心）上，则称这两个程序是并行执行的。  并行一定并发，反之不然  程序的顺序执行与特征 顺序性：按照程序结构所指定的次序（可能有分支或循环） 封闭性：独占全部资源，计算机的状态只由于该程序的控制逻辑所决定 可再现性：初始条件相同则结果相同。 程序并发执行时的特征 间断性：并发程序具有“执行—暂停—执行”这种间断性的活动规律。 非封闭性：多个程序共享系统中的资源（如共享内存），这些资源的状态将由多个程序来改变，致使程序之间相互影响。 不可再现性：在所有输入相同的情况下，程序的执行结果还依赖于执行的次序。 原因：调度产生了不确定性，发生了数据竞争：  数据竞争：多个进程在没有同步保护的情况下访问同一个共享变量， 而...</div></div></div></a><a class="pagination-related" href="/2026/08/05/buaa-os-lab0/" title="BUAA OS Lab0 实验报告"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-05</div><div class="info-item-2">BUAA OS Lab0 实验报告</div></div><div class="info-2"><div class="info-item-1">1. 思考题   对比 Untracked.txt 和 Stage.txt  Untracked.txt: README.txt 处于未跟踪的文件列表中。这表示文件在磁盘上，但 Git 仓库尚未记录它，也不会追踪其改动。 Stage.txt: README.txt 处于要提交的变更列表中。这表示文件已进入暂存区，准备好在下一次 commit 时存入版本库。  对比 Modified.txt 和第一次 add 之前的 status (Untracked) 现象：两次结果不一样。  第一次（Untracked）：Git 提示未跟踪的文件。 第二次（Modified）：Git 提示尚未暂存以备提交的变更。  原因： 第一次时，README.txt 是新文件，Git 完全不认识它。一旦执行过 add 和 commit，该文件就进入了 Git 的管理体系。当再次修改它时，Git 会对比“工作区”和“当前版本库（HEAD）”的内容。发现不一致时，它知道这是一个已追踪的文件被修改了，而不是一个新出现的陌生文件。   add the file 对应指令 git add，stage the fil...</div></div></div></a><a class="pagination-related" href="/2026/08/16/os-notes-io/" title="OS 理论笔记：I&#x2F;O 设备管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-16</div><div class="info-item-2">OS 理论笔记：I&#x2F;O 设备管理</div></div><div class="info-2"><div class="info-item-1">设备管理 设备管理概述 I/O 设备的特点 I/O 设备种类多、差异大。 按传输速度：  低速设备； 中速设备； 高速设备。  按信息交换单位：  块设备：以块为传输单位，每个块可独立读写，如硬盘、CD-ROM、U 盘。 字符设备：以字符为单位发送或者接收字符流的设备，不可寻址，如打印机、鼠标、键盘、网卡。  按共享属性：  独占设备； 共享设备。   设备管理的一个核心难点：外设速度差异巨大，但系统仍要提供统一、稳定且高效的访问方式。  设备管理目标 方便使用：  屏蔽不同外设差异； 对不同设备提供统一使用方式； 协调设备的并发使用。  提高效率：  提高 I/O 访问效率； 匹配 CPU 与不同速度外设之间的处理节奏。  方便控制：  支持设备增加、删除； 支持新设备类型； 方便 OS 对设备统一管理。  设备管理功能 设备管理主要功能：  提供设备使用接口：命令行接口和编程接口； 分配与释放设备、控制器、通道等资源； 管理设备访问与控制，包括并发访问和差错处理； 实现 I/O 缓冲和调度，提高访问效率。  统一 I/O 接口 设备即文件 UNIX 将设备抽象为特殊文件，从而...</div></div></div></a><a class="pagination-related" href="/2026/08/14/os-notes-memory/" title="OS 理论笔记：内存管理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-14</div><div class="info-item-2">OS 理论笔记：内存管理</div></div><div class="info-2"><div class="info-item-1">内存管理的不同空间 重定位 编译时重定位 如果在编译时知道给程序分配的物理地址空间，就可以直接生成包含物理地址的代码。 问题：如果程序要装入其他地址，必须重新编译-不灵活 装载时重定位 装载程序时，将指令和数据的地址转换为物理地址 装载时重定位，降低装载的速度，实现复杂，同时也缺乏保护。 执行时重定位（动态重定位） 问题：寄存器比较和相加产生时间开销 地址空间  物理地址空间  内存中一系列存储信息的物理地址的集合 内存通常以字节（每个字节为8个二进制位）为编址单位，每个字节都有一个地址与其对应。假定存储器的容量为n个字节，其地址编号顺序为0，1，2，…，n－1。这些地址称为“物理地址”。   逻辑地址空间  对物理内存的抽象 程序中使用的地址对应逻辑地址空间的地址 不同进程的逻辑地址空间相互独立    逻辑地址在0∼max0 \sim max0∼max，物理基址RRR  物理地址在R+0∼R+max{R+0} \sim R+maxR+0∼R+max  用户在程序中使用逻辑地址，但用于内存访问前必须映射为物理地址 地址映射  从逻辑地址到物理地址的映射 通过存储管理单元（MMU）...</div></div></div></a><a class="pagination-related" href="/2026/08/08/buaa-os-lab3/" title="BUAA OS Lab3 实验报告"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-08</div><div class="info-item-2">BUAA OS Lab3 实验报告</div></div><div class="info-2"><div class="info-item-1">思考题 Thinking 3.1 把页目录的物理地址写入第 PDX(UVPT) 个页目录项，并设置为有效 PTE_V。用户态程序可以直接访问 UVPT 地址读取自己的页表，用于调试 / 系统调用 Thinking 3.2 load_icode 函数中对 elf_load_seg 的调用如下： 1panic_on(elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e)); data 这一参数的来源即是进程控制块的指针 e，它的作用是要在页表中建立映射。所以没有这个参数不可以，否则无法在页表中建立映射，进程就无法访问到它的代码段和数据段了。 Thinking 3.3 需要处理三种页面的加载情况：1. 从va开始，未页对齐的部分。2. 开头页对齐的数据页面。3. 超出bin_size部分的.bss内容。 Thinking 3.4 虚拟地址。env_tf.cp0_epc 字段指示的是进程恢复运行时PC应恢复到的位置，CPU访问的地址都是虚拟地址。 Thinking 3.5 0号异常处理函数在 kern/genex....</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">wv-ce</div><div class="author-info-description">wv-ce 的个人网站：技术笔记与日常思考。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%80%83%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">思考题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-2-1"><span class="toc-number">1.1.</span> <span class="toc-text">Thinking 2.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-2-2"><span class="toc-number">1.2.</span> <span class="toc-text">Thinking 2.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-2-3"><span class="toc-number">1.3.</span> <span class="toc-text">Thinking 2.3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-2-4"><span class="toc-number">1.4.</span> <span class="toc-text">Thinking 2.4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-2-5"><span class="toc-number">1.5.</span> <span class="toc-text">Thinking 2.5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-2-6"><span class="toc-number">1.6.</span> <span class="toc-text">Thinking 2.6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-2-7"><span class="toc-number">1.7.</span> <span class="toc-text">Thinking 2.7</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%BE%E7%82%B9%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">难点分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BD%93%E4%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">实验体会</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%88%9B%E5%A3%B0%E6%98%8E"><span class="toc-number">4.</span> <span class="toc-text">原创声明</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/24/buaa-co-bus-io/" title="BUAA CO 总线与 IO 理论笔记">BUAA CO 总线与 IO 理论笔记</a><time datetime="2026-08-24T10:00:00.000Z" title="发表于 2026-08-24 10:00:00">2026-08-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/23/buaa-co-cache-vm/" title="BUAA CO Cache 与虚存 理论笔记">BUAA CO Cache 与虚存 理论笔记</a><time datetime="2026-08-23T10:00:00.000Z" title="发表于 2026-08-23 10:00:00">2026-08-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/22/buaa-co-assembly/" title="BUAA CO 汇编 理论笔记">BUAA CO 汇编 理论笔记</a><time datetime="2026-08-22T10:00:00.000Z" title="发表于 2026-08-22 10:00:00">2026-08-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/21/buaa-co-main-memory/" title="BUAA CO 主存储器 理论笔记">BUAA CO 主存储器 理论笔记</a><time datetime="2026-08-21T10:00:00.000Z" title="发表于 2026-08-21 10:00:00">2026-08-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/20/buaa-co-seq-logic/" title="BUAA CO 时序逻辑 理论笔记">BUAA CO 时序逻辑 理论笔记</a><time datetime="2026-08-20T10:00:00.000Z" title="发表于 2026-08-20 10:00:00">2026-08-20</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By wv-ce</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/katex.min.css')
+    if (false) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.18.1/dist/contrib/copy-tex.min.js')
     }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
+  }
 
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
-
-
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script  src="/js/local-search.js" ></script>
-
-
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
-</body>
-</html>
+  showKatex()
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
