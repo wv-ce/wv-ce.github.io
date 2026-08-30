@@ -9,7 +9,7 @@
 - **BUAA CO（计算机组成）**：理论笔记 + 实验部分代码
   - 实验部分代码：<https://github.com/wv-ce/BUAA_CO>
 
-> 笔记由 `scripts/import_buaa_os.py` / `scripts/import_buaa_co.py` 从对应仓库导入。
+> 笔记由 `tools/import_buaa_os.py` / `tools/import_buaa_co.py` 从对应仓库导入。
 
 ## 本地预览与发布
 
