@@ -1,0 +1,87 @@
+/**
+ * 首页模板注入：将 index.ejs 替换为分类卡片布局。
+ * 每次 hexo generate 时自动执行，不依赖 node_modules 修改。
+ */
+const fs = require("fs");
+const path = require("path");
+
+const TARGET = path.join(
+  __dirname,
+  "../node_modules/hexo-theme-fluid/layout/index.ejs"
+);
+
+const CUSTOM = `<%
+if (theme.index.slogan.enable) {
+  page.subtitle = theme.index.slogan.text || config.subtitle || ''
+}
+page.banner_img = theme.index.banner_img
+page.banner_img_height = theme.index.banner_img_height
+page.banner_mask_alpha = theme.index.banner_mask_alpha
+%>
+
+<h1 style="display: none"><%= config.title %></h1>
+
+<style>
+.category-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  padding: 40px 0;
+}
+.category-card {
+  flex: 1 1 280px;
+  max-width: 360px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  background: var(--bg-soft);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  color: var(--text);
+}
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  color: var(--text);
+  text-decoration: none;
+}
+.category-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+.category-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+.category-card .card-arrow {
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+</style>
+
+<div class="category-cards">
+  <a class="category-card" href="<%= url_for('/co/') %>">
+    <h2>BUAA CO</h2>
+    <p>计算机组成原理理论笔记，涵盖组合逻辑、时序逻辑、主存储器、汇编、Cache 与虚存、总线与 IO。</p>
+    <span class="card-arrow">查看笔记 →</span>
+  </a>
+  <a class="category-card" href="<%= url_for('/os/') %>">
+    <h2>BUAA OS</h2>
+    <p>操作系统实验报告与理论笔记，含 Lab0~Lab6 实验、内存/进程/IO/磁盘/文件系统五大主题。</p>
+    <span class="card-arrow">查看笔记 →</span>
+  </a>
+  <a class="category-card" href="<%= url_for('/notes/') %>">
+    <h2>随笔</h2>
+    <p>技术之外的日常思考与记录。</p>
+    <span class="card-arrow">查看随笔 →</span>
+  </a>
+</div>
+`;
+
+hexo.on("generateBefore", function () {
+  if (fs.existsSync(TARGET)) {
+    fs.writeFileSync(TARGET, CUSTOM, "utf8");
+  }
+});
