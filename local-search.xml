@@ -13,6 +13,8 @@
     
     <categories>
       
+      <category>计算机组成</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -20,9 +22,9 @@
     
     <tags>
       
-      <tag>BUAA_CO</tag>
-      
       <tag>计算机组成</tag>
+      
+      <tag>总线与 IO</tag>
       
     </tags>
     
@@ -40,6 +42,8 @@
     
     <categories>
       
+      <category>计算机组成</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -47,9 +51,9 @@
     
     <tags>
       
-      <tag>BUAA_CO</tag>
-      
       <tag>计算机组成</tag>
+      
+      <tag>Cache 与虚存</tag>
       
     </tags>
     
@@ -67,6 +71,8 @@
     
     <categories>
       
+      <category>计算机组成</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -74,9 +80,9 @@
     
     <tags>
       
-      <tag>BUAA_CO</tag>
-      
       <tag>计算机组成</tag>
+      
+      <tag>汇编</tag>
       
     </tags>
     
@@ -94,6 +100,8 @@
     
     <categories>
       
+      <category>计算机组成</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -101,9 +109,9 @@
     
     <tags>
       
-      <tag>BUAA_CO</tag>
-      
       <tag>计算机组成</tag>
+      
+      <tag>主存储器</tag>
       
     </tags>
     
@@ -121,6 +129,8 @@
     
     <categories>
       
+      <category>计算机组成</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -128,9 +138,9 @@
     
     <tags>
       
-      <tag>BUAA_CO</tag>
-      
       <tag>计算机组成</tag>
+      
+      <tag>时序逻辑</tag>
       
     </tags>
     
@@ -148,6 +158,8 @@
     
     <categories>
       
+      <category>计算机组成</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -155,9 +167,9 @@
     
     <tags>
       
-      <tag>BUAA_CO</tag>
-      
       <tag>计算机组成</tag>
+      
+      <tag>组合逻辑</tag>
       
     </tags>
     
@@ -175,6 +187,8 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -182,9 +196,9 @@
     
     <tags>
       
-      <tag>BUAA_OS</tag>
-      
       <tag>操作系统</tag>
+      
+      <tag>文件系统</tag>
       
     </tags>
     
@@ -202,6 +216,8 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -209,9 +225,9 @@
     
     <tags>
       
-      <tag>BUAA_OS</tag>
-      
       <tag>操作系统</tag>
+      
+      <tag>磁盘管理</tag>
       
     </tags>
     
@@ -229,6 +245,8 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -236,9 +254,9 @@
     
     <tags>
       
-      <tag>BUAA_OS</tag>
-      
       <tag>操作系统</tag>
+      
+      <tag>I/O 设备管理</tag>
       
     </tags>
     
@@ -256,6 +274,8 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -263,9 +283,9 @@
     
     <tags>
       
-      <tag>BUAA_OS</tag>
-      
       <tag>操作系统</tag>
+      
+      <tag>进程管理</tag>
       
     </tags>
     
@@ -283,6 +303,8 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>理论笔记</category>
       
     </categories>
@@ -290,9 +312,9 @@
     
     <tags>
       
-      <tag>BUAA_OS</tag>
-      
       <tag>操作系统</tag>
+      
+      <tag>内存管理</tag>
       
     </tags>
     
@@ -310,14 +332,14 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>理论作业</category>
       
     </categories>
     
     
     <tags>
-      
-      <tag>BUAA_OS</tag>
       
       <tag>操作系统</tag>
       
@@ -337,14 +359,14 @@
     
     <categories>
       
-      <category>实验报告</category>
+      <category>操作系统</category>
+      
+      <category>知识梳理</category>
       
     </categories>
     
     
     <tags>
-      
-      <tag>BUAA_OS</tag>
       
       <tag>操作系统</tag>
       
@@ -364,14 +386,14 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>实验报告</category>
       
     </categories>
     
     
     <tags>
-      
-      <tag>BUAA_OS</tag>
       
       <tag>操作系统</tag>
       
@@ -391,14 +413,14 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>实验报告</category>
       
     </categories>
     
     
     <tags>
-      
-      <tag>BUAA_OS</tag>
       
       <tag>操作系统</tag>
       
@@ -418,14 +440,14 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>实验报告</category>
       
     </categories>
     
     
     <tags>
-      
-      <tag>BUAA_OS</tag>
       
       <tag>操作系统</tag>
       
@@ -445,14 +467,14 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>实验报告</category>
       
     </categories>
     
     
     <tags>
-      
-      <tag>BUAA_OS</tag>
       
       <tag>操作系统</tag>
       
@@ -472,14 +494,14 @@
     
     <categories>
       
+      <category>操作系统</category>
+      
       <category>实验报告</category>
       
     </categories>
     
     
     <tags>
-      
-      <tag>BUAA_OS</tag>
       
       <tag>操作系统</tag>
       
@@ -499,32 +521,7 @@
     
     <categories>
       
-      <category>实验报告</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>BUAA_OS</tag>
-      
-      <tag>操作系统</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>BUAA OS Lab0 实验报告</title>
-    <link href="/2026/08/05/buaa-os-lab0/"/>
-    <url>/2026/08/05/buaa-os-lab0/</url>
-    
-    <content type="html"><![CDATA[<h2 id="1-思考题">1. 思考题</h2><ol><li><p>对比 Untracked.txt 和 Stage.txt</p><ul><li>Untracked.txt: README.txt 处于未跟踪的文件列表中。这表示文件在磁盘上，但 Git 仓库尚未记录它，也不会追踪其改动。</li><li>Stage.txt: README.txt 处于要提交的变更列表中。这表示文件已进入暂存区，准备好在下一次 commit 时存入版本库。</li></ul><p>对比 Modified.txt 和第一次 add 之前的 status (Untracked)现象：两次结果<strong>不一样</strong>。</p><ul><li>第一次（Untracked）：Git 提示未跟踪的文件。</li><li>第二次（Modified）：Git 提示尚未暂存以备提交的变更。</li></ul><p>原因：第一次时，README.txt 是新文件，Git 完全不认识它。一旦执行过 add 和 commit，该文件就进入了 Git 的管理体系。当再次修改它时，Git 会对比“工作区”和“当前版本库（HEAD）”的内容。发现不一致时，它知道这是一个<strong>已追踪</strong>的文件被修改了，而不是一个新出现的陌生文件。</p></li><li><p>add the file 对应指令 <code>git add</code>，stage the file 对应指令也是 <code>git add</code>，commit 对应 <code>git commit</code>。</p></li><li><ol><li><code>git checkout -- print.c</code> 或 <code>git restore print.c</code></li><li>先撤销暂存区的删除操作 <code>git reset HEAD print.c</code>，再撤销工作区的删除操作 <code>git checkout -- print.c</code> 或 <code>git restore print.c</code></li><li><code>git reset HEAD hello.txt</code></li></ol></li><li><p>执行 <code>git reset --hard HEAD^</code>变化：HEAD 指针从版本 3 移动到了版本 2，版本 3 的记录消失了（只剩下 2 和 1）。同时，工作区 README.txt 的内容也会变回 “Testing 2”。</p><p>回退到版本 1：<code>git reset --hard &lt;hash1&gt;</code>变化：HEAD 指针直接跳到了最早的提交，只剩下一条记录（版本 1）。工作区内容变为 “Testing 1”。</p><p>再次回到新版本：<code>git reset --hard &lt;hash3&gt;</code>变化：版本 3 回归，git log 恢复到三条完整的记录，工作区变回 “Testing 3”。</p></li><li><p><code>echo first</code> :输出first。<code>echo second &gt; output.txt</code> :创建output.txt 文件，并在其中写入second。<code>echo third &gt; output.txt</code> :覆盖原有的output.txt 文件内容，写入third。<code>echo forth &gt;&gt; output.txt</code> :在原有的文件后追加forth。</p></li><li><p>command 内容</p> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">&#x27;EOF&#x27;</span> &gt; <span class="hljs-built_in">test</span><br><span class="hljs-built_in">echo</span> Shell Start...<br><span class="hljs-built_in">echo</span> <span class="hljs-built_in">set</span> a = 1<br>a=1<br><span class="hljs-built_in">echo</span> <span class="hljs-built_in">set</span> b = 2<br>b=2<br><span class="hljs-built_in">echo</span> <span class="hljs-built_in">set</span> c = a+b<br>c=$[<span class="hljs-variable">$a</span>+<span class="hljs-variable">$b</span>]<br><span class="hljs-built_in">echo</span> c = <span class="hljs-variable">$c</span><br><span class="hljs-built_in">echo</span> save c to ./file1<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$c</span>&gt;file1<br><span class="hljs-built_in">echo</span> save b to ./file2<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$b</span>&gt;file2<br><span class="hljs-built_in">echo</span> save a to ./file3<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$a</span>&gt;file3<br><span class="hljs-built_in">echo</span> save file1 file2 file3 to file4<br><span class="hljs-built_in">cat</span> file1&gt;file4<br><span class="hljs-built_in">cat</span> file2&gt;&gt;file4<br><span class="hljs-built_in">cat</span> file3&gt;&gt;file4<br><span class="hljs-built_in">echo</span> save file4 to ./result<br><span class="hljs-built_in">cat</span> file4&gt;&gt;result<br>EOF<br><br><span class="hljs-built_in">chmod</span> +x <span class="hljs-built_in">test</span><br>./test &gt; result<br></code></pre></td></tr></table></figure><p>result 内容</p> <figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-function"><span class="hljs-title">Shell</span></span> Start...<br><span class="hljs-keyword">set</span> a <span class="hljs-comment">= 1</span><br><span class="hljs-keyword">set</span> <span class="hljs-comment">b = 2</span><br><span class="hljs-keyword">set</span> <span class="hljs-comment">c = a+b</span><br>c <span class="hljs-comment">= 3</span><br>save <span class="hljs-comment">c to .</span>/file1<br>save b to ./<span class="hljs-comment">file2</span><br>save <span class="hljs-comment">a to .</span>/file3<br>save file1 file2 file3 to file4<br>save file4 to ./<span class="hljs-comment">result</span><br>3<br>2<br>1<br></code></pre></td></tr></table></figure><p>说明：result 文件包含 test 脚本执行时的所有 <code>echo</code> 输出以及最后的 <code>cat</code> 结果<code>echo echo Shell Start</code>：直接输出字符串 echo Shell Start。<code>echo `echo Shell Start` </code>：输出 Shell Start。反引号触发了命令替换。Shell 先执行内部的 <code>echo Shell Start</code>，得到结果 Shell Start，然后再由外部的 echo 将这个结果打印出来。</p><p><code>echo echo $c&gt;file1</code>：将字符串 echo [c的值] 写入文件 file1。屏幕无输出。<code>echo `echo $c&gt;file1` </code>：将变量 $c 的值写入 file1。在屏幕输出一个空串。</p></li></ol><h2 id="2-难点分析">2. 难点分析</h2><ol><li><code>sed</code> 命令的使用：<code>sed</code> 是一个强大的文本处理工具，但其语法较为复杂，尤其是正则表达式部分。</li><li><code>chmod</code> 命令的权限设置：理解不同权限位（读、写、执行）以及如何使用 <code>chmod</code> 来修改文件权限可能会有些混淆。ugo+rwx 表示给用户、组和其他人都添加读、写、执行权限。以及用数字方式设置权限（如 755）也需要理解。</li><li>单引号和双引号的区别：在 shell 中，单引号内的内容被原样输出，而双引号内的内容会进行变量替换和命令替换。这可能会导致一些意外的结果，尤其是在使用 <code>echo</code> 时。</li><li>美元符号 $ 的使用：$ 用于变量替换和命令替换，且会和方括号（<code>$[$a+1]</code>）、花括号（<code>${var}</code>）、小括号（<code>$((a+1))</code>）等结合使用，理解这些不同的用法可能会有些混乱。</li></ol><p><img src="/2026/08/05/buaa-os-lab0/image.png" alt="alt text"></p><h2 id="3-实验体会">3. 实验体会</h2><ol><li>实验中可能会遇到一些指导书没有提到的细节问题，例如 lab0 中遇到的 <code>gcc -I</code> 选项的使用以指明头文件路径，这些细节需要通过询问大模型或查阅资料来解决。</li><li><code>sed</code> <code>awk</code>命令的使用需要一定的练习和理解，尤其是正则表达式和变量部分。</li></ol><h2 id="4-原创说明">4. 原创说明</h2><p>本实验报告所有内容均为原创。</p>]]></content>
-    
-    
-    <categories>
+      <category>操作系统</category>
       
       <category>实验报告</category>
       
@@ -532,8 +529,6 @@
     
     
     <tags>
-      
-      <tag>BUAA_OS</tag>
       
       <tag>操作系统</tag>
       
@@ -551,10 +546,37 @@
     <content type="html"><![CDATA[<p>大家好，我是 wv-ce。经过一番折腾，我的个人网站终于上线了 🎉。这篇文章就来聊聊这个网站的由来，以及我打算在这里写些什么。</p><h2 id="为什么建这个网站">为什么建这个网站</h2><p>一直想有一个属于自己的地方，可以自由地记录、分享和思考。社交媒体虽然方便，但内容和形式都受限于平台。而一个自己的网站，从设计到内容都由自己掌控，这种感觉很好。</p><h2 id="网站的技术方案">网站的技术方案</h2><p>这个网站使用 <a href="https://hexo.io">Hexo</a> 构建，主题为 <a href="https://github.com/fluid-dev/hexo-theme-fluid">Fluid</a>。好处是：</p><ul><li>支持 Markdown 写作，专注内容本身</li><li>明暗模式自动切换</li><li>页面加载快，部署在 GitHub Pages 上</li></ul><h2 id="我会写些什么">我会写些什么</h2><ol><li>技术笔记：把踩过的坑和学习心得记录下来</li><li>项目分享：介绍我做过的有意思的项目</li><li>生活随笔：一些日常的思考与记录</li></ol><h2 id="最后">最后</h2><p>网站刚刚起步，内容会慢慢丰富起来。如果你有什么建议，欢迎通过 <a href="https://github.com/wv-ce">GitHub</a> 找到我。期待与你交流。</p>]]></content>
     
     
+    <categories>
+      
+      <category>随笔</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>BUAA OS Lab0 实验报告</title>
+    <link href="/2026/08/05/buaa-os-lab0/"/>
+    <url>/2026/08/05/buaa-os-lab0/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1-思考题">1. 思考题</h2><ol><li><p>对比 Untracked.txt 和 Stage.txt</p><ul><li>Untracked.txt: README.txt 处于未跟踪的文件列表中。这表示文件在磁盘上，但 Git 仓库尚未记录它，也不会追踪其改动。</li><li>Stage.txt: README.txt 处于要提交的变更列表中。这表示文件已进入暂存区，准备好在下一次 commit 时存入版本库。</li></ul><p>对比 Modified.txt 和第一次 add 之前的 status (Untracked)现象：两次结果<strong>不一样</strong>。</p><ul><li>第一次（Untracked）：Git 提示未跟踪的文件。</li><li>第二次（Modified）：Git 提示尚未暂存以备提交的变更。</li></ul><p>原因：第一次时，README.txt 是新文件，Git 完全不认识它。一旦执行过 add 和 commit，该文件就进入了 Git 的管理体系。当再次修改它时，Git 会对比“工作区”和“当前版本库（HEAD）”的内容。发现不一致时，它知道这是一个<strong>已追踪</strong>的文件被修改了，而不是一个新出现的陌生文件。</p></li><li><p>add the file 对应指令 <code>git add</code>，stage the file 对应指令也是 <code>git add</code>，commit 对应 <code>git commit</code>。</p></li><li><ol><li><code>git checkout -- print.c</code> 或 <code>git restore print.c</code></li><li>先撤销暂存区的删除操作 <code>git reset HEAD print.c</code>，再撤销工作区的删除操作 <code>git checkout -- print.c</code> 或 <code>git restore print.c</code></li><li><code>git reset HEAD hello.txt</code></li></ol></li><li><p>执行 <code>git reset --hard HEAD^</code>变化：HEAD 指针从版本 3 移动到了版本 2，版本 3 的记录消失了（只剩下 2 和 1）。同时，工作区 README.txt 的内容也会变回 “Testing 2”。</p><p>回退到版本 1：<code>git reset --hard &lt;hash1&gt;</code>变化：HEAD 指针直接跳到了最早的提交，只剩下一条记录（版本 1）。工作区内容变为 “Testing 1”。</p><p>再次回到新版本：<code>git reset --hard &lt;hash3&gt;</code>变化：版本 3 回归，git log 恢复到三条完整的记录，工作区变回 “Testing 3”。</p></li><li><p><code>echo first</code> :输出first。<code>echo second &gt; output.txt</code> :创建output.txt 文件，并在其中写入second。<code>echo third &gt; output.txt</code> :覆盖原有的output.txt 文件内容，写入third。<code>echo forth &gt;&gt; output.txt</code> :在原有的文件后追加forth。</p></li><li><p>command 内容</p> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">&#x27;EOF&#x27;</span> &gt; <span class="hljs-built_in">test</span><br><span class="hljs-built_in">echo</span> Shell Start...<br><span class="hljs-built_in">echo</span> <span class="hljs-built_in">set</span> a = 1<br>a=1<br><span class="hljs-built_in">echo</span> <span class="hljs-built_in">set</span> b = 2<br>b=2<br><span class="hljs-built_in">echo</span> <span class="hljs-built_in">set</span> c = a+b<br>c=$[<span class="hljs-variable">$a</span>+<span class="hljs-variable">$b</span>]<br><span class="hljs-built_in">echo</span> c = <span class="hljs-variable">$c</span><br><span class="hljs-built_in">echo</span> save c to ./file1<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$c</span>&gt;file1<br><span class="hljs-built_in">echo</span> save b to ./file2<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$b</span>&gt;file2<br><span class="hljs-built_in">echo</span> save a to ./file3<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$a</span>&gt;file3<br><span class="hljs-built_in">echo</span> save file1 file2 file3 to file4<br><span class="hljs-built_in">cat</span> file1&gt;file4<br><span class="hljs-built_in">cat</span> file2&gt;&gt;file4<br><span class="hljs-built_in">cat</span> file3&gt;&gt;file4<br><span class="hljs-built_in">echo</span> save file4 to ./result<br><span class="hljs-built_in">cat</span> file4&gt;&gt;result<br>EOF<br><br><span class="hljs-built_in">chmod</span> +x <span class="hljs-built_in">test</span><br>./test &gt; result<br></code></pre></td></tr></table></figure><p>result 内容</p> <figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-function"><span class="hljs-title">Shell</span></span> Start...<br><span class="hljs-keyword">set</span> a <span class="hljs-comment">= 1</span><br><span class="hljs-keyword">set</span> <span class="hljs-comment">b = 2</span><br><span class="hljs-keyword">set</span> <span class="hljs-comment">c = a+b</span><br>c <span class="hljs-comment">= 3</span><br>save <span class="hljs-comment">c to .</span>/file1<br>save b to ./<span class="hljs-comment">file2</span><br>save <span class="hljs-comment">a to .</span>/file3<br>save file1 file2 file3 to file4<br>save file4 to ./<span class="hljs-comment">result</span><br>3<br>2<br>1<br></code></pre></td></tr></table></figure><p>说明：result 文件包含 test 脚本执行时的所有 <code>echo</code> 输出以及最后的 <code>cat</code> 结果<code>echo echo Shell Start</code>：直接输出字符串 echo Shell Start。<code>echo `echo Shell Start` </code>：输出 Shell Start。反引号触发了命令替换。Shell 先执行内部的 <code>echo Shell Start</code>，得到结果 Shell Start，然后再由外部的 echo 将这个结果打印出来。</p><p><code>echo echo $c&gt;file1</code>：将字符串 echo [c的值] 写入文件 file1。屏幕无输出。<code>echo `echo $c&gt;file1` </code>：将变量 $c 的值写入 file1。在屏幕输出一个空串。</p></li></ol><h2 id="2-难点分析">2. 难点分析</h2><ol><li><code>sed</code> 命令的使用：<code>sed</code> 是一个强大的文本处理工具，但其语法较为复杂，尤其是正则表达式部分。</li><li><code>chmod</code> 命令的权限设置：理解不同权限位（读、写、执行）以及如何使用 <code>chmod</code> 来修改文件权限可能会有些混淆。ugo+rwx 表示给用户、组和其他人都添加读、写、执行权限。以及用数字方式设置权限（如 755）也需要理解。</li><li>单引号和双引号的区别：在 shell 中，单引号内的内容被原样输出，而双引号内的内容会进行变量替换和命令替换。这可能会导致一些意外的结果，尤其是在使用 <code>echo</code> 时。</li><li>美元符号 $ 的使用：$ 用于变量替换和命令替换，且会和方括号（<code>$[$a+1]</code>）、花括号（<code>${var}</code>）、小括号（<code>$((a+1))</code>）等结合使用，理解这些不同的用法可能会有些混乱。</li></ol><p><img src="/2026/08/05/buaa-os-lab0/image.png" alt="alt text"></p><h2 id="3-实验体会">3. 实验体会</h2><ol><li>实验中可能会遇到一些指导书没有提到的细节问题，例如 lab0 中遇到的 <code>gcc -I</code> 选项的使用以指明头文件路径，这些细节需要通过询问大模型或查阅资料来解决。</li><li><code>sed</code> <code>awk</code>命令的使用需要一定的练习和理解，尤其是正则表达式和变量部分。</li></ol><h2 id="4-原创说明">4. 原创说明</h2><p>本实验报告所有内容均为原创。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>操作系统</category>
+      
+      <category>实验报告</category>
+      
+    </categories>
+    
     
     <tags>
       
-      <tag>随笔</tag>
+      <tag>操作系统</tag>
       
     </tags>
     
