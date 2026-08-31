@@ -10,9 +10,10 @@
  *   分类：两级「学科 / 文档类型」
  *     BUAA OS   / 实验报告 | 理论笔记 | 知识梳理 | 理论作业
  *     BUAA CO   / 理论笔记
+ *     BUAA ML   / 实验报告 | 理论笔记 | 知识梳理
  *     随笔       （单级，无子类）
- *   标签：每篇一个学科标签（BUAA OS / BUAA CO）+ 0~1 个话题标签（话题见 TOPIC_TAGS）
- *   已弃用：中文学科全称（操作系统 / 计算机组成）与旧英文标签（BUAA_OS / BUAA_CO），避免重复、歧义
+ *   标签：每篇一个学科标签（BUAA OS / BUAA CO / BUAA ML）+ 0~1 个话题标签（话题见 TOPIC_TAGS）
+ *   已弃用：中文学科全称（操作系统 / 计算机组成 / 机器学习）与旧英文标签（BUAA_OS / BUAA_CO / BUAA_ML），避免重复、歧义
  */
 const fs = require('fs');
 const path = require('path');
@@ -23,6 +24,7 @@ const POSTS_DIR = path.join(__dirname, '..', 'source', '_posts');
 const SUBJECTS = {
   'BUAA OS': new Set(['实验报告', '理论笔记', '知识梳理', '理论作业']),
   'BUAA CO': new Set(['理论笔记']),
+  'BUAA ML': new Set(['实验报告', '理论笔记', '知识梳理']),
   '随笔': null,
 };
 
@@ -30,11 +32,15 @@ const SUBJECTS = {
 const TOPIC_TAGS = {
   'BUAA OS': new Set(['内存管理', '进程管理', 'I/O 设备管理', '磁盘管理', '文件系统']),
   'BUAA CO': new Set(['组合逻辑', '时序逻辑', '主存储器', '汇编', 'Cache 与虚存', '总线与 IO']),
+  'BUAA ML': new Set([
+    '模型评估', '贝叶斯决策', '感知机', 'PCA', '支持向量机',
+    'K-Means', '集成学习', '决策树', '神经网络', 'CNN', 'RNN',
+  ]),
   '随笔': new Set(),
 };
 
 // 已弃用的旧标签，避免再出现
-const FORBIDDEN_TAGS = ['操作系统', '计算机组成', 'BUAA_OS', 'BUAA_CO'];
+const FORBIDDEN_TAGS = ['操作系统', '计算机组成', '机器学习', 'BUAA_OS', 'BUAA_CO', 'BUAA_ML'];
 
 function parseFrontMatter(text) {
   const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);

@@ -1,8 +1,8 @@
 /**
- * 分类页说明注入：为顶层分类页（/categories/BUAA-OS/、/categories/BUAA-CO/、/categories/随笔/）
+ * 分类页说明注入：为顶层分类页（/categories/BUAA-OS/、/categories/BUAA-CO/、/categories/BUAA-ML/、/categories/随笔/）
  * 在文章列表上方渲染对应的课程说明。
  *
- * 说明正文取自策划页（source/os|co|notes/index.md）开头到第一个小节/列表之前的部分，
+ * 说明正文取自策划页（source/os|co|ml|notes/index.md）开头到第一个小节/列表之前的部分，
  * 保证分类页与 /os/ /co/ /notes/ 入口页的文案同源、不会各写一份。
  *
  * Hexo 在 load 阶段就预编译了主题模板，改磁盘模板对当次构建无效；
@@ -23,6 +23,7 @@ const TPL = path.join(
 const INTRO_SOURCES = {
   "BUAA OS": "source/os/index.md",
   "BUAA CO": "source/co/index.md",
+  "BUAA ML": "source/ml/index.md",
   "随笔": "source/notes/index.md",
 };
 

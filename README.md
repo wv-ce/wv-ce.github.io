@@ -8,8 +8,10 @@
   - 笔记仓库：<https://github.com/wv-ce/BUAA_OS>
 - **BUAA CO（计算机组成）**：理论笔记 + 实验部分代码
   - 实验部分代码：<https://github.com/wv-ce/BUAA_CO>
+- **BUAA ML（机器学习）**：期末复习（按题型汇总的例题与参考解答）
+  - 入口页：`source/ml/index.md`（线上 /ml/）
 
-> 笔记由 `tools/import_buaa_os.py` / `tools/import_buaa_co.py` 从对应仓库导入。
+> OS / CO 笔记由 `tools/import_buaa_os.py` / `tools/import_buaa_co.py` 从对应仓库导入；ML 资料直接维护在 `source/_posts/`。
 
 ## 本地预览与发布
 
@@ -41,15 +43,18 @@ _config.fluid.yml # 主题配置
 | BUAA OS / 知识梳理 | BUAA OS |
 | BUAA OS / 理论作业 | BUAA OS |
 | BUAA CO / 理论笔记 | BUAA CO + 话题（组合逻辑、时序逻辑、主存储器、汇编、Cache 与虚存、总线与 IO） |
+| BUAA ML / 知识梳理 | BUAA ML |
+| BUAA ML / 理论笔记 | BUAA ML + 话题（模型评估、贝叶斯决策、感知机、PCA、支持向量机、K-Means、集成学习、决策树、神经网络、CNN、RNN） |
+| BUAA ML / 实验报告 | BUAA ML |
 | 随笔 | —— |
 
 规则：
 
 - 每篇文章必须有 `categories`，且必须是上表中的分类路径；
-- 每篇只用一个学科标签（`BUAA OS` / `BUAA CO`），不要使用中文学科全称（`操作系统` / `计算机组成`）或旧英文标签（`BUAA_OS` / `BUAA_CO`），避免标签重复、歧义；
+- 每篇只用一个学科标签（`BUAA OS` / `BUAA CO` / `BUAA ML`），不要使用中文学科全称（`操作系统` / `计算机组成` / `机器学习`）或旧英文标签（`BUAA_OS` / `BUAA_CO` / `BUAA_ML`），避免标签重复、歧义；
 - 理论笔记可加一个对应的话题标签。
-- 顶层分类页（`/categories/BUAA-OS/`、`/categories/BUAA-CO/`、`/categories/随笔/`）的文章列表上方会显示课程说明，
-  正文取自对应入口页（`source/os|co|notes/index.md`）开头到第一个小节/列表之前的部分，由 `scripts/patch-category-intros.js` 在构建时注入；
+- 顶层分类页（`/categories/BUAA-OS/`、`/categories/BUAA-CO/`、`/categories/BUAA-ML/`、`/categories/随笔/`）的文章列表上方会显示课程说明，
+  正文取自对应入口页（`source/os|co|ml|notes/index.md`）开头到第一个小节/列表之前的部分，由 `scripts/patch-category-intros.js` 在构建时注入；
   改说明只需改入口页，子分类页与分页不显示说明。
 
 检查命令：

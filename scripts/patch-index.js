@@ -72,6 +72,11 @@ page.banner_mask_alpha = theme.index.banner_mask_alpha
     <p>操作系统实验报告与理论笔记，含 Lab0~Lab6 实验、内存/进程/IO/磁盘/文件系统五大主题。</p>
     <span class="card-arrow">查看笔记 →</span>
   </a>
+  <a class="category-card" href="<%= url_for('/ml/') %>">
+    <h2>BUAA ML</h2>
+    <p>机器学习导论期末复习：按题型汇总的例题与参考解答，含模型评估、贝叶斯决策、感知机、PCA、SVM、K-Means、集成学习、决策树与 BP。</p>
+    <span class="card-arrow">查看资料 &#8594;</span>
+  </a>
   <a class="category-card" href="<%= url_for('/notes/') %>">
     <h2>随笔</h2>
     <p>技术之外的日常思考与记录。</p>

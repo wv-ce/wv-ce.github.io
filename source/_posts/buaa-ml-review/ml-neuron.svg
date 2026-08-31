@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 300" width="700" height="300"
+     font-family="Georgia, 'Times New Roman', 'Songti SC', serif" font-size="18" fill="#1f2329" stroke="none">
+  <rect width="700" height="300" fill="#ffffff"/>
+  <defs>
+    <marker id="arwN" markerWidth="9" markerHeight="9" refX="7.5" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L8,3.5 L0,7 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+
+  <g stroke="#4b5563" stroke-width="1.6" fill="none">
+    <line x1="60" y1="52"  x2="292" y2="122" marker-end="url(#arwN)"/>
+    <line x1="60" y1="112" x2="292" y2="131" marker-end="url(#arwN)"/>
+    <line x1="60" y1="212" x2="292" y2="148" marker-end="url(#arwN)"/>
+    <line x1="312" y1="252" x2="312" y2="155" marker-end="url(#arwN)"/>
+    <line x1="328" y1="135" x2="396" y2="135" marker-end="url(#arwN)"/>
+    <line x1="524" y1="135" x2="596" y2="135" marker-end="url(#arwN)"/>
+    <circle cx="312" cy="135" r="17"/>
+    <rect x="396" y="106" width="128" height="58" rx="8"/>
+  </g>
+
+  <text x="20" y="58" font-style="italic">x<tspan font-size="12" dy="5">1</tspan></text>
+  <text x="20" y="118" font-style="italic">x<tspan font-size="12" dy="5">2</tspan></text>
+  <text x="20" y="218" font-style="italic">x<tspan font-size="12" dy="5">N</tspan></text>
+  <g fill="#1f2329">
+    <circle cx="30" cy="146" r="1.9"/>
+    <circle cx="30" cy="158" r="1.9"/>
+    <circle cx="30" cy="170" r="1.9"/>
+  </g>
+
+  <text x="118" y="60" font-style="italic">w<tspan font-size="12" dy="5">1</tspan></text>
+  <text x="118" y="104" font-style="italic">w<tspan font-size="12" dy="5">2</tspan></text>
+  <text x="118" y="228" font-style="italic">w<tspan font-size="12" dy="5">N</tspan></text>
+
+  <text x="302" y="143" font-size="21">&#931;</text>
+  <text x="348" y="128" font-style="italic">a</text>
+  <text x="320" y="250" font-style="italic">&#952;</text>
+
+  <text x="414" y="142" font-size="19" font-style="italic">f</text>
+  <text x="432" y="141" font-size="14">激活函数</text>
+
+  <text x="606" y="141" font-style="italic">y</text>
+  <text x="620" y="141" font-size="14">= f(a)</text>
+
+  <text x="200" y="288" font-size="15">
+    <tspan font-style="italic">a</tspan><tspan> = &#931; </tspan><tspan font-style="italic">x</tspan><tspan font-size="11" dy="4">i</tspan><tspan dy="-4" font-style="italic">w</tspan><tspan font-size="11" dy="4">i</tspan><tspan dy="-4"> &#8722; </tspan><tspan dy="-4" font-style="italic">&#952;</tspan><tspan dy="-4">,</tspan><tspan dy="-4">&#160;&#160;</tspan><tspan dy="-4" font-style="italic">y</tspan><tspan dy="-4"> = </tspan><tspan dy="-4" font-style="italic">f</tspan><tspan dy="-4">(</tspan><tspan dy="-4" font-style="italic">a</tspan><tspan dy="-4">)</tspan>
+  </text>
+</svg>
