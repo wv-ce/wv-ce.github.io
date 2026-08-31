@@ -1,263 +1,1091 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>wv-ce - 写代码，记录生活。</title><meta name="author" content="wv-ce"><meta name="copyright" content="wv-ce"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="wv-ce 的个人网站：技术笔记与日常思考。">
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wv-ce">
+  <meta name="keywords" content="wv-ce,博客,技术,随笔">
+  
+    <meta name="description" content="wv-ce 的个人网站：技术笔记与日常思考。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="wv-ce">
 <meta property="og:url" content="https://wv-ce.github.io/index.html">
 <meta property="og:site_name" content="wv-ce">
 <meta property="og:description" content="wv-ce 的个人网站：技术笔记与日常思考。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://wv-ce.github.io/img/butterfly-icon.png">
 <meta property="article:author" content="wv-ce">
 <meta property="article:tag" content="wv-ce">
 <meta property="article:tag" content="博客">
 <meta property="article:tag" content="技术">
 <meta property="article:tag" content="随笔">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://wv-ce.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "wv-ce",
-  "alternateName": [
-    "写代码，记录生活。",
-    "wv-ce.github.io"
-  ],
-  "url": "https://wv-ce.github.io/"
-}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wv-ce.github.io/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
-    (() => {
-      
-    const saveToLocal = {
-      set: (key, value, ttl) => {
-        const data = { value }
-
-        if (ttl != null) {
-          data.expiry = Date.now() + ttl * 86400000
-        }
-
-        localStorage.setItem(key, JSON.stringify(data))
-      },
-      get: key => {
-        const itemStr = localStorage.getItem(key)
-        if (!itemStr) return
-
-        try {
-          const data = JSON.parse(itemStr)
-
-          if (data.expiry && Date.now() > data.expiry) {
-            localStorage.removeItem(key)
-            return
-          }
-
-          return data.value
-        } catch {
-          localStorage.removeItem(key)
-        }
-      }
-    }
-
-    const scriptCache = new Map()
-    const cssCache = new Map()
-    window.btf = {
-      saveToLocal,
-      getScript: (url, attr = {}) => {
-        if (scriptCache.has(url)) {
-          return scriptCache.get(url)
-        }
-
-        const promise = new Promise((resolve, reject) => {
-          const script = document.createElement('script')
-
-          script.src = url
-          script.async = true
-
-          for (const key in attr) {
-            script.setAttribute(key, attr[key])
-          }
-
-          script.onload = resolve
-          script.onerror = reject
-
-          document.head.appendChild(script)
-        })
-
-        scriptCache.set(url, promise)
-
-        return promise
-      },
-      getCSS: (url, id) => {
-        if (cssCache.has(url)) {
-          return cssCache.get(url)
-        }
-
-        const promise = new Promise((resolve, reject) => {
-          const link = document.createElement('link')
-
-          link.rel = 'stylesheet'
-          link.href = url
-
-          if (id) {
-            link.id = id
-          }
-
-          link.onload = resolve
-          link.onerror = reject
-
-          document.head.appendChild(link)
-        })
-
-        cssCache.set(url, promise)
-
-        return promise
-      },
-      addGlobalFn: (key, fn, name = false, parent = window) => {
-        if (!false && key.startsWith('pjax')) return
-        const globalFn = parent.globalFn || {}
-        globalFn[key] = globalFn[key] || {}
-        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
-        parent.globalFn = globalFn
-      }
-    }
+<meta name="twitter:card" content="summary_large_image">
   
-      
-      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
-      const activateDarkMode = () => {
-        document.documentElement.dataset.theme = 'dark'
-        if (metaThemeColor !== null) {
-          metaThemeColor.setAttribute('content', '#0d0d0d')
-        }
-      }
-      const activateLightMode = () => {
-        document.documentElement.dataset.theme = 'light'
-        if (metaThemeColor !== null) {
-          metaThemeColor.setAttribute('content', '#ffffff')
-        }
-      }
+  
+  
+  <title>wv-ce</title>
 
-      btf.activateDarkMode = activateDarkMode
-      btf.activateLightMode = activateLightMode
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
-      const theme = saveToLocal.get('theme')
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wv-ce.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
     
-          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="写代码，记录生活。"></span>
+          
+        </div>
+
+        
+      </div>
+
       
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
-      }
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
     
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<h1 style="display: none">wv-ce</h1>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/24/buaa-co-bus-io/" target="_self">
+          BUAA CO 总线与 IO 理论笔记
+        </a>
+      </h2>
+
       
-    const detectApple = () => {
-      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
-        document.documentElement.classList.add('apple')
-      }
-    }
-    detectApple()
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/24/buaa-co-bus-io/" target="_self">
+        <div>
+          BUAA CO 总线与 IO 理论笔记。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-24 10:00" pubdate>
+              2026-08-24
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
   
-    })()
-  </script><script>const GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
-  translate: undefined,
-  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
-  copy: {
-    success: '复制成功',
-    error: '复制失败',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  dateSuffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'null',
-  Snackbar: undefined,
-  infinitegrid: {
-    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
-    buttonText: '加载更多'
-  },
-  isPhotoFigcaption: false,
-  islazyloadPlugin: false,
-  isAnchor: false,
-  percent: {
-    toc: true,
-    rightside: false,
-  },
-  autoDarkmode: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: 'wv-ce',
-  isHighlightShrink: false,
-  isToc: false,
-  pageType: 'home'
-}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 专栏</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/co/"><i class="fa-fw fas fa-book"></i><span> BUAA CO</span></a></li><li><a class="site-page child" href="/os/"><i class="fa-fw fas fa-book"></i><span> BUAA OS</span></a></li><li><a class="site-page child" href="/notes/"><i class="fa-fw fas fa-edit"></i><span> 随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">wv-ce</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 专栏</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/co/"><i class="fa-fw fas fa-book"></i><span> BUAA CO</span></a></li><li><a class="site-page child" href="/os/"><i class="fa-fw fas fa-book"></i><span> BUAA OS</span></a></li><li><a class="site-page child" href="/notes/"><i class="fa-fw fas fa-edit"></i><span> 随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">wv-ce</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/24/buaa-co-bus-io/" title="BUAA CO 总线与 IO 理论笔记">BUAA CO 总线与 IO 理论笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-24T10:00:00.000Z" title="发表于 2026-08-24 10:00:00">2026-08-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="content">总线 I/O接口 程序查询I/O方式 I/O接口设置状态寄存器以表示外部设备的工作状态 CPU通过不断读取状态寄存器以查询外部设备的状态 在外部设备准备就绪的时候，CPU通过I/O接口中的数据寄存器与外部设备之间完成数据交换  程序查询I/O方式的特点  I/O操作由CPU直接完成（通过执行I/O指令完成） 外设速度慢，CPU速度快，在外设准备过程中，CPU处在不断的查询之中，极大地浪费了CPU的性能。 外设与CPU完全串行工作。CPU效率低。  中断与中断I/O方式 中断I/O方式的特点  I/O操作仍然由CPU通过I/O指令完成 在外设准备阶段，CPU可以执行其他程序，仅在外设准备就绪后，CPU才中断正在执行的程序，处理I/O事务 在外设准备阶段，CPU与外设的工作可以认为是并行的 中断I/O方式是目前最主要的I/O方式  DMA I/O方式 程序I/O与中断I/O的不足  I/O传送速度受处理器测试和给设备提供服务的速度的限制 处理器直接负责管理I/O，对于每一次I/O传送，处理器必须执行一些指令  DMA（Direct Memory Access）  CPU对总线的控制被...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/23/buaa-co-cache-vm/" title="BUAA CO Cache 与虚存 理论笔记">BUAA CO Cache 与虚存 理论笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-23T10:00:00.000Z" title="发表于 2026-08-23 10:00:00">2026-08-23</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="content">Cache原理  Cache与主存之间以数据块（Block）为单位进行数据交换 每个数据块包含若干个字或字节 Cache块大小和主存块大小相等  Cache的基本结构  存储机构： 保存数据，存取数据，一般采用SRAM构成。以数据块Block（若干字）为单位，Cache块大小与主存块大小相同； 地址机构：地址比较机制，地址转换机制，地址标记（Tag），一个Block具有一个Tag； 替换机构：记录Block的使用情况，替换策略，有效位（v）记录对应数据块中的数据是否有效。   Cache的基本术语  标记（tag）：每一Cache数据块有一个标记字段，用来保存该Cache数据块对应的主存数据块的地址信息。 有效位（valid bit）：Cache中每一Block有一个有效位，用于指示相应数据块中是否包含有效数据。 行（line）：Cache中一个block及其tag、valid bit构成1行。 组（set）：若干块(Block)构成一个组，地址比较一般能在组内各块间同时进行。 路（way）：Cache相关联的等级，每一路具有独立的地址比较机构，各路地址比较能同时进行（一般与组结...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/22/buaa-co-assembly/" title="BUAA CO 汇编 理论笔记">BUAA CO 汇编 理论笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-22T10:00:00.000Z" title="发表于 2026-08-22 10:00:00">2026-08-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="content">指令格式 指令系统概述 机器指令要素：  操作码 源操作数地址 目的操作数地址 下一条指令地址  指令类型：  数据传输指令 算数/逻辑运算指令 程序控制指令 其他  操作数的类型  数值（无符号、定点、浮点） 逻辑型数、字符 地址（操作数地址、指令地址）  操作数的位置  存储器（存储器地址） 寄存器（寄存器地址） 输入输出端口（输入输出端口地址）  操作数的存储方式  大端（big-endian）次序：最高有效字节存储在地址最小位置 小端（little-endian）次序：最低有效字节存储在地址最小位置  1234567graph TD    A[Instruction Fetch&lt;br&gt;指令取指] --&gt; B[Instruction Decode&lt;br&gt;指令译码]    B --&gt; C[Operand Fetch&lt;br&gt;操作数取指]    C --&gt; D[Execute&lt;br&gt;执行]    D --&gt; E[Result Store&lt;br&gt;结果存储]    E --&gt; F[Next In...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/21/buaa-co-main-memory/" title="BUAA CO 主存储器 理论笔记">BUAA CO 主存储器 理论笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-21T10:00:00.000Z" title="发表于 2026-08-21 10:00:00">2026-08-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="content">主存储器 存储系统概述 存取时间：对RAM来说，是从给定地址到存储器完成读或写操作所需时间。对其他（如Cache）而言，则是指将读写机构定位到目标位置所需的时间。 存取周期：仅对RAM而言，指两次访问存储单元间的最小时间间隔。 存储器带宽是指存储器在单位时间内能够传输的数据量。 存储单元电路 存储单元电路 存储器中用来存储一位二进制信息（0或1）的电路，是组成存储器的基础和核心，也称存储元件、存储基元、存储位元、存储元。 基本要求  具有两种稳定（或半稳定）状态，用来表示二进制的 0和1 可以实现状态写入（或设置） 可以实现状态读出（或感知）  SRAM存储单元电路 DRAM存储单元电路 ROM存储单元电路 存储器芯片结构 存储芯片容量（字单元数×每个字单元的位数） 存储位元： 2n2^n2n x mmm 个 地址线： n位–&gt;2n2^n2n个字单元， An−1..A0A_{n-1}..A_0An−1​..A0​ 单向 数据线： m位–&gt;m位/字单元， Dm−1..D0D_{m-1}..D_0Dm−1​..D0​ 双向 1. 一维地址结构(线选法) 地址编码：译码电路...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/20/buaa-co-seq-logic/" title="BUAA CO 时序逻辑 理论笔记">BUAA CO 时序逻辑 理论笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-20T10:00:00.000Z" title="发表于 2026-08-20 10:00:00">2026-08-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="content">时序逻辑 锁存器和触发器 触发器（基础概念，不重要） 触发器（Flip-Flop，FF）就是构成记忆功能部件的基本单元，或者说是实现存储（记忆）功能的基本单元电路。 触发器特点：  有两个互非的输出 QQQ 和 Q‾\overline{Q}Q​，QQQ 称为状态变量 当 Q=0Q = 0Q=0（Q‾=1\overline{Q} = 1Q​=1）时称为 0 态， 当 Q=1Q = 1Q=1（Q‾=0\overline{Q} = 0Q​=0）时称为 1 态。 无外加信号时，触发器保持原有状态（原态）不变，n 级触发器可以记忆 n 位二进制信息的 2n2^n2n 种状态。 在外加信号作用（触发）时，可以改变原态（具有置 0 或置 1 功能）。 QnQ^nQn（原态）→ Qn+1Q^{n+1}Qn+1（次态）  RS锁存器 可用与非门或者或非门实现 约束条件：R‾D+S‾D=1\overline{R}_D + \overline{S}_D = 1RD​+SD​=1  特性表（真值表）：    R‾D\overline{R}_DRD​ S‾D\overline{S}_DSD​ Qn+1Q^...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/19/buaa-co-comb-logic/" title="BUAA CO 组合逻辑 理论笔记">BUAA CO 组合逻辑 理论笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-19T10:00:00.000Z" title="发表于 2026-08-19 10:00:00">2026-08-19</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="content">逻辑门电路 二极管 PN结 半导体二极管实际上就是一个PN结，记作D  单向导电性：外加正向开启电压导通，反向电压截止 二极管的正向开启电压：锗管约为0.2-0.5V；硅管为0.5-0.7V。如无特殊说明，本课程中默认为 0.7V 当加在二极管上的电压UD&lt;VDU_D&lt;V_DUD​&lt;VD​（0.7V）时，二极管截止，电流ID=0I_D=0ID​=0；当UD&gt;VDU_D&gt;V_DUD​&gt;VD​ 时，二极管导通，而且一旦导通，则UD=VDU_D=V_DUD​=VD​不变。因此，VDV_DVD​称为钳位电压 当二极管的反向电压超过一个阈值(VZV_ZVZ​)时，二极管会被击穿，此时二极管上的压降是VZV_ZVZ​  三极管 半导体三极管又称晶体（三极）管。 由两层N型半导体中间夹一层P型半导体（NPN型）或 两层P型半导体中间夹一层N型半导体（PNP型）组成。（不重要） 三个引脚  基极 (Base, B)： 控制端，像水龙头的阀门。 发射极 (Emitter, E)： 载流子的发射源。 集电极 (Collector, C)： 载流子的收集端。   工...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/18/os-notes-fs/" title="OS 理论笔记：文件系统">OS 理论笔记：文件系统</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-18T10:00:00.000Z" title="发表于 2026-08-18 10:00:00">2026-08-18</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="content">文件系统 文件系统基本概念 数据的持久化存储 进程运行时可以把数据暂时保存在自己的地址空间中，但这种方式有明显局限：  地址空间大小有限； 进程结束后，数据会丢失； 不便于多个进程长期共享。  因此，计算机必须把部分数据保存在磁盘、SSD、光盘等外部存储设备上，以满足：  大量存储； 长期保存； 多进程共享。  文件的概念 文件（File）是带有标识（文件名）的、在逻辑上具有完整意义的信息项序列。 可以从两个角度理解文件：  从用户角度：文件是一个有名字的字节序列； 从文件系统角度：文件是磁盘块的有组织集合。  文件通常包括两部分：  文件体：文件的实际内容； 文件说明：管理该文件所需的信息，如文件名、物理地址、大小、权限、时间戳等。  文件的本质 文件本质上是一种抽象机制。 操作系统中的典型抽象：  进程是对 CPU 的抽象； 虚拟地址空间是对内存的抽象； 文件是对磁盘等持久化存储的抽象。  文件把底层复杂的存储细节隐藏起来，使用户看到的是一个独立的、连续的逻辑地址空间，其大小就是文件大小，与进程地址空间无关。 一切皆文件 文件的本质是一组字节序列，因此很多 I/O 设备也可以...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/17/os-notes-disk/" title="OS 理论笔记：磁盘管理">OS 理论笔记：磁盘管理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-17T10:00:00.000Z" title="发表于 2026-08-17 10:00:00">2026-08-17</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="content">磁盘管理 磁盘的工作原理 磁盘的基本结构 磁盘是一种典型的随机存取外存设备，数据记录在旋转盘片表面的磁性介质上，由磁头完成读写。 常见概念：  磁道（track）：盘片表面上的同心圆。 扇区（sector）：磁道被划分出的若干扇形区域，是磁盘读写的基本单位。 柱面（cylinder）：多个盘面上半径相同的磁道组成的集合。 磁头（head）：每个盘面通常对应一个磁头。  传统地址方式是 CHS（柱面 Cylinder、磁头 Head、扇区 Sector），现代系统更多采用 LBA（逻辑块地址）进行统一编号。 温彻斯特磁盘 温彻斯特磁盘的主要特点：  磁头和盘片组件密封； 内部充惰性气体，减小阻力； 磁头更轻更小，可以更靠近盘面； 采用接触起停技术，降低结构复杂度。  这些改进带来了更大的容量、更高的读写速度和更低的成本。 位密度与 ZBR 位密度：沿磁道方向单位长度内可记录的二进制位数，也称线密度。 老式磁盘：  每个磁道的扇区数相同； 外圈磁道更长，因此空间利用率不高。  新式磁盘通常采用 ZBR（Zone Bit Recording，分区记录）：  不同磁道的扇区数不同； 外圈...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/16/os-notes-io/" title="OS 理论笔记：I/O 设备管理">OS 理论笔记：I/O 设备管理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-16T10:00:00.000Z" title="发表于 2026-08-16 10:00:00">2026-08-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="content">设备管理 设备管理概述 I/O 设备的特点 I/O 设备种类多、差异大。 按传输速度：  低速设备； 中速设备； 高速设备。  按信息交换单位：  块设备：以块为传输单位，每个块可独立读写，如硬盘、CD-ROM、U 盘。 字符设备：以字符为单位发送或者接收字符流的设备，不可寻址，如打印机、鼠标、键盘、网卡。  按共享属性：  独占设备； 共享设备。   设备管理的一个核心难点：外设速度差异巨大，但系统仍要提供统一、稳定且高效的访问方式。  设备管理目标 方便使用：  屏蔽不同外设差异； 对不同设备提供统一使用方式； 协调设备的并发使用。  提高效率：  提高 I/O 访问效率； 匹配 CPU 与不同速度外设之间的处理节奏。  方便控制：  支持设备增加、删除； 支持新设备类型； 方便 OS 对设备统一管理。  设备管理功能 设备管理主要功能：  提供设备使用接口：命令行接口和编程接口； 分配与释放设备、控制器、通道等资源； 管理设备访问与控制，包括并发访问和差错处理； 实现 I/O 缓冲和调度，提高访问效率。  统一 I/O 接口 设备即文件 UNIX 将设备抽象为特殊文件，从而...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/15/os-notes-process/" title="OS 理论笔记：进程管理与死锁">OS 理论笔记：进程管理与死锁</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-08-15T10:00:00.000Z" title="发表于 2026-08-15 10:00:00">2026-08-15</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/">理论笔记</a></span></div><div class="content">进程与线程 进程 并发与并行 并发Concurrent：设有两个活动a1和a2，如果在某一指定的时间t，只要a1和a2都处在各自的起点和终点之间的某一处，则称a1和a2是并发执行的。 程序的并发执行是指若干个程序（或程序段）同时在系统中运行，这些程序（或程序段）的执行在时间上是重叠的。 并行Parallel：如果考虑两个程序,它们在同一时间度量下同时运行在不同的处理机（或核心）上，则称这两个程序是并行执行的。  并行一定并发，反之不然  程序的顺序执行与特征 顺序性：按照程序结构所指定的次序（可能有分支或循环） 封闭性：独占全部资源，计算机的状态只由于该程序的控制逻辑所决定 可再现性：初始条件相同则结果相同。 程序并发执行时的特征 间断性：并发程序具有“执行—暂停—执行”这种间断性的活动规律。 非封闭性：多个程序共享系统中的资源（如共享内存），这些资源的状态将由多个程序来改变，致使程序之间相互影响。 不可再现性：在所有输入相同的情况下，程序的执行结果还依赖于执行的次序。 原因：调度产生了不确定性，发生了数据竞争：  数据竞争：多个进程在没有同步保护的情况下访问同一个共享变量， 而...</div></div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="page-number" href="/page/3/#content-inner">3</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">wv-ce</div><div class="author-info-description">wv-ce 的个人网站：技术笔记与日常思考。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/24/buaa-co-bus-io/" title="BUAA CO 总线与 IO 理论笔记">BUAA CO 总线与 IO 理论笔记</a><time datetime="2026-08-24T10:00:00.000Z" title="发表于 2026-08-24 10:00:00">2026-08-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/23/buaa-co-cache-vm/" title="BUAA CO Cache 与虚存 理论笔记">BUAA CO Cache 与虚存 理论笔记</a><time datetime="2026-08-23T10:00:00.000Z" title="发表于 2026-08-23 10:00:00">2026-08-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/22/buaa-co-assembly/" title="BUAA CO 汇编 理论笔记">BUAA CO 汇编 理论笔记</a><time datetime="2026-08-22T10:00:00.000Z" title="发表于 2026-08-22 10:00:00">2026-08-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/21/buaa-co-main-memory/" title="BUAA CO 主存储器 理论笔记">BUAA CO 主存储器 理论笔记</a><time datetime="2026-08-21T10:00:00.000Z" title="发表于 2026-08-21 10:00:00">2026-08-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/20/buaa-co-seq-logic/" title="BUAA CO 时序逻辑 理论笔记">BUAA CO 时序逻辑 理论笔记</a><time datetime="2026-08-20T10:00:00.000Z" title="发表于 2026-08-20 10:00:00">2026-08-20</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
-          <ul class="card-category-list" id="aside-cat-list">
-            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A/"><span class="card-category-list-name">实验报告</span><span class="card-category-list-count">8</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%90%86%E8%AE%BA%E4%BD%9C%E4%B8%9A/"><span class="card-category-list-name">理论作业</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">理论笔记</span><span class="card-category-list-count">11</span></a></li>
-          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/BUAA-OS/" style="font-size: 1.5em; color: #99a9bf">BUAA_OS</a> <a href="/tags/BUAA-CO/" style="font-size: 1.3em; color: #99a1ac">BUAA_CO</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 1.1em; color: #999">随笔</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 1.5em; color: #99a9bf">操作系统</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" style="font-size: 1.3em; color: #99a1ac">计算机组成</a></div></div><div class="card-widget card-archives">
-    <div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div>
   
-    <ul class="card-archive-list">
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BUAA-CO/">#BUAA_CO</a>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/">#计算机组成</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/23/buaa-co-cache-vm/" target="_self">
+          BUAA CO Cache 与虚存 理论笔记
+        </a>
+      </h2>
+
       
-        <li class="card-archive-list-item">
-          <a class="card-archive-list-link" href="/archives/2026/08/">
-            <span class="card-archive-list-date">
-              八月 2026
-            </span>
-            <span class="card-archive-list-count">21</span>
-          </a>
-        </li>
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/23/buaa-co-cache-vm/" target="_self">
+        <div>
+          BUAA CO Cache 与虚存 理论笔记。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-23 10:00" pubdate>
+              2026-08-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BUAA-CO/">#BUAA_CO</a>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/">#计算机组成</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/22/buaa-co-assembly/" target="_self">
+          BUAA CO 汇编 理论笔记
+        </a>
+      </h2>
+
       
-    </ul>
-  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">21</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-08-30T16:39:43.439Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By wv-ce</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"><script>window.typedJSFn = {
-  init: str => {
-    window.typed = new Typed('#subtitle', Object.assign({
-      strings: str,
-      startDelay: 300,
-      typeSpeed: 150,
-      loop: true,
-      backSpeed: 50,
-    }, null))
-  },
-  run: subtitleType => {
-    if (true) {
-      if (typeof Typed === 'function') {
-        subtitleType()
-      } else {
-        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js@3.0.0/dist/typed.umd.min.js').then(subtitleType)
-      }
-    } else {
-      subtitleType()
-    }
-  },
-  processSubtitle: (content, extraContents = []) => {
-    if (true) {
-      const sub = ["写代码，记录生活。","这里是我的一个小角落。"].slice()
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/22/buaa-co-assembly/" target="_self">
+        <div>
+          BUAA CO 汇编 理论笔记。
+        </div>
+      </a>
 
-      if (extraContents.length > 0) {
-        sub.unshift(...extraContents)
-      }
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-22 10:00" pubdate>
+              2026-08-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
 
-      if (typeof content === 'string') {
-        sub.unshift(content)
-      } else if (Array.isArray(content)) {
-        sub.unshift(...content)
-      }
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
 
-      sub.length > 0 && typedJSFn.init(sub)
-    } else {
-      document.getElementById('subtitle').textContent = typeof content === 'string' ? content :
-        (Array.isArray(content) && content.length > 0 ? content[0] : '')
-    }
-  }
-}
-btf.addGlobalFn('pjaxSendOnce', () => { typed && typed.destroy() }, 'typedDestroy')
-</script><script>function subtitleType () {
-  typedJSFn.processSubtitle(["写代码，记录生活。","这里是我的一个小角落。"])
-}
-typedJSFn.run(subtitleType)</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BUAA-CO/">#BUAA_CO</a>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/">#计算机组成</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/21/buaa-co-main-memory/" target="_self">
+          BUAA CO 主存储器 理论笔记
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/21/buaa-co-main-memory/" target="_self">
+        <div>
+          BUAA CO 主存储器 理论笔记。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-21 10:00" pubdate>
+              2026-08-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BUAA-CO/">#BUAA_CO</a>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/">#计算机组成</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/20/buaa-co-seq-logic/" target="_self">
+          BUAA CO 时序逻辑 理论笔记
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/20/buaa-co-seq-logic/" target="_self">
+        <div>
+          BUAA CO 时序逻辑 理论笔记。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-20 10:00" pubdate>
+              2026-08-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BUAA-CO/">#BUAA_CO</a>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/">#计算机组成</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/19/buaa-co-comb-logic/" target="_self">
+          BUAA CO 组合逻辑 理论笔记
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/19/buaa-co-comb-logic/" target="_self">
+        <div>
+          BUAA CO 组合逻辑 理论笔记。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-19 10:00" pubdate>
+              2026-08-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BUAA-CO/">#BUAA_CO</a>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/">#计算机组成</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/18/os-notes-fs/" target="_self">
+          OS 理论笔记：文件系统
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/18/os-notes-fs/" target="_self">
+        <div>
+          OS 理论笔记：文件系统。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-18 10:00" pubdate>
+              2026-08-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BUAA-OS/">#BUAA_OS</a>
+            
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/17/os-notes-disk/" target="_self">
+          OS 理论笔记：磁盘管理
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/17/os-notes-disk/" target="_self">
+        <div>
+          OS 理论笔记：磁盘管理。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-17 10:00" pubdate>
+              2026-08-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BUAA-OS/">#BUAA_OS</a>
+            
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/16/os-notes-io/" target="_self">
+          OS 理论笔记：I/O 设备管理
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/16/os-notes-io/" target="_self">
+        <div>
+          OS 理论笔记：I/O 设备管理。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-16 10:00" pubdate>
+              2026-08-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BUAA-OS/">#BUAA_OS</a>
+            
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2026/08/15/os-notes-process/" target="_self">
+          OS 理论笔记：进程管理与死锁
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/15/os-notes-process/" target="_self">
+        <div>
+          OS 理论笔记：进程管理与死锁。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-08-15 10:00" pubdate>
+              2026-08-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" class="category-chain-item">理论笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BUAA-OS/">#BUAA_OS</a>
+            
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">#操作系统</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>© 2024 wv-ce</span> <i class="iconfont icon-love"></i> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
