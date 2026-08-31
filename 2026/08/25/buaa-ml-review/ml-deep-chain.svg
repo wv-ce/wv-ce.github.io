@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 262" width="880" height="262"
+     font-family="Georgia, 'Times New Roman', 'Songti SC', serif" font-size="17" fill="#1f2329" stroke="none">
+  <rect width="880" height="262" fill="#ffffff"/>
+  <defs>
+    <marker id="arwD" markerWidth="9" markerHeight="9" refX="7.5" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L8,3.5 L0,7 z" fill="#4b5563"/>
+    </marker>
+  </defs>
+
+  <g stroke="#4b5563" stroke-width="1.6" fill="none">
+    <line x1="70"  y1="120" x2="134" y2="120" marker-end="url(#arwD)"/>
+    <line x1="184" y1="120" x2="284" y2="120" marker-end="url(#arwD)"/>
+    <line x1="334" y1="120" x2="434" y2="120" marker-end="url(#arwD)"/>
+    <line x1="484" y1="120" x2="584" y2="120" marker-end="url(#arwD)"/>
+    <line x1="634" y1="120" x2="694" y2="120" marker-end="url(#arwD)"/>
+    <line x1="756" y1="120" x2="790" y2="120" marker-end="url(#arwD)"/>
+
+    <circle cx="50"  cy="120" r="20"/>
+    <circle cx="159" cy="120" r="25"/>
+    <circle cx="309" cy="120" r="25"/>
+    <circle cx="459" cy="120" r="25"/>
+    <circle cx="609" cy="120" r="25"/>
+    <rect x="696" y="96" width="60" height="48" rx="8"/>
+    <circle cx="812" cy="120" r="21"/>
+  </g>
+
+  <text x="42"  y="126" font-style="italic">x<tspan font-size="12" dy="5">1</tspan></text>
+  <text x="152" y="127" font-size="20">&#963;</text>
+  <text x="302" y="127" font-size="20">&#963;</text>
+  <text x="452" y="127" font-size="20">&#963;</text>
+  <text x="602" y="127" font-size="20">&#963;</text>
+  <text x="703" y="125" font-size="13">Loss</text>
+  <text x="805" y="126" font-style="italic">C</text>
+
+  <text x="152" y="80" font-style="italic">x<tspan font-size="12" dy="5">2</tspan></text>
+  <text x="302" y="80" font-style="italic">x<tspan font-size="12" dy="5">3</tspan></text>
+  <text x="452" y="80" font-style="italic">x<tspan font-size="12" dy="5">4</tspan></text>
+  <text x="602" y="80" font-style="italic">x<tspan font-size="12" dy="5">5</tspan></text>
+
+  <text x="118" y="174" font-size="13"><tspan font-style="italic">z</tspan><tspan font-size="10" dy="4">1</tspan><tspan dy="-4"> = </tspan><tspan dy="-4" font-style="italic">w</tspan><tspan font-size="10" dy="4">1</tspan><tspan dy="-4" font-style="italic">x</tspan><tspan font-size="10" dy="4">1</tspan><tspan dy="-4"> + </tspan><tspan dy="-4" font-style="italic">b</tspan><tspan font-size="10" dy="4">1</tspan></text>
+  <text x="268" y="174" font-size="13"><tspan font-style="italic">z</tspan><tspan font-size="10" dy="4">2</tspan><tspan dy="-4"> = </tspan><tspan dy="-4" font-style="italic">w</tspan><tspan font-size="10" dy="4">2</tspan><tspan dy="-4" font-style="italic">x</tspan><tspan font-size="10" dy="4">2</tspan><tspan dy="-4"> + </tspan><tspan dy="-4" font-style="italic">b</tspan><tspan font-size="10" dy="4">2</tspan></text>
+  <text x="418" y="174" font-size="13"><tspan font-style="italic">z</tspan><tspan font-size="10" dy="4">3</tspan><tspan dy="-4"> = </tspan><tspan dy="-4" font-style="italic">w</tspan><tspan font-size="10" dy="4">3</tspan><tspan dy="-4" font-style="italic">x</tspan><tspan font-size="10" dy="4">3</tspan><tspan dy="-4"> + </tspan><tspan dy="-4" font-style="italic">b</tspan><tspan font-size="10" dy="4">3</tspan></text>
+  <text x="568" y="174" font-size="13"><tspan font-style="italic">z</tspan><tspan font-size="10" dy="4">4</tspan><tspan dy="-4"> = </tspan><tspan dy="-4" font-style="italic">w</tspan><tspan font-size="10" dy="4">4</tspan><tspan dy="-4" font-style="italic">x</tspan><tspan font-size="10" dy="4">4</tspan><tspan dy="-4"> + </tspan><tspan dy="-4" font-style="italic">b</tspan><tspan font-size="10" dy="4">4</tspan></text>
+
+  <text x="42" y="216" font-size="15"><tspan font-style="italic">x</tspan><tspan font-size="11" dy="4">i+1</tspan><tspan dy="-4"> = </tspan><tspan dy="-4">&#963;(</tspan><tspan dy="-4" font-style="italic">z</tspan><tspan font-size="11" dy="4">i</tspan><tspan dy="-4">),</tspan><tspan dy="-4">&#160;&#160;</tspan><tspan dy="-4" font-style="italic">i</tspan><tspan dy="-4"> = 1, &#8230;, 4;</tspan><tspan dy="-4">&#160;&#160;</tspan><tspan dy="-4" font-style="italic">C</tspan><tspan dy="-4"> = Loss(</tspan><tspan dy="-4" font-style="italic">x</tspan><tspan font-size="11" dy="4">5</tspan><tspan dy="-4">),</tspan><tspan dy="-4">&#160;&#160;|</tspan><tspan dy="-4" font-style="italic">w</tspan><tspan font-size="11" dy="4">i</tspan><tspan dy="-4">| &lt; 1</tspan></text>
+  <text x="42" y="244" font-size="13" fill="#4b5563">每层只有一个神经元：误差反向传播时梯度要连乘 4 个 σ&#8242;(z) 与 3 个 w，层数越深连乘项越多</text>
+</svg>
