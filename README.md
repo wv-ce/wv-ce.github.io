@@ -25,7 +25,7 @@ git add -A && git commit -m "更新" && git push   # 自动构建并部署到 gh
 ```
 source/_posts/    # 文章（含同名资源目录存放图片）
 tools/            # 笔记导入脚本（import_buaa_os.py / import_buaa_co.py）
-scripts/          # 构建补丁与校验脚本（patch-index.js / lint-taxonomy.js）
+scripts/          # 构建补丁与校验脚本（patch-index.js / patch-categories.js / lint-taxonomy.js）
 _config.yml       # 站点配置
 _config.fluid.yml # 主题配置
 ```
@@ -36,17 +36,17 @@ _config.fluid.yml # 主题配置
 
 | 分类路径 | 标签 |
 | --- | --- |
-| 操作系统 / 实验报告 | 操作系统 |
-| 操作系统 / 理论笔记 | 操作系统 + 话题（内存管理、进程管理、I/O 设备管理、磁盘管理、文件系统） |
-| 操作系统 / 知识梳理 | 操作系统 |
-| 操作系统 / 理论作业 | 操作系统 |
-| 计算机组成 / 理论笔记 | 计算机组成 + 话题（组合逻辑、时序逻辑、主存储器、汇编、Cache 与虚存、总线与 IO） |
+| BUAA OS / 实验报告 | BUAA OS |
+| BUAA OS / 理论笔记 | BUAA OS + 话题（内存管理、进程管理、I/O 设备管理、磁盘管理、文件系统） |
+| BUAA OS / 知识梳理 | BUAA OS |
+| BUAA OS / 理论作业 | BUAA OS |
+| BUAA CO / 理论笔记 | BUAA CO + 话题（组合逻辑、时序逻辑、主存储器、汇编、Cache 与虚存、总线与 IO） |
 | 随笔 | —— |
 
 规则：
 
 - 每篇文章必须有 `categories`，且必须是上表中的分类路径；
-- 每篇只用一个学科标签（`操作系统` 或 `计算机组成`），不要同时保留英文课程号（`BUAA_OS` / `BUAA_CO`），避免标签重复；
+- 每篇只用一个学科标签（`BUAA OS` / `BUAA CO`），不要使用中文学科全称（`操作系统` / `计算机组成`）或旧英文标签（`BUAA_OS` / `BUAA_CO`），避免标签重复、歧义；
 - 理论笔记可加一个对应的话题标签。
 
 检查命令：

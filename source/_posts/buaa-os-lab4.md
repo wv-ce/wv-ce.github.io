@@ -1,8 +1,8 @@
 ---
 title: BUAA OS Lab4 实验报告
 date: 2026-08-09 10:00:00
-categories: [操作系统, 实验报告]
-tags: [操作系统]
+categories: [BUAA OS, 实验报告]
+tags: [BUAA OS]
 description: BUAA OS Lab4 实验报告。
 ---
 

@@ -1,8 +1,8 @@
 ---
 title: OS 理论笔记：文件系统
 date: 2026-08-18 10:00:00
-categories: [操作系统, 理论笔记]
-tags: [操作系统, 文件系统]
+categories: [BUAA OS, 理论笔记]
+tags: [BUAA OS, 文件系统]
 description: OS 理论笔记：文件系统。
 ---
 

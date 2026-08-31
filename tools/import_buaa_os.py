@@ -38,14 +38,14 @@ def build_plan(repo: Path):
         d = repo / "实验报告" / f"lab{slug[-1]}"
         plan.append({
             "slug": slug, "title": title,
-            "categories": ["操作系统", "实验报告"], "tags": ["操作系统"],
+            "categories": ["BUAA OS", "实验报告"], "tags": ["BUAA OS"],
             "parts": [(d / f"lab{slug[-1]}.md", None)], "img_dir": d,
         })
 
     # 实验报告/结构梳理.md
     plan.append({
         "slug": "buaa-os-review", "title": "BUAA OS 知识结构梳理",
-        "categories": ["操作系统", "知识梳理"], "tags": ["操作系统"],
+        "categories": ["BUAA OS", "知识梳理"], "tags": ["BUAA OS"],
         "parts": [(repo / "实验报告" / "结构梳理.md", None)], "img_dir": None,
     })
 
@@ -53,7 +53,7 @@ def build_plan(repo: Path):
     parts = [(f, f"作业 {i + 1}") for i, f in enumerate(hw)]
     plan.append({
         "slug": "buaa-os-theory-homework", "title": "操作系统理论作业汇总",
-        "categories": ["操作系统", "理论作业"], "tags": ["操作系统"],
+        "categories": ["BUAA OS", "理论作业"], "tags": ["BUAA OS"],
         "parts": parts, "img_dir": None,
     })
 
@@ -70,7 +70,7 @@ def build_plan(repo: Path):
         parts = [(f, None) for f in sorted(d.glob("*.md"))]
         plan.append({
             "slug": slug, "title": title,
-            "categories": ["操作系统", "理论笔记"], "tags": ["操作系统", topic],
+            "categories": ["BUAA OS", "理论笔记"], "tags": ["BUAA OS", topic],
             "parts": parts, "img_dir": d if d.exists() else None,
         })
     return plan

@@ -1,8 +1,8 @@
 ---
 title: BUAA CO 主存储器 理论笔记
 date: 2026-08-21 10:00:00
-categories: [计算机组成, 理论笔记]
-tags: [计算机组成, 主存储器]
+categories: [BUAA CO, 理论笔记]
+tags: [BUAA CO, 主存储器]
 description: BUAA CO 主存储器 理论笔记。
 ---
 

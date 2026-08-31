@@ -1,8 +1,8 @@
 ---
 title: BUAA CO 时序逻辑 理论笔记
 date: 2026-08-20 10:00:00
-categories: [计算机组成, 理论笔记]
-tags: [计算机组成, 时序逻辑]
+categories: [BUAA CO, 理论笔记]
+tags: [BUAA CO, 时序逻辑]
 description: BUAA CO 时序逻辑 理论笔记。
 ---
 
