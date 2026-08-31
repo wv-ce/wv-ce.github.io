@@ -980,18 +980,6 @@ category:
   # The maximum number of posts in a single category. If the limit is exceeded, it will be displayed More. If 0 no limit
   post_limit: 10
 
-  # 分类页顶部说明（HTML），由 scripts/patch-categories.js 注入到页面中
-  # Introduction shown at the top of the category page (HTML), injected via scripts/patch-categories.js
-  introduction: |
-    <div class="category-intro">
-      <p>本站内容按「课程 / 文档类型」两级分类组织：</p>
-      <ul>
-        <li><strong>BUAA OS</strong>（操作系统）：实验报告（Lab0~Lab6）、理论笔记（内存 / 进程 / I/O / 磁盘 / 文件系统）、知识梳理、理论作业。</li>
-        <li><strong>BUAA CO</strong>（计算机组成原理）：理论笔记（组合逻辑、时序逻辑、主存储器、汇编、Cache 与虚存、总线与 IO）。</li>
-        <li><strong>随笔</strong>：技术之外的日常记录。</li>
-      </ul>
-    </div>
-
 
 #---------------------------
 # 标签页

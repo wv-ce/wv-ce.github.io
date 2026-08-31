@@ -25,7 +25,7 @@ git add -A && git commit -m "更新" && git push   # 自动构建并部署到 gh
 ```
 source/_posts/    # 文章（含同名资源目录存放图片）
 tools/            # 笔记导入脚本（import_buaa_os.py / import_buaa_co.py）
-scripts/          # 构建补丁与校验脚本（patch-index.js / patch-categories.js / lint-taxonomy.js）
+scripts/          # 构建补丁与校验脚本（patch-index.js / patch-category-intros.js / lint-taxonomy.js）
 _config.yml       # 站点配置
 _config.fluid.yml # 主题配置
 ```
@@ -48,6 +48,9 @@ _config.fluid.yml # 主题配置
 - 每篇文章必须有 `categories`，且必须是上表中的分类路径；
 - 每篇只用一个学科标签（`BUAA OS` / `BUAA CO`），不要使用中文学科全称（`操作系统` / `计算机组成`）或旧英文标签（`BUAA_OS` / `BUAA_CO`），避免标签重复、歧义；
 - 理论笔记可加一个对应的话题标签。
+- 顶层分类页（`/categories/BUAA-OS/`、`/categories/BUAA-CO/`、`/categories/随笔/`）的文章列表上方会显示课程说明，
+  正文取自对应入口页（`source/os|co|notes/index.md`）开头到第一个小节/列表之前的部分，由 `scripts/patch-category-intros.js` 在构建时注入；
+  改说明只需改入口页，子分类页与分页不显示说明。
 
 检查命令：
 
