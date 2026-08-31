@@ -1,8 +1,8 @@
 ---
 title: OS 理论笔记：磁盘管理
 date: 2026-08-17 10:00:00
-categories: [理论笔记]
-tags: [BUAA_OS, 操作系统]
+categories: [操作系统, 理论笔记]
+tags: [操作系统, 磁盘管理]
 description: OS 理论笔记：磁盘管理。
 ---
 

@@ -94,8 +94,8 @@ def main():
             "---\n"
             f"title: BUAA CO {title} 理论笔记\n"
             f"date: {post_date.isoformat()} 10:00:00\n"
-            "categories: [理论笔记]\n"
-            "tags: [BUAA_CO, 计算机组成]\n"
+            "categories: [计算机组成, 理论笔记]\n"
+            f"tags: [计算机组成, {title}]\n"
             f"description: BUAA CO {title} 理论笔记。\n"
             "---\n\n"
         )

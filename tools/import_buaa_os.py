@@ -37,14 +37,15 @@ def build_plan(repo: Path):
     for slug, title in labs:
         d = repo / "实验报告" / f"lab{slug[-1]}"
         plan.append({
-            "slug": slug, "title": title, "category": "实验报告",
+            "slug": slug, "title": title,
+            "categories": ["操作系统", "实验报告"], "tags": ["操作系统"],
             "parts": [(d / f"lab{slug[-1]}.md", None)], "img_dir": d,
         })
 
     # 实验报告/结构梳理.md
     plan.append({
         "slug": "buaa-os-review", "title": "BUAA OS 知识结构梳理",
-        "category": "实验报告",
+        "categories": ["操作系统", "知识梳理"], "tags": ["操作系统"],
         "parts": [(repo / "实验报告" / "结构梳理.md", None)], "img_dir": None,
     })
 
@@ -52,22 +53,24 @@ def build_plan(repo: Path):
     parts = [(f, f"作业 {i + 1}") for i, f in enumerate(hw)]
     plan.append({
         "slug": "buaa-os-theory-homework", "title": "操作系统理论作业汇总",
-        "category": "理论作业", "parts": parts, "img_dir": None,
+        "categories": ["操作系统", "理论作业"], "tags": ["操作系统"],
+        "parts": parts, "img_dir": None,
     })
 
     # 理论笔记：每个文件夹一篇
     notes = {
-        "3-内存管理": ("os-notes-memory", "OS 理论笔记：内存管理"),
-        "4-进程管理": ("os-notes-process", "OS 理论笔记：进程管理与死锁"),
-        "5-IO": ("os-notes-io", "OS 理论笔记：I/O 设备管理"),
-        "6-磁盘管理": ("os-notes-disk", "OS 理论笔记：磁盘管理"),
-        "7-文件系统": ("os-notes-fs", "OS 理论笔记：文件系统"),
+        "3-内存管理": ("os-notes-memory", "OS 理论笔记：内存管理", "内存管理"),
+        "4-进程管理": ("os-notes-process", "OS 理论笔记：进程管理与死锁", "进程管理"),
+        "5-IO": ("os-notes-io", "OS 理论笔记：I/O 设备管理", "I/O 设备管理"),
+        "6-磁盘管理": ("os-notes-disk", "OS 理论笔记：磁盘管理", "磁盘管理"),
+        "7-文件系统": ("os-notes-fs", "OS 理论笔记：文件系统", "文件系统"),
     }
-    for folder, (slug, title) in notes.items():
+    for folder, (slug, title, topic) in notes.items():
         d = repo / "理论笔记" / folder
         parts = [(f, None) for f in sorted(d.glob("*.md"))]
         plan.append({
-            "slug": slug, "title": title, "category": "理论笔记",
+            "slug": slug, "title": title,
+            "categories": ["操作系统", "理论笔记"], "tags": ["操作系统", topic],
             "parts": parts, "img_dir": d if d.exists() else None,
         })
     return plan
@@ -136,8 +139,8 @@ def main():
             "---\n"
             f"title: {item['title']}\n"
             f"date: {post_date.isoformat()} 10:00:00\n"
-            f"categories: [{item['category']}]\n"
-            "tags: [BUAA_OS, 操作系统]\n"
+            f"categories: [{', '.join(item['categories'])}]\n"
+            f"tags: [{', '.join(item['tags'])}]\n"
             f"description: {item['title']}。\n"
             "---\n\n"
         )

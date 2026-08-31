@@ -1,8 +1,8 @@
 ---
 title: BUAA OS Lab3 实验报告
 date: 2026-08-08 10:00:00
-categories: [实验报告]
-tags: [BUAA_OS, 操作系统]
+categories: [操作系统, 实验报告]
+tags: [操作系统]
 description: BUAA OS Lab3 实验报告。
 ---
 

@@ -1,8 +1,8 @@
 ---
 title: BUAA CO 总线与 IO 理论笔记
 date: 2026-08-24 10:00:00
-categories: [理论笔记]
-tags: [BUAA_CO, 计算机组成]
+categories: [计算机组成, 理论笔记]
+tags: [计算机组成, 总线与 IO]
 description: BUAA CO 总线与 IO 理论笔记。
 ---
 

@@ -1,8 +1,8 @@
 ---
 title: OS 理论笔记：内存管理
 date: 2026-08-14 10:00:00
-categories: [理论笔记]
-tags: [BUAA_OS, 操作系统]
+categories: [操作系统, 理论笔记]
+tags: [操作系统, 内存管理]
 description: OS 理论笔记：内存管理。
 ---
 

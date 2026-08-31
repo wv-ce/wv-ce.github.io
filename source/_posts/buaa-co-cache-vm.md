@@ -1,8 +1,8 @@
 ---
 title: BUAA CO Cache 与虚存 理论笔记
 date: 2026-08-23 10:00:00
-categories: [理论笔记]
-tags: [BUAA_CO, 计算机组成]
+categories: [计算机组成, 理论笔记]
+tags: [计算机组成, Cache 与虚存]
 description: BUAA CO Cache 与虚存 理论笔记。
 ---
 

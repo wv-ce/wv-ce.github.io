@@ -1,8 +1,8 @@
 ---
 title: 操作系统理论作业汇总
 date: 2026-08-13 10:00:00
-categories: [理论作业]
-tags: [BUAA_OS, 操作系统]
+categories: [操作系统, 理论作业]
+tags: [操作系统]
 description: 操作系统理论作业汇总。
 ---
 

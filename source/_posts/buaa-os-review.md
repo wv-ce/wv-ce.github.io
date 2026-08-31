@@ -1,8 +1,8 @@
 ---
 title: BUAA OS 知识结构梳理
 date: 2026-08-12 10:00:00
-categories: [实验报告]
-tags: [BUAA_OS, 操作系统]
+categories: [操作系统, 知识梳理]
+tags: [操作系统]
 description: BUAA OS 知识结构梳理。
 ---
 
